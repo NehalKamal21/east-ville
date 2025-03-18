@@ -1,13 +1,12 @@
-import GoogleMapComponent from "./GoogleMapComponent";
-
 import './App.css'
+import GoogleMapWrapper from "./components/GoogleMapWrapper";
 
 function App() {
-  
+
 
   return (
     <>
-      <GoogleMapComponent />
+      <GoogleMapWrapper />
     </>
   )
 }
