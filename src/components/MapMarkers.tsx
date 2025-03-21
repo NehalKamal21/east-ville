@@ -17,7 +17,17 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
         title: string;
         type: string;
     }
-    
+
+    const icon = document.createElement('div');
+    icon.innerHTML = '<i class="fa fa-pizza-slice fa-lg"></i>';
+    // Define or import PinElement if it is from a library
+    // const faPin = new PinElement({
+    //     glyph: icon,
+    //     glyphColor: '#ff8300',
+    //     background: '#FFD514',
+    //     borderColor: '#ff8300',
+    // });
+
     const [selectedMarker, setSelectedMarker] = useState<MarkerType | null>(null);
 
 
@@ -58,7 +68,7 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
                     >
                         <Flex verticalAlign="center" >
                             <Box >
-                                <FaEllipsisV size={40} fontSize={'md'}/>
+                                <FaEllipsisV size={40} fontSize={'md'} />
                             </Box>
                             <Box width={'100%'}>
 

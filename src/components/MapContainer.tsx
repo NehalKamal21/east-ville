@@ -5,6 +5,7 @@ import MapInfoWindow from "./MapInfoWindow";
 import MapPath from "./MapPath";
 import { containerStyle, eastVilleLocation, locations } from "./helpers";
 import MapMarkers from "./MapMarkers";
+import { useNavigate } from "react-router-dom";
 
 interface MapContainerProps {
   isLoaded: boolean;

@@ -4,7 +4,8 @@ import { Box, Image } from "@chakra-ui/react";
 import logo from "../assets/ajna.webp";
 import { eastVilleLocation } from "./helpers";
 
-const MapInfoWindow: React.FC = () => {
+const MapInfoWindow: React.FC= () => {
+
   return (
     <>
       <Marker
@@ -17,7 +18,7 @@ const MapInfoWindow: React.FC = () => {
           lat: eastVilleLocation.lat + 0.005, // Slightly move up
           lng: eastVilleLocation.lng,
         }}>
-        <Box color="white" p={6} borderRadius={15} background={'white'} textAlign="center" maxW="220px">
+        <Box color="white" p={6} borderRadius={15} background={'white'} textAlign="center" maxW="220px" onClick={() => window.location.href = "/map"}>
           <Image src={logo} alt="Ajna" width="100%" fit="contain" />
         </Box>
       </InfoWindow>

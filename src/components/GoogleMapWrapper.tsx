@@ -5,6 +5,7 @@ import MapContainer from "./MapContainer";
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAL52vLYsvaei_MKXRaRg0aPNLlJyKDGWs';
 
 const GoogleMapWrapper: React.FC = () => {
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
