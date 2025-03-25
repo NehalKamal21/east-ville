@@ -68,7 +68,7 @@ export const locations = [
 
   },
   {
-    position: { lat: 30.008626069978543, lng: 31.42846484451591 },
+    position: { lat: 30.024831912211155, lng: 31.50153637346938 },
     title: "AUC New Cairo",
     type: "education",
   },

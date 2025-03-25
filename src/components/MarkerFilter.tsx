@@ -8,9 +8,9 @@ interface MarkerFilterProps {
 }
 
 const filterOptions = [
-  { label: "Sports", value: "sports", style: "surface", icon: <MdSportsHandball /> },
-  { label: "Residential", value: "residential", style: "surface", icon: <MdOutlineHome /> },
-  { label: "Education", value: "education", style: "surface", icon: <MdSchool /> },
+  { label: "Sports", value: "sports", style: "surface", icon: <MdSportsHandball size={20} /> },
+  { label: "Residential", value: "residential", style: "surface", icon: <MdOutlineHome size={20}/> },
+  { label: "Education", value: "education", style: "surface", icon: <MdSchool size={20} /> },
 ];
 
 const MarkerFilter: React.FC<MarkerFilterProps> = ({ onFilterChange }) => {
@@ -55,8 +55,7 @@ const MarkerFilter: React.FC<MarkerFilterProps> = ({ onFilterChange }) => {
             >
               <CheckboxCard.HiddenInput />
               <CheckboxCard.Control>
-                <CheckboxCard.Label> {variant.icon} {variant.value}</CheckboxCard.Label>
-                {/* <CheckboxCard.Indicator /> */}
+                <CheckboxCard.Label> {variant.icon} {variant.label}</CheckboxCard.Label>
               </CheckboxCard.Control>
             </CheckboxCard.Root>
           )}

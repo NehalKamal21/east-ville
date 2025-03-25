@@ -1,0 +1,19 @@
+.villa:hover {
+    filter: grayscale(100%) sepia(100%);
+}
+
+.fullScreenSvg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.fullScreenSvg+image {
+    width: 100%;
+    height: 100%;
+}
+
+
+.rotateIcon {
+    flex: 1;
+}
