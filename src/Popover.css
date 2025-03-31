@@ -1,0 +1,15 @@
+.popoverXXX {
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    color: white;
+    padding: 2px; /* Small padding */
+    border-radius: 6px;
+    font-size: 4px; /* Font size set to 6px */
+    text-align: center;
+    white-space: nowrap; /* Prevent text wrapping */
+    position: relative;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+/* */
+.availableUnits{
+    color: mediumspringgreen;
+}

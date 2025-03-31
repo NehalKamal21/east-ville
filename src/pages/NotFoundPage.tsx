@@ -1,33 +1,20 @@
-import { Box, Heading, Text, Button, VStack } from "@chakra-ui/react";
+import React from "react";
+import { Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const NotFoundPage = () => {
+const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      bg="gray.100"
-    >
-      <VStack spaceX={6} textAlign="center">
-        <Heading fontSize="6xl" fontWeight="bold" color="red.500">
-          404
-        </Heading>
-        <Text fontSize="xl" color="gray.600">
-          Oops! The page you’re looking for doesn’t exist.
-        </Text>
-        <Button
-          bg="blue.500" color="white" _hover={{ bg: "blue.600" }}
-          size="lg"
-          onClick={() => navigate("/")}
-        >
+    <div className="d-flex vh-100 justify-content-center align-items-center bg-light">
+      <Container className="text-center">
+        <h1 className="display-1 fw-bold text-danger">404</h1>
+        <p className="fs-4 text-muted">Oops! The page you’re looking for doesn’t exist.</p>
+        <Button variant="primary" size="lg" onClick={() => navigate("/")}>
           Go Home
         </Button>
-      </VStack>
-    </Box>
+      </Container>
+    </div>
   );
 };
 

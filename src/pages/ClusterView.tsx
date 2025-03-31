@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button } from "@chakra-ui/react";
+import { Container, Button } from "react-bootstrap";
 import { FiRotateCcw } from "react-icons/fi";
 import '../master.css';
 import axios from "axios";
@@ -29,30 +29,24 @@ const ClusterView: React.FC = () => {
         fetchCluster();
     }, [clusterId]);
 
-
     const handleRotation = () => {
         setIsFront((prev) => !prev); // Toggle flip state
     };
+
     return (
-        <>
-            <Box position="relative" width="100vw" height="100vh">
-                {/* Background Image */}
+        <div className="d-flex flex-column align-items-center justify-content-center vh-100">
+            {/* Background Image */}
+            <Container fluid className="position-relative text-center">
                 {clusterId?.indexOf('A') !== -1 ? isFront ? <AFront /> : <ABack /> : null}
                 {clusterId?.indexOf('B') !== -1 ? isFront ? <BFront /> : <BBack /> : null}
                 {clusterId?.indexOf('T') !== -1 ? isFront ? <TWFront /> : <TWBack /> : null}
+            </Container>
 
-                {/* Centered Outline Button */}
-                <Box position="absolute" top="5%" left="50%" transform="translate(-50%, -50%)" >
-                    <Button
-                        variant="outline" color="white" bg="black" borderColor="black"
-                        display="flex" alignItems="center" gap={2} _hover={{ bg: "white", color: "black" }}
-                        onClick={handleRotation} >
-                        Rotate Building <FiRotateCcw className='rotateIcon' size={18} />
-                    </Button>
-                </Box>
-            </Box>
-        </>
-
+            {/* Centered Outline Button */}
+            <Button variant="dark" className="mt-3 d-flex align-items-center gap-2" onClick={handleRotation}>
+                Rotate Building <FiRotateCcw size={18} />
+            </Button>
+        </div>
     );
 };
 

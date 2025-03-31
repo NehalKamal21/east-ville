@@ -1,62 +1,105 @@
-import { Flex, Box, RadioCard, For, Heading, Stack, HStack } from '@chakra-ui/react';
-import AGroundFloor from '../SVGs/ClusterA/AGroundFloor';
-import React from 'react';
-import AFirstFloor from '../SVGs/ClusterA/AFirstFloor';
-import { useParams } from 'react-router-dom';
-import ASecondFloor from '../SVGs/ClusterA/ASecondFloor';
-import ARoof from '../SVGs/ClusterA/ARoof';
-import BSecondFloor from '../SVGs/ClusterB/BSecondFloor';
-import BFirstFloor from '../SVGs/ClusterB/BFirstFloor';
-import BGroundFloor from '../SVGs/ClusterB/BGroundFloor';
-import BRoof from '../SVGs/ClusterB/BRoof';
-import TWGroundFloor from '../SVGs/ClusterTW/TWGroundFloor';
-import TWFirstFloor from '../SVGs/ClusterTW/TWFirstFloor';
-import TWRoof from '../SVGs/ClusterTW/TWRoof';
-import TWSecondFloor from '../SVGs/ClusterTW/TWSecondFloor';
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Container, Button, ToggleButton, ToggleButtonGroup, Card, Col, Row } from "react-bootstrap";
+import AGroundFloor from "../SVGs/ClusterA/AGroundFloor";
+import AFirstFloor from "../SVGs/ClusterA/AFirstFloor";
+import ASecondFloor from "../SVGs/ClusterA/ASecondFloor";
+import ARoof from "../SVGs/ClusterA/ARoof";
+import BGroundFloor from "../SVGs/ClusterB/BGroundFloor";
+import BFirstFloor from "../SVGs/ClusterB/BFirstFloor";
+import BSecondFloor from "../SVGs/ClusterB/BSecondFloor";
+import BRoof from "../SVGs/ClusterB/BRoof";
+import TWGroundFloor from "../SVGs/ClusterTW/TWGroundFloor";
+import TWFirstFloor from "../SVGs/ClusterTW/TWFirstFloor";
+import TWSecondFloor from "../SVGs/ClusterTW/TWSecondFloor";
+import TWRoof from "../SVGs/ClusterTW/TWRoof";
+
+import { RiMailLine, RiArrowRightLine } from "react-icons/ri";
 
 const VillaView: React.FC = () => {
-  const { clusterId } = useParams<{ clusterId: string }>(); // Get route param
-  const { FloorId } = useParams<{ FloorId: string }>(); // Get route param
-  const Floors = [{ value: 'GF', key: 'groundFloor' }, { value: '1F', key: 'firstFloor' }, { value: '2F', key: 'secondFloor' }, { value: 'RF', key: 'Roof' }];
-  const defaultSelectedFloor = Floors.filter((item) => item.key === FloorId)[0];
-  const [selectedFloor, setSelectedFloor] = React.useState<{ key: string, value: string }>(defaultSelectedFloor);
+  const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
+  const navigate = useNavigate();
+
+  const Floors = [
+    { value: "GF", key: "groundFloor" },
+    { value: "1F", key: "firstFloor" },
+    { value: "2F", key: "secondFloor" },
+    { value: "RF", key: "Roof" },
+  ];
+
+  const defaultSelectedFloor = Floors.find((item) => item.key === FloorId) || Floors[0];
+  const [selectedFloor, setSelectedFloor] = useState(defaultSelectedFloor);
+
   return (
-    <Box>
-      <Flex alignItems={'center'} justifyContent={'center'} >
+    <>
+      <Container fluid className="d-flex justify-content-center align-items-center vh-100">
+        {clusterId?.includes("A") &&
+          (selectedFloor.key === "groundFloor" ? <AGroundFloor /> :
+            selectedFloor.key === "firstFloor" ? <AFirstFloor /> :
+              selectedFloor.key === "secondFloor" ? <ASecondFloor /> :
+                selectedFloor.key === "Roof" ? <ARoof /> : null)}
 
-        {clusterId?.indexOf('A') !== -1 ? selectedFloor.key === 'groundFloor' ? <AGroundFloor /> : selectedFloor.key === 'firstFloor' ? <AFirstFloor /> : selectedFloor.key === 'secondFloor' ? <ASecondFloor /> : selectedFloor.key === 'Roof' ? <ARoof /> : null : null}
-        {clusterId?.indexOf('B') !== -1 ? selectedFloor.key === 'groundFloor' ? <BGroundFloor /> : selectedFloor.key === 'firstFloor' ? <BFirstFloor /> : selectedFloor.key === 'secondFloor' ? <BSecondFloor /> : selectedFloor.key === 'Roof' ? <BRoof /> : null : null}
-        {clusterId?.indexOf('T') !== -1 ? selectedFloor.key === 'groundFloor' ? <TWGroundFloor /> : selectedFloor.key === 'firstFloor' ? <TWFirstFloor /> : selectedFloor.key === 'secondFloor' ? <TWSecondFloor /> : selectedFloor.key === 'Roof' ? <TWRoof /> : null : null}
-      </Flex>
-      <Box
-        position="absolute"
-        top="55px"
-        left="55px"
-        zIndex="10"
-        bg="blackAlpha.600"
-        p="4"
-        color={"white"}
-        borderRadius="md"
-        boxShadow="lg"
-        width="80px"
-      >
-        <Heading fontSize="md" mb="2">
-          Floors
-        </Heading>
+        {clusterId?.includes("B") &&
+          (selectedFloor.key === "groundFloor" ? <BGroundFloor /> :
+            selectedFloor.key === "firstFloor" ? <BFirstFloor /> :
+              selectedFloor.key === "secondFloor" ? <BSecondFloor /> :
+                selectedFloor.key === "Roof" ? <BRoof /> : null)}
 
-        <RadioCard.Root defaultValue={selectedFloor.key} variant="surface"
-          colorPalette="blue" onChange={(event) => setSelectedFloor(Floors.filter((item) => item.key === (event.target as HTMLInputElement).value)[0])}>
-          {Floors.map((item) => (
-            <RadioCard.Item key={item.key} value={item.key}>
-              <RadioCard.ItemHiddenInput />
-              <RadioCard.ItemControl>
-                <RadioCard.ItemText>{item.value}</RadioCard.ItemText>
-              </RadioCard.ItemControl>
-            </RadioCard.Item>
-          ))}
-        </RadioCard.Root>
-      </Box>
-    </Box>
+        {clusterId?.includes("T") &&
+          (selectedFloor.key === "groundFloor" ? <TWGroundFloor /> :
+            selectedFloor.key === "firstFloor" ? <TWFirstFloor /> :
+              selectedFloor.key === "secondFloor" ? <TWSecondFloor /> :
+                selectedFloor.key === "Roof" ? <TWRoof /> : null)}
+      </Container>
+
+      {/* Responsive Floor Selection Card */}
+      <Container fluid className="position-fixed top-0 start-0 p-3" style={{ zIndex: 1000 }}>
+        <Row className="justify-content-start">
+          <Col xs={6} sm={4} md={2} lg={1}>
+            <Card className="p-2 bg-dark text-white shadow">
+              <Card.Title className="text-center fs-6">Floors</Card.Title>
+
+              {/* Floor Selection Buttons */}
+              <ToggleButtonGroup
+                type="radio"
+                name="floors"
+                defaultValue={selectedFloor.key}
+                vertical
+                className="d-grid gap-2"
+              >
+                {Floors.map((item) => (
+                  <ToggleButton
+                    key={item.key}
+                    id={`floor-${item.key}`}
+                    value={item.key}
+                    variant="outline-light"
+                    className="w-100 text-center"
+                    onChange={() => setSelectedFloor(item)}
+                  >
+                    {item.value}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+
+              {/* Action Buttons */}
+              <div className="d-flex justify-content-between mt-3">
+                <Button variant="outline-light" className="p-2">
+                  <RiMailLine size={18} />
+                </Button>
+                <Button
+                  variant="outline-light"
+                  className="p-2"
+                  onClick={() => navigate(`/clusterView/${clusterId}/${FloorId}/image`)}
+                >
+                  <RiArrowRightLine size={18} />
+                </Button>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
+    </>
   );
 };
 
