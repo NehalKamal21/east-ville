@@ -6,30 +6,6 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
@@ -58,6 +34,213 @@
 
 }
 
-.gm-style-iw-tc{
-display: none !important;
+.gm-style-iw-tc {
+  display: none !important;
+}
+
+/* ContactForm.css */
+.contact-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background-color: #007bff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1050;
+}
+
+.modal-header,
+.modal-footerr {
+  background: #222 !important;
+  color: white !important;
+  border-bottom: 1px solid #444 !important;
+  border-top: none !important;
+}
+
+.modal-body {
+  background: #333;
+  color: white;
+  /* border-radius: 10px; */
+  padding: 20px;
+}
+
+.form-control {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  /* Black background with some opacity */
+  color: white !important;
+  /* White text color */
+  border: 1px solid #444 !important;
+}
+
+.form-control::placeholder {
+  color: white !important;
+}
+
+
+.breadcrumb-wrapper {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 1000;
+  /* max-width: calc(100% - 40px); */
+  overflow-x: auto;
+
+
+  animation: fadeIn 0.4s ease;
+  display: flex;
+  align-items: center;
+}
+
+.custom-breadcrumb {
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.breadcrumb-item,
+.breadcrumb-item a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item.active {
+  color: #ccc !important;
+}
+
+.custom-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+  content: ">";
+  padding: 0 8px;
+  color: #aaa;
+  font-weight: bold;
+}
+
+.crumb-icon {
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb {
+  margin: 5px 0 !important;
+}
+
+/* Responsive collapsing */
+@media (max-width: 576px) {
+  .breadcrumb-wrapper {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .breadcrumb-item .crumb-icon {
+    margin-right: 3px;
+  }
+
+  .breadcrumb-item {
+    font-size: 0.85rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.floor-panel-container {
+  /* position: fixed;
+  top: 100px; */
+  /* Adjust based on breadcrumb height */
+  left: 20px;
+  z-index: 999;
+}
+
+@media (max-width: 768px) {
+  .floor-panel-container {
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .floor-panel-container .card {
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+
+.room-details-panel {
+  /* position: fixed;
+  top: 10PX; */
+  /* adjust for breadcrumb */
+  right: 20px;
+  z-index: 999;
+  max-width: 300px;
+  font-size: 10px;
+}
+
+@media (max-width: 768px) {
+  .room-details-panel {
+    position: static;
+    margin-top: 1rem;
+  }
+}
+
+
+/* Make close button white */
+.modal-header .btn-close {
+  filter: invert(1);
+}
+
+/* Style carousel arrows with blurred background and white color */
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  width: 50px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+  background-size: 70% 70%;
+}
+
+.masterplan-filter {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 1050;
+  max-width: 200px;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  font-size: 10px;
 }

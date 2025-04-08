@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Modal, Button, Form } from "react-bootstrap";
-import Cookies from "js-cookie";
 
 interface Contact {
+    firstName: string;
+    lastName: string;
     _id: string;
     name: string;
     email: string;
@@ -98,7 +99,7 @@ const Callback: React.FC = () => {
                 <tbody>
                     {contacts.map((contact) => (
                         <tr key={contact._id} onClick={() => handleRowClick(contact)} style={{ cursor: "pointer" }}>
-                            <td>{contact.name}</td>
+                            {contact.firstName ? <td>{contact.firstName + ' ' + contact.lastName}</td> : <td>{contact.name} </td>}
                             <td>{contact.email}</td>
                             <td>{contact.message}</td>
                             <td>

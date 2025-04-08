@@ -1,6 +1,6 @@
 import React from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
-import MapContainer from "../components/MapContainer";
+import MapContainer from "../components/map/MapContainer";
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyAL52vLYsvaei_MKXRaRg0aPNLlJyKDGWs';
 

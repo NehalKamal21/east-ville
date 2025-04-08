@@ -1,22 +1,13 @@
 // src/pages/SpinnerPage.tsx
 import React from "react";
-import { Box, Spinner, Text } from "@chakra-ui/react";
+import { Spinner } from "react-bootstrap";
 
 const SpinnerPage: React.FC = () => {
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      height="100vh"
-      bg="gray.100"
-    >
-      <Spinner size="xl" color="blue.500" />
-      <Text fontSize="xl" mt={4} color="gray.700">
-        Loading, please wait...
-      </Text>
-    </Box>
+    <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+      <Spinner animation="border" variant="primary" role="status" style={{ width: "3rem", height: "3rem" }} />
+      <p className="mt-3 fs-5 text-muted">Loading, please wait...</p>
+    </div>
   );
 };
 

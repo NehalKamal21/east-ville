@@ -13,6 +13,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Cookies from "js-cookie";
 import Callback from './pages/Callback';
 import UpdateVillaStatus from './pages/UpdateVillaStatus';
+import ContactForm from './components/ContactForm';
+import BreadcrumbNav from './components/Breadcrumbs';
 
 
 // 🔹 Protected Route Component
@@ -26,10 +28,11 @@ function App() {
     <>
       <Router>
         <Suspense fallback={<h1>Looding...</h1>}>
+          <BreadcrumbNav />
           <Routes>
             <Route path="/" element={<GoogleMapWrapper />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/map" element={<MasterPlan />} />
+            <Route path="/master-plan" element={<MasterPlan />} />
             <Route path="/callback" element={<ProtectedRoute element={<Callback />} />} />
             <Route path="/villa-status" element={<ProtectedRoute element={<UpdateVillaStatus />} />} />
             <Route path="/clusterView/:clusterId" element={<ClusterView />} />
@@ -38,6 +41,8 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
+        <ContactForm />
+
       </Router>
     </>
   )
