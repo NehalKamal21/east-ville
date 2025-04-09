@@ -3,10 +3,20 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  plugins: [react(), VitePWA({ registerType: 'autoUpdate' })],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      workbox: {
+        globDirectory: 'dist', // or 'build' if you changed it
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globIgnores: ['node_modules/**/*', 'sw.js', 'workbox-*.js'],
+      },
+    }),
+  ],
   build: {
-    minify: 'esbuild', // Faster builds
-    chunkSizeWarningLimit: 500, // Avoid warnings for large bundles
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 500,
   },
   server: {
     open: true,
