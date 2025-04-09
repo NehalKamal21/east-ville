@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { Form, Dropdown, Card, Container, Button } from "react-bootstrap";
+import { Form, Dropdown, Button } from "react-bootstrap";
 import { AiOutlineSearch } from "react-icons/ai";
 
 interface Villa {
@@ -20,6 +20,7 @@ const VillaSearchFromClusters: React.FC = () => {
     const [clusters, setClusters] = useState<Cluster[]>([]);
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
+    // @ts-ignore
     const [selected, setSelected] = useState<{ cluster: Cluster; villa: Villa } | null>(null);
     const [showSearch, setShowSearch] = useState(false);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);

@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
-import { RiMailLine, RiArrowRightLine } from "react-icons/ri";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface Room {

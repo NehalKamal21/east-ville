@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import MasterPlan from './pages/MasterPlan';
 import ClusterView from './pages/ClusterView';
 import NotFoundPage from './pages/NotFoundPage';
-import React, { JSX, Suspense } from 'react';
+import { JSX, Suspense } from 'react';
 // import SpinnerPage from "./pages/SpinnerPage"; // Ensure this path is correct or create the file if it doesn't exist
 import Login from './pages/Login'; // Ensure this path is correct or create the file if it doesn't exist
 import VillaView from './pages/VillaView';

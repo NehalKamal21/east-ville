@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Carousel, Button } from "react-bootstrap";
+import { Modal, Carousel } from "react-bootstrap";
 
 interface CompoundImageCarouselProps {
     show: boolean;

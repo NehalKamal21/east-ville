@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { FiRotateCcw } from "react-icons/fi";
 import '../master.css';
 import axios from "axios";
@@ -15,7 +15,9 @@ import ClusterLayoutFilter from '../components/ClusterLayoutFilter';
 const ClusterView: React.FC = () => {
     const { clusterId } = useParams<{ clusterId: string }>(); // Get route param
     const [isFront, setIsFront] = useState(true);
+    // @ts-ignore
     const [cluster, setCluster] = useState(null);
+    // @ts-ignore
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

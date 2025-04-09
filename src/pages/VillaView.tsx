@@ -2,12 +2,9 @@ import React, { JSX, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Container,
-  Button,
   ToggleButton,
   ToggleButtonGroup,
   Card,
-  Col,
-  Row,
 } from "react-bootstrap";
 import AGroundFloor from "../SVGs/ClusterA/AGroundFloor";
 import AFirstFloor from "../SVGs/ClusterA/AFirstFloor";
@@ -23,7 +20,6 @@ import TWGroundFloor from "../SVGs/ClusterTW/TWGroundFloor";
 import TWFirstFloor from "../SVGs/ClusterTW/TWFirstFloor";
 import TWSecondFloor from "../SVGs/ClusterTW/TWSecondFloor";
 import TWRoof from "../SVGs/ClusterTW/TWRoof";
-import { RiMailLine, RiArrowRightLine } from "react-icons/ri";
 import RoomDetailsPanel from "../components/RoomDetailsPanel";
 import { villaDetails } from "../helpers/villaDetails";
 

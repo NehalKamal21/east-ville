@@ -20,6 +20,7 @@ import VillaSearchFromClusters from '../components/VillaSearchFromClusters';
 
 const MasterPlan: React.FC = () => {
     const [clusters, setClusters] = useState([]);
+    // @ts-ignore
     const [error, setError] = useState<string | null>(null);
     const effectRun = useRef(false);
     const compoundImages = [

@@ -13,6 +13,7 @@ interface MapContainerProps {
 const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
   const [animatedPath, setAnimatedPath] = useState<google.maps.LatLngLiteral[]>([]);
   const animationRef = useRef<number | null>(null);
+  // @ts-ignore
   const [destination, setDestination] = useState<google.maps.LatLngLiteral | null>(null);
   const [routeDetails, setRouteDetails] = useState<{ distance: string; duration: string; steps: string[] } | null>(null);
 
