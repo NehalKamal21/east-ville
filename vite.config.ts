@@ -8,9 +8,15 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globDirectory: 'dist', // or 'build' if you changed it
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        globIgnores: ['node_modules/**/*', 'sw.js', 'workbox-*.js'],
+        "globDirectory": "dist",
+        "globPatterns": ["**/*.{js,css,html,ico,png,svg}"],
+        "globIgnores": [
+          "node_modules/**/*",
+          "sw.js",
+          "workbox-*.js",
+          "sw.js",
+          "workbox-*.js"
+        ]
       },
     }),
   ],
