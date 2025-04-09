@@ -1,3 +1,4 @@
+// TODO: Define proper props interface
 // src/pages/SpinnerPage.tsx
 import React from "react";
 import { Spinner } from "react-bootstrap";

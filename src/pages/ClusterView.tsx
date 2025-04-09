@@ -1,3 +1,4 @@
+// TODO: Define proper props interface
 import React, { useEffect, useState } from 'react';
 import { Button } from "react-bootstrap";
 import { FiRotateCcw } from "react-icons/fi";
@@ -30,7 +31,7 @@ const ClusterView: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        async function fetchCluster() {
+        const fetchCluster = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/clusters/clusterId/${clusterId}`);
                 setCluster(response.data);

@@ -1,3 +1,4 @@
+// TODO: Define proper props interface
 import React, { useEffect, useRef, useState } from 'react';
 import MasterPlanSvg from '../SVGs/MasterPlanSvg';
 import axios from "axios";
@@ -36,7 +37,7 @@ const MasterPlan: React.FC = () => {
     };
 
     useEffect(() => {
-        async function fetchCluster() {
+        const fetchCluster = async (): Promise<void> => {
             try {
                 const response = await axios.get(`http://localhost:5000/clusters`);
                 const data = response.data;

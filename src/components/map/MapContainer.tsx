@@ -3,7 +3,7 @@ import { GoogleMap } from "@react-google-maps/api";
 import MapPolygon from "./MapPolygon";
 import MapInfoWindow from "./MapInfoWindow";
 import MapPath from "./MapPath";
-import { containerStyle, eastVilleLocation, locations } from "../../helpers/helpers";
+import { containerStyle, eastVilleLocation, locations } from "../../utils/helpers";
 import MapMarkers from "./MapMarkers";
 
 interface MapContainerProps {

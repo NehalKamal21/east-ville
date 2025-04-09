@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Marker, InfoWindow } from "@react-google-maps/api";
 import { FaEllipsisV } from "react-icons/fa";
-import { locations } from "../../helpers/helpers";
+import { locations } from  "../../utils/helpers";
 import MarkerFilter from "./MarkerFilter";
 
 interface MapMarkersProps {

@@ -1,3 +1,4 @@
+// TODO: Define proper props interface
 import React, { JSX, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -21,7 +22,7 @@ import TWFirstFloor from "../SVGs/ClusterTW/TWFirstFloor";
 import TWSecondFloor from "../SVGs/ClusterTW/TWSecondFloor";
 import TWRoof from "../SVGs/ClusterTW/TWRoof";
 import RoomDetailsPanel from "../components/RoomDetailsPanel";
-import { villaDetails } from "../helpers/villaDetails";
+import { villaDetails } from "../utils/villaDetails"; // Adjust the import path as necessary
 
 
 const Floors = [

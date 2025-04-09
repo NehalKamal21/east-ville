@@ -1,6 +1,6 @@
 import React from "react";
 import { Polygon } from "@react-google-maps/api";
-import { polygonCoordinates } from "../../helpers/helpers";
+import { polygonCoordinates } from  "../../utils/helpers";
 
 const MapPolygon: React.FC = () => {
   return (

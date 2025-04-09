@@ -1,3 +1,4 @@
+// TODO: Define proper props interface
 import React from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import MapContainer from "../components/map/MapContainer";

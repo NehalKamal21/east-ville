@@ -1,7 +1,7 @@
 import React from "react";
 import { InfoWindow, Marker } from "@react-google-maps/api";
 import logo from "../../assets/ajna.webp";
-import { eastVilleLocation } from "../../helpers/helpers";
+import { eastVilleLocation } from  "../../utils/helpers";
 
 const MapInfoWindow: React.FC = () => {
   return (
