@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import img01 from '../../../assets/clusterB/BFront/img01.png';
-import img02 from '../../../assets/clusterB/BFront/img02.png'; 
+import img01 from '../../assets/clusterB/BFront/image_01.png';
+import img02 from '../../../assets/clusterB/BFront/image_02.png'; 
+
 const BFront: React.FC = () => {
     const navigate = useNavigate();
     const { clusterId } = useParams<{ clusterId: string }>(); // Get route param
