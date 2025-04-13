@@ -1,5 +1,5 @@
 import React from "react";
-import roofFloorImg from "../../assets/ARoofImage.png"; // adjust the path if needed
+import roofFloorImg from "../../assets/clusterA/ARoofImage.png";
 
 const ARoof: React.FC = () => {
   return (

@@ -30,7 +30,7 @@ const MarkerFilter: React.FC<MarkerFilterProps> = ({ onFilterChange }) => {
     <div
       style={{
         position: "absolute",
-        top: "20px",
+        top: "10%",
         left: "20px",
         zIndex: 10,
         backgroundColor: "rgba(0, 0, 0, 0.6)",

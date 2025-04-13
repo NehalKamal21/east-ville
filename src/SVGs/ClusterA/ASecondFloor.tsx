@@ -1,5 +1,5 @@
 import React from "react";
-import seconedFloorImg from "../../assets/ASecondFloorImage.png"; // adjust the path if needed
+import seconedFloorImg from "../../assets/clusterA/ASecondFloorImage.png";
 
 const ASecondFloor: React.FC = () => {
   return (
