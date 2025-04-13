@@ -1,5 +1,5 @@
 import React from "react";
-import groundFloor from "../../assets/ClusterB/BGroundFloor.png";
+import groundFloor from "../../assets/clusterB/BGroundFloor.png";
 
 
 const BGroundFloor: React.FC = () => {
