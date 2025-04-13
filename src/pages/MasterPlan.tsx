@@ -39,7 +39,7 @@ const MasterPlan: React.FC = () => {
     useEffect(() => {
         const fetchCluster = async (): Promise<void> => {
             try {
-                const response = await axios.get(`http://localhost:5000/clusters`);
+                const response = await axios.get(`http://164.90.145.222/clusters`);
                 const data = response.data;
 
                 data.map((item: any) => {
