@@ -20,7 +20,7 @@ const ClusterView: React.FC = () => {
     const [cluster, setCluster] = useState(null);
     // @ts-ignore
     const [error, setError] = useState<string | null>(null);
-
+    const imageUrl = `/images/availability/${clusterId}.svg`;
     useEffect(() => {
         const scrollToMiddle = () => {
             const scrollY = (document.body.scrollHeight - window.innerHeight) / 2;
@@ -28,7 +28,7 @@ const ClusterView: React.FC = () => {
         };
 
         scrollToMiddle();
-    }, []);
+    }, [isFront]);
 
     useEffect(() => {
         const fetchCluster = async () => {
@@ -48,7 +48,7 @@ const ClusterView: React.FC = () => {
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center vh-100">
-            <ClusterLayoutFilter layoutImage="/images/cluster-a-layout.jpg" area={180} bedroomCount={6} />
+            <ClusterLayoutFilter layoutImage={imageUrl} area={180} bedroomCount={6} />
 
             {/* Background Image */}
             <div className="position-relative text-center">

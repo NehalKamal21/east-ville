@@ -23,6 +23,10 @@ const MasterPlan: React.FC = () => {
     const [clusters, setClusters] = useState([]);
     // @ts-ignore
     const [error, setError] = useState<string | null>(null);
+
+    const [selectedArea, setSelectedArea] = useState<number>(-1);
+    const [selectedType, setSelectedType] = useState<string>("");
+
     const effectRun = useRef(false);
     const compoundImages = [
         img1, img10, img11, img2, img3, img4, img5, img6, img7, img8, img9
@@ -30,10 +34,12 @@ const MasterPlan: React.FC = () => {
 
     const handleTypeChange = (type: string) => {
         console.log("Type:", type);
+        setSelectedType(type);
     };
 
     const handleAreaChange = (index: number) => {
         console.log("Area filter:", index); // 0, 1, or 2
+        setSelectedArea(index);
     };
 
     useEffect(() => {
@@ -44,6 +50,7 @@ const MasterPlan: React.FC = () => {
 
                 data.map((item: any) => {
                     item.availableUnits = item.villas.filter((villa: any) => villa.status === "Available").length;
+                    item.totalVillas = item.villas.length;
                     // return item;
                 });
                 setClusters(data);
@@ -61,7 +68,7 @@ const MasterPlan: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100vh" }}>
             <VillaSearchFromClusters />
-            <MasterPlanSvg points={clusters} />
+            <MasterPlanSvg points={clusters} selectedArea={selectedArea} selectedType={selectedType} />
 
             <Button
                 variant="dark"

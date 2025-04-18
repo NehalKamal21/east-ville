@@ -1,24 +1,20 @@
-.villa-A {
+.villa-A:hover,
+.active-A {
     filter: invert(18%) sepia(96%) saturate(2349%) hue-rotate(285deg) brightness(89%) contrast(85%);
     opacity: 0.3;
 }
 
-.villa-B {
+.villa-B:hover,
+.active-B {
     filter: invert(41%) sepia(50%) saturate(4860%) hue-rotate(346deg) brightness(96%) contrast(93%);
     opacity: 0.3;
-
 }
 
-.villa-TW {
+.villa-TW:hover,
+.active-TW {
     filter: invert(78%) sepia(63%) saturate(6404%) hue-rotate(82deg) brightness(119%) contrast(121%);
     opacity: 0.3;
 
-}
-
-.villa-A:hover,
-.villa-B:hover,
-.villa-TW:hover {
-    filter: none;
 }
 
 .fullScreenSvg {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Pannellum } from "pannellum-react";
 import { Spinner } from "react-bootstrap";
 import Image1 from "../assets/1.jpg";
-import Image2 from "../assets/2.jpg";
+import Image2 from "../assets/3.jpg";
 
 interface Panorama {
     image: string;

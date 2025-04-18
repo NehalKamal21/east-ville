@@ -15,16 +15,22 @@ interface MasterPlanFilterProps {
 }
 
 const MasterPlanFilter: React.FC<MasterPlanFilterProps> = ({ onTypeChange, onAreaChange }) => {
-  const [selectedType, setSelectedType] = useState<string>("residential");
+  const [selectedType, setSelectedType] = useState<string>("");
   const [areaIndex, setAreaIndex] = useState<number>(0);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
     onTypeChange(value);
+    const index = parseInt("-1", 10);
+    setAreaIndex(index);
+    onAreaChange(index);
   };
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const index = parseInt(e.target.value, 10);
+    setSelectedType("");
+    onTypeChange("");
+
     setAreaIndex(index);
     onAreaChange(index);
   };
