@@ -19,7 +19,7 @@ const ContactForm: React.FC = () => {
         message: string;
     }) => {
         try {
-            const response = await axios.post("http://localhost:5000/contact", contactData, {
+            const response = await axios.post("http://164.90.145.222/contact", contactData, {
                 withCredentials: true,
             });
 
