@@ -80,7 +80,6 @@ const VillaView: React.FC = () => {
   }, [clusterId, selectedFloor]);
 
   const getRoomsData = (clusterId: string | number, selectedFloor: { key: string | number; }) => {
-    console.log(clusterId, selectedFloor);
 
     const cluster = villaDetails[clusterId as keyof typeof villaDetails];
     if (!cluster) {
@@ -95,8 +94,12 @@ const VillaView: React.FC = () => {
     }
 
     setRooms(floorData.map(room => ({ ...room, dimensions: room.dimensions || "N/A" })));
+
   }
 
+  useEffect(() => {
+    localStorage.setItem("rooms", JSON.stringify(rooms));
+  }, [rooms])
 
   const capitalize = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
@@ -112,30 +115,30 @@ const VillaView: React.FC = () => {
 
             {/* Sticky Floor Filter Panel */}
             <div className="floor-panel-container mt-2">
-                  <Card className="p-3 bg-dark text-white shadow-lg rounded-4">
-                    <Card.Title className="text-center fs-6">Floors</Card.Title>
+              <Card className="p-3 bg-dark text-white shadow-lg rounded-4">
+                <Card.Title className="text-center fs-6">Floors</Card.Title>
 
-                    <ToggleButtonGroup 
-                      type="radio"
-                      name="floors"
-                      value={selectedFloor.key}
+                <ToggleButtonGroup
+                  type="radio"
+                  name="floors"
+                  value={selectedFloor.key}
+                >
+                  {Floors.map((floor) => (
+                    <ToggleButton
+                      key={floor.key}
+                      id={`floor-${floor.key}`}
+                      value={floor.key}
+                      variant="outline-light"
+                      className="text-center"
+                      onClick={() => { setSelectedFloor(floor); navigate(`/clusterView/${clusterId}/${floor.key}`) }}
                     >
-                      {Floors.map((floor) => (
-                        <ToggleButton
-                          key={floor.key}
-                          id={`floor-${floor.key}`}
-                          value={floor.key}
-                          variant="outline-light"
-                          className="text-center"
-                          onClick={() => { setSelectedFloor(floor); navigate(`/clusterView/${clusterId}/${floor.key}`) }}
-                        >
-                          {floor.value}
-                        </ToggleButton>
-                      ))}
-                    </ToggleButtonGroup>
-                  </Card>
-              </div>
+                      {floor.value}
+                    </ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+              </Card>
             </div>
+          </div>
         </div>
       </Container >
 

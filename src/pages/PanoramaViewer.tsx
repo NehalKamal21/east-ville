@@ -1,88 +1,145 @@
-import React, { useState } from "react";
-// @ts-ignore
-import { Pannellum } from "pannellum-react";
+import React, { useRef, useState, useEffect } from "react";
 import { Spinner } from "react-bootstrap";
+import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
+import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
+import "@photo-sphere-viewer/core/index.css";
+import "@photo-sphere-viewer/markers-plugin/index.css";
+
 import Image1 from "../assets/1.jpg";
 import Image2 from "../assets/3.jpg";
 
-interface Panorama {
-    image: string;
-    hotspots: {
-        pitch: number;
-        yaw: number;
-        target: string;
-    }[];
+interface Hotspot {
+    pitch: number;
+    yaw: number;
+    target: string;
 }
 
-const panoramaData: { panoramas: { [key: string]: Panorama } } = {
-    "panoramas": {
-        "location1": {
-            "image": Image1,
-            "hotspots": [
-                {
-                    "pitch": 0,
-                    "yaw": 290,
-                    "target": "location2",
-                }
-            ]
+interface Panorama {
+    id: string,
+    name: string,
+    image: string;
+    hotspots: Hotspot[];
+}
+
+const panoramaData: { panoramas: Record<string, Panorama> } = {
+    panoramas: {
+        location1: {
+            id: 'pano-1',
+            name: 'Panorama 1',
+            image: Image1,
+            hotspots: [{ pitch: 0, yaw: 290, target: "location2" }],
         },
-        "location2": {
-            "image": Image2,
-            "hotspots": [
-                {
-                    "pitch": 0,
-                    "yaw": -100,
-                    "target": "location1",
-                }
-            ]
-        }
-    }
+        location2: {
+            id: 'pano-2',
+            name: 'Panorama 3',
+            image: Image2,
+            hotspots: [{ pitch: 0, yaw: -100, target: "location1" }],
+        },
+    },
 };
 
 const PanoramaViewer: React.FC = () => {
     const [currentLocation, setCurrentLocation] = useState("location1");
-    const [currentImage, setCurrentImage] = useState(panoramaData.panoramas["location1"].image);
     const [loading, setLoading] = useState(false);
+    const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
+    const viewerRef = useRef<any>(null);
 
-    // Function to handle hotspot click (change panorama with transition)
     const handleHotspotClick = (targetLocation: string) => {
         setLoading(true);
         setTimeout(() => {
             setCurrentLocation(targetLocation);
-            setCurrentImage(panoramaData.panoramas[targetLocation].image);
+        }, 100); // allow fade-out
+        setTimeout(() => {
             setLoading(false);
-        }, 800); // Smooth transition delay
+        }, 900); // allow fade-in
     };
 
+    const onReady = (viewer: any) => {
+        viewerRef.current = viewer;
+        const markersPlugin = viewer.getPlugin(MarkersPlugin);
+
+        const hotspots = panoramaData.panoramas[currentLocation]?.hotspots ?? [];
+
+        const markers = hotspots
+            .filter(
+                (h) =>
+                    typeof h.pitch === "number" &&
+                    !isNaN(h.pitch) &&
+                    typeof h.yaw === "number" &&
+                    !isNaN(h.yaw)
+            )
+            .map((hotspot, index) => ({
+                id: `marker-${index}`,
+                position: { yaw: '45deg', pitch: '0deg' },
+                longitude: hotspot.yaw * (Math.PI / 180),
+                latitude: hotspot.pitch * (Math.PI / 180),
+                image: "/marker-icon.png",
+                width: 32,
+                height: 32,
+                anchor: "bottom center",
+                tooltip: `Go to ${hotspot.target}`,
+                data: { target: hotspot.target },
+                size: { width: 32, height: 32 },
+
+            }));
+
+        markersPlugin.setMarkers(markers);
+
+        markersPlugin.addEventListener("select-marker", (e: any) => {
+            const target = e.marker?.data?.target;
+            if (target) handleHotspotClick(target);
+        });
+    };
+
+    // Optional: Preload the next image
+    useEffect(() => {
+        const next = panoramaData.panoramas[currentLocation]?.hotspots?.[0]?.target;
+        if (next) {
+            const preloadImg = new Image();
+            preloadImg.src = panoramaData.panoramas[next].image;
+        }
+    }, [currentLocation]);
+    useEffect(() => setRooms(JSON.parse(localStorage.getItem("rooms") || "[]")), [])
     return (
-        <div className="w-100 vh-100 position-relative">
+        <div className="w-100 vh-100 position-relative bg-black">
             {loading && (
                 <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 d-flex align-items-center justify-content-center z-3">
                     <Spinner animation="border" variant="light" />
                 </div>
             )}
 
-            <Pannellum
-                width="100%"
-                height="100vh"
-                image={currentImage}
-                pitch={0}
-                yaw={0}
-                hfov={110}
-                autoLoad
-                showControls
+            <div
+                style={{
+                    opacity: loading ? 0 : 1,
+                    transition: "opacity 0.6s ease-in-out",
+                    // width: "100%",
+                    // height: "100vh",
+                }}
             >
-                {/* Dynamically generate hotspots from JSON */}
-                {panoramaData.panoramas[currentLocation].hotspots.map((hotspot, index) => (
-                    <Pannellum.Hotspot
-                        key={index}
-                        type="custom"
-                        pitch={hotspot.pitch}
-                        yaw={hotspot.yaw}
-                        handleClick={() => handleHotspotClick(hotspot.target)}
-                    />
-                ))}
-            </Pannellum>
+                <ReactPhotoSphereViewer
+                    key={currentLocation}
+                    src={panoramaData.panoramas[currentLocation].image}
+                    height="100vh"
+                    width="100%"
+                    plugins={[[MarkersPlugin, {}]]}
+                    onReady={onReady}
+                />
+                {/* Room Navigation Buttons */}
+                <div
+                    className="position-absolute start-0 w-100 p-3 d-flex justify-content-center gap-2"
+                    style={{ background: "rgba(0,0,0,0.5)", zIndex: 10, bottom: '40px' }}
+                >
+                    {rooms.map((room: any) => (
+                        <button
+                            key={room.id}
+                            className="btn btn-light btn-sm"
+                            onClick={() => handleHotspotClick(room.panorama)}
+                        >
+                            {room.name}
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
