@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import { JSX } from "react";
 
 import AGroundFloor from "../SVGs/ClusterA/AGroundFloor";
 import AFirstFloor from "../SVGs/ClusterA/AFirstFloor";
