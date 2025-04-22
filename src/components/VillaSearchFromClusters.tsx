@@ -26,7 +26,7 @@ const VillaSearchFromClusters: React.FC = () => {
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        axios.get("http://159.89.30.220/clusters", { withCredentials: true }).then((res) => {
+        axios.get("http://localhost:5000/clusters", { withCredentials: true }).then((res) => {
             setClusters(res.data);
         });
     }, []);

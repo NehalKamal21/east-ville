@@ -7,6 +7,8 @@ import "@photo-sphere-viewer/markers-plugin/index.css";
 
 import Image1 from "../assets/1.jpg";
 import Image2 from "../assets/3.jpg";
+import { renderSVG } from "../utils/renderSVG";
+import { useParams } from "react-router-dom";
 
 interface Hotspot {
     pitch: number;
@@ -39,9 +41,21 @@ const panoramaData: { panoramas: Record<string, Panorama> } = {
 };
 
 const PanoramaViewer: React.FC = () => {
+    const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
+    const Floors = [
+        { value: "GF", key: "groundFloor" },
+        { value: "1F", key: "firstFloor" },
+        { value: "2F", key: "secondFloor" },
+        { value: "RF", key: "Roof" },
+    ];
+    const defaultSelected = Floors.find((f) => f.key === FloorId) || Floors[0];
+
     const [currentLocation, setCurrentLocation] = useState("location1");
     const [loading, setLoading] = useState(false);
     const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
+    const [showFloorPlan, setShowFloorPlan] = useState(false);
+    const [floorSVG, setFloorSvg] = useState<React.ReactNode>(null);
+
     const viewerRef = useRef<any>(null);
 
     const handleHotspotClick = (targetLocation: string) => {
@@ -99,7 +113,10 @@ const PanoramaViewer: React.FC = () => {
             preloadImg.src = panoramaData.panoramas[next].image;
         }
     }, [currentLocation]);
-    useEffect(() => setRooms(JSON.parse(localStorage.getItem("rooms") || "[]")), [])
+    useEffect(() => {
+        setRooms(JSON.parse(localStorage.getItem("rooms") || "[]"))
+        setFloorSvg(renderSVG(clusterId || "", defaultSelected));
+    }, [])
     return (
         <div className="w-100 vh-100 position-relative bg-black">
             {loading && (
@@ -140,6 +157,48 @@ const PanoramaViewer: React.FC = () => {
                     ))}
                 </div>
             </div>
+            {/* Floor Plan Toggle Button (bottom-right) */}
+            <div
+                className="position-absolute end-0 m-3"
+                style={{
+                    backgroundColor: "#000",
+                    padding: "8px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    zIndex: 20,
+                    bottom: '80px',
+                }}
+                onClick={() => setShowFloorPlan(!showFloorPlan)}
+            >
+                <img
+                    src="/floorPlan.png"
+                    alt="Floor Plan Icon"
+                    style={{ width: 40, height: 40, objectFit: "contain" }}
+                />
+            </div>
+
+            {/* Floor Plan Panel */}
+            {showFloorPlan && (
+                <div
+                    className="position-absolute mt-3 ms-3 p-3 bg-white shadow"
+                    style={{
+                        zIndex: 30,
+                        width: "300px",
+                        maxHeight: "80vh",
+                        overflow: "auto",
+                        borderRadius: "12px",
+                        bottom: '100px',
+                        right: '75px',
+                    }}
+                >
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        <strong>Floor Plan</strong>
+                        <button className="btn btn-sm btn-close" onClick={() => setShowFloorPlan(false)} />
+                    </div>
+                    {floorSVG}
+                </div>
+            )}
+
         </div>
     );
 };

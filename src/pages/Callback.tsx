@@ -28,7 +28,7 @@ const Callback: React.FC = () => {
         const fetchContacts = async () => {
             try {
                 // const token = Cookies.get("token");
-                const response = await axios.get("http://159.89.30.220/contacts", { withCredentials: true })
+                const response = await axios.get("http://localhost:5000/contacts", { withCredentials: true })
 
                 setContacts(response.data);
             } catch (error) {
@@ -59,7 +59,7 @@ const Callback: React.FC = () => {
 
         try {
             const response = await axios.put(
-                `http://159.89.30.220/contacts/${selectedContact._id}`,
+                `http://localhost:5000/contacts/${selectedContact._id}`,
                 { status, comment },
                 {
                     withCredentials: true

@@ -33,7 +33,7 @@ const ClusterView: React.FC = () => {
     useEffect(() => {
         const fetchCluster = async () => {
             try {
-                const response = await axios.get(`http://159.89.30.220/clusters/clusterId/${clusterId}`);
+                const response = await axios.get(`http://localhost:5000/clusters/clusterId/${clusterId}`);
                 setCluster(response.data);
             } catch (err) {
                 setError("Cluster not found");

@@ -4,6 +4,13 @@
   height: 100vh;
   /* padding: 2rem; */
   text-align: center;
+  
+}
+/* index.css or App.css */
+html, body, #root {
+  height: 100vh;
+  margin: 0;
+  background-color: black; /* ✅ eliminates white flash */
 }
 
 
@@ -244,3 +251,8 @@
   border-radius: 12px;
   font-size: 10px;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+} 

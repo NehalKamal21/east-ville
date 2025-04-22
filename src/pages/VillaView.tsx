@@ -7,23 +7,10 @@ import {
   ToggleButtonGroup,
   Card,
 } from "react-bootstrap";
-import AGroundFloor from "../SVGs/ClusterA/AGroundFloor";
-import AFirstFloor from "../SVGs/ClusterA/AFirstFloor";
-import ASecondFloor from "../SVGs/ClusterA/ASecondFloor";
-import ARoof from "../SVGs/ClusterA/ARoof";
 
-import BGroundFloor from "../SVGs/ClusterB/BGroundFloor";
-import BFirstFloor from "../SVGs/ClusterB/BFirstFloor";
-import BSecondFloor from "../SVGs/ClusterB/BSecondFloor";
-import BRoof from "../SVGs/ClusterB/BRoof";
-
-import TWGroundFloor from "../SVGs/ClusterTW/TWGroundFloor";
-import TWFirstFloor from "../SVGs/ClusterTW/TWFirstFloor";
-import TWSecondFloor from "../SVGs/ClusterTW/TWSecondFloor";
-import TWRoof from "../SVGs/ClusterTW/TWRoof";
 import RoomDetailsPanel from "../components/RoomDetailsPanel";
 import { villaDetails } from "../utils/villaDetails"; // Adjust the import path as necessary
-
+import { renderSVG } from "../utils/renderSVG";
 
 const Floors = [
   { value: "GF", key: "groundFloor" },
@@ -40,33 +27,6 @@ const VillaView: React.FC = () => {
   const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
   const defaultSelected = Floors.find((f) => f.key === FloorId) || Floors[0];
   const [selectedFloor, setSelectedFloor] = useState(defaultSelected);
-
-  const renderSVG = () => {
-    const map: Record<string, JSX.Element> = {
-      AGroundFloor: <AGroundFloor />,
-      AFirstFloor: <AFirstFloor />,
-      ASecondFloor: <ASecondFloor />,
-      ARoof: <ARoof />,
-      BGroundFloor: <BGroundFloor />,
-      BFirstFloor: <BFirstFloor />,
-      BSecondFloor: <BSecondFloor />,
-      BRoof: <BRoof />,
-      TWGroundFloor: <TWGroundFloor />,
-      TWFirstFloor: <TWFirstFloor />,
-      TWSecondFloor: <TWSecondFloor />,
-      TWRoof: <TWRoof />,
-    };
-
-    const prefix = clusterId?.startsWith("A")
-      ? "A"
-      : clusterId?.startsWith("B")
-        ? "B"
-        : clusterId?.startsWith("T")
-          ? "TW"
-          : "";
-    return map[`${prefix}${capitalize(selectedFloor.key)}`] || null;
-  };
-
 
   useEffect(() => {
     const prefix = clusterId?.startsWith("A")
@@ -101,14 +61,11 @@ const VillaView: React.FC = () => {
     localStorage.setItem("rooms", JSON.stringify(rooms));
   }, [rooms])
 
-  const capitalize = (str: string) =>
-    str.charAt(0).toUpperCase() + str.slice(1);
-
   return (
     <>
       {/* SVG Viewer Fullscreen */}
       <Container fluid className="d-flex flex-row justify-content-center align-items-center vh-100">
-        <div>{renderSVG()}</div>
+        <div>{renderSVG(clusterId || "", selectedFloor)}</div>
         <div style={{ position: "fixed", top: "10%", left: "20px", zIndex: 999 }}>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <RoomDetailsPanel rooms={rooms} />

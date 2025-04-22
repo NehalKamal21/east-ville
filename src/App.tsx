@@ -1,33 +1,37 @@
-import './App.css'
-import GoogleMapWrapper from "./pages/GoogleMapWrapper";
+import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import MasterPlan from './pages/MasterPlan';
-import ClusterView from './pages/ClusterView';
-import NotFoundPage from './pages/NotFoundPage';
-import { JSX, Suspense } from 'react';
-// import SpinnerPage from "./pages/SpinnerPage"; // Ensure this path is correct or create the file if it doesn't exist
-import Login from './pages/Login'; // Ensure this path is correct or create the file if it doesn't exist
-import VillaView from './pages/VillaView';
-import PanoramaViewer from './pages/PanoramaViewer';
-import "bootstrap/dist/css/bootstrap.min.css";
+import { JSX, Suspense, lazy } from 'react';
+import React from 'react';
 import Cookies from "js-cookie";
-import Callback from './pages/Callback';
-import UpdateVillaStatus from './pages/UpdateVillaStatus';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// Components
+import LoadingScreen from "./components/LoadingScreen";
 import ContactForm from './components/ContactForm';
 import BreadcrumbNav from './components/Breadcrumbs';
 
+// 🔹 Lazy-loaded Pages
+const GoogleMapWrapper = lazy(() => import("./pages/GoogleMapWrapper"));
+const MasterPlan = lazy(() => import("./pages/MasterPlan"));
+const ClusterView = lazy(() => import("./pages/ClusterView"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const Login = lazy(() => import("./pages/Login"));
+const VillaView = lazy(() => import("./pages/VillaView"));
+const PanoramaViewer = lazy(() => import("./pages/PanoramaViewer"));
+const Callback = lazy(() => import("./pages/Callback"));
+const UpdateVillaStatus = lazy(() => import("./pages/UpdateVillaStatus"));
 
-// 🔹 Protected Route Component
+// 🔐 Protected Route Wrapper
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
-  const token = Cookies.get("token"); // Read token from cookies
+  const token = Cookies.get("token");
   return token ? element : <Navigate to="/login" />;
 };
 
 function App() {
   return (
-    <>
+    <React.StrictMode>
       <Router>
-        <Suspense fallback={<h1>Looding...</h1>}>
+        <Suspense fallback={<LoadingScreen />}>
           <BreadcrumbNav />
           <Routes>
             <Route path="/" element={<GoogleMapWrapper />} />
@@ -42,10 +46,9 @@ function App() {
           </Routes>
         </Suspense>
         <ContactForm />
-
       </Router>
-    </>
-  )
+    </React.StrictMode>
+  );
 }
 
-export default App
+export default App;
