@@ -19,7 +19,6 @@ export const capitalize = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
   
   export const renderSVG = (clusterId: string, selectedFloor: { value: string, key: string }) => {
-debugger;
     const map: Record<string, JSX.Element> = {
       AGroundFloor: <AGroundFloor />,
       AFirstFloor: <AFirstFloor />,

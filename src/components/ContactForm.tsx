@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import { RiMailLine } from "react-icons/ri";
 
@@ -8,6 +8,25 @@ const ContactForm: React.FC = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        console.log("ContactForm component mounted");
+       setInterval(() => {
+        console.log("Button shake effect triggered");
+            const btn = buttonRef.current;
+            console.log("Button reference:", btn);
+            if (btn) {
+                btn.classList.add('shake-intense');
+
+                setTimeout(() => {
+                    btn.classList.remove('shake-intense');
+                }, 1200); // match animation duration
+            }
+        }, 30000); // every 30 seconds
+
+        // return () => clearInterval(interval);
+    }, []);
 
     const submitContactRequest = async (contactData: {
         firstName: string;
@@ -35,6 +54,7 @@ const ContactForm: React.FC = () => {
         <>
             {/* Floating Contact Button with Accessible Label */}
             <Button
+                ref={buttonRef}
                 variant="primary"
                 onClick={handleShow}
                 className="contact-button"

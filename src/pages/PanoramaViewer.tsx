@@ -135,7 +135,7 @@ const PanoramaViewer: React.FC = () => {
             >
                 <ReactPhotoSphereViewer
                     key={currentLocation}
-                    src={panoramaData.panoramas[currentLocation].image}
+                    src={panoramaData.panoramas[currentLocation]?.image}
                     height="100vh"
                     width="100%"
                     plugins={[[MarkersPlugin, {}]]}
@@ -150,7 +150,7 @@ const PanoramaViewer: React.FC = () => {
                         <button
                             key={room.id}
                             className="btn btn-light btn-sm"
-                            onClick={() => handleHotspotClick(room.panorama)}
+                            onClick={() => handleHotspotClick('location1')}
                         >
                             {room.name}
                         </button>
