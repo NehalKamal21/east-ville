@@ -20,7 +20,7 @@ const UpdateVillaStatus: React.FC = () => {
   const handleSearch = async () => {
     try {
       setError(null);
-      const response = await axios.get<Villa>(`http://http://209.38.255.181/api/villas/${villaId}`, { withCredentials: true });
+      const response = await axios.get<Villa>(`http://209.38.255.181/api/villas/${villaId}`, { withCredentials: true });
       setVilla(response.data);
       setNewStatus(response.data.status);
     } catch (error) {
@@ -40,7 +40,7 @@ const UpdateVillaStatus: React.FC = () => {
       }
 
       const response = await axios.put(
-        `http://http://209.38.255.181/api/villas/${villa._id}`,
+        `http://209.38.255.181/api/villas/${villa._id}`,
         { status: newStatus },
         { 
           withCredentials: true,

@@ -17,7 +17,7 @@ const Login: React.FC = () => {
 
         try {
             const response = await axios.post(
-                "http://http://209.38.255.181/api/login",
+                "http://209.38.255.181/api/login",
                 { email, password }, // Make sure these fields exist
                 {
                     headers: { "Content-Type": "application/json" },
