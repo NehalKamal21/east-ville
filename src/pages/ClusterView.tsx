@@ -19,7 +19,7 @@ const ClusterView: React.FC = () => {
     const [cluster, setCluster] = useState(null);
     // @ts-ignore
     const [error, setError] = useState<string | null>(null);
-    const imageUrl = `/images/availability/${clusterId}.svg`;
+
     useEffect(() => {
         const scrollToMiddle = () => {
             const scrollY = (document.body.scrollHeight - window.innerHeight) / 2;
