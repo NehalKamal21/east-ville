@@ -1,18 +1,18 @@
 .villa-A:hover,
 .active-A {
-    filter: invert(18%) sepia(96%) saturate(2349%) hue-rotate(285deg) brightness(89%) contrast(85%);
+    filter: brightness(0) saturate(100%) invert(25%) sepia(11%) saturate(4722%) hue-rotate(143deg) brightness(94%) contrast(98%);
     opacity: 0.3;
 }
 
 .villa-B:hover,
 .active-B {
-    filter: invert(41%) sepia(50%) saturate(4860%) hue-rotate(346deg) brightness(96%) contrast(93%);
+    filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
     opacity: 0.3;
 }
 
 .villa-TW:hover,
 .active-TW {
-    filter: invert(78%) sepia(63%) saturate(6404%) hue-rotate(82deg) brightness(119%) contrast(121%);
+    filter: brightness(0) saturate(100%) invert(84%) sepia(5%) saturate(2386%) hue-rotate(137deg) brightness(84%) contrast(84%);
     opacity: 0.3;
 
 }

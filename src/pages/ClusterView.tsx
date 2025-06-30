@@ -11,7 +11,6 @@ import BFront from '../SVGs/ClusterB/BFront';
 import BBack from '../SVGs/ClusterB/BBack';
 import TWFront from '../SVGs/ClusterTW/TWFront';
 import TWBack from '../SVGs/ClusterTW/TWBack';
-import ClusterLayoutFilter from '../components/ClusterLayoutFilter';
 
 const ClusterView: React.FC = () => {
     const { clusterId } = useParams<{ clusterId: string }>(); // Get route param
@@ -48,7 +47,6 @@ const ClusterView: React.FC = () => {
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center vh-100">
-            <ClusterLayoutFilter layoutImage={imageUrl} area={180} bedroomCount={6} />
 
             {/* Background Image */}
             <div className="position-relative text-center">

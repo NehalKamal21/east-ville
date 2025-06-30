@@ -64,8 +64,8 @@ const VillaView: React.FC = () => {
   return (
     <>
       {/* SVG Viewer Fullscreen */}
-      <Container fluid className="d-flex flex-row justify-content-center align-items-center vh-100">
-        <div>{renderSVG(clusterId || "", selectedFloor)}</div>
+      <Container fluid className="d-flex flex-row justify-content-center align-items-center vh-100 p-0">
+        <div className="fullScreen"> {renderSVG(clusterId || "", selectedFloor)}</div>
         <div style={{ position: "fixed", top: "10%", left: "20px", zIndex: 999 }}>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <RoomDetailsPanel rooms={rooms} />
