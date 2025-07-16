@@ -89,6 +89,7 @@ const PanoramaViewer: React.FC = () => {
   };
   useEffect(() => {
     type ClusterIdName = "ClusterA" | "ClusterB" | "ClusterTW";
+    type FloorKey = "groundFloor" | "firstFloor" | "secondFloor" | "Roof";
 
     let clusterName: ClusterIdName | null = null;
     if (clusterId?.includes("A")) {
@@ -99,7 +100,7 @@ const PanoramaViewer: React.FC = () => {
       clusterName = "ClusterTW";
     }
     if (clusterName) {
-      const floorKey = defaultSelected.key;
+      const floorKey = defaultSelected.key as FloorKey;
       const floorData = panoramaData[clusterName]?.[floorKey] || {};
       setSelectedPanorama(floorData);
     }
@@ -123,11 +124,11 @@ const PanoramaViewer: React.FC = () => {
     setFloorSvg(renderSVG(clusterId || "", defaultSelected));
   }, [])
 
- const getRandomLocation = (): string => {
-  const locations = ["location1", "location2"];
-  const index = Math.floor(Math.random() * locations.length);
-  return locations[index];
-};
+  const getRandomLocation = (): string => {
+    const locations = ["location1", "location2"];
+    const index = Math.floor(Math.random() * locations.length);
+    return locations[index];
+  };
   return (
     <div className="w-100 vh-100 position-relative bg-black">
       {loading && (

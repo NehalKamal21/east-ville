@@ -20,7 +20,7 @@ const ContactForm: React.FC = () => {
 
     useEffect(() => {
         if (prefillData.interestedUnit) {
-            setFormData((prev) => ({ ...prev, interestedUnit: prefillData.interestedUnit }));
+            setFormData((prev) => ({ ...prev, interestedUnit: prefillData.interestedUnit || "" }));
         }
     }, [prefillData]);
 
@@ -43,7 +43,7 @@ const ContactForm: React.FC = () => {
         <Button
             ref={buttonRef}
             variant="primary"
-            onClick={openModal}
+            onClick={() => openModal()}
             className="contact-button"
             aria-label="Contact Us Form"
         >
