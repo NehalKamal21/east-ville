@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LoadingScreen from "./components/LoadingScreen";
 import ContactForm from './components/ContactForm';
 import BreadcrumbNav from './components/Breadcrumbs';
+import { ContactModalProvider } from './utils/ContactModalContext';
 
 // 🔹 Lazy-loaded Pages
 const GoogleMapWrapper = lazy(() => import("./pages/GoogleMapWrapper"));
@@ -30,23 +31,25 @@ const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
 function App() {
   return (
     <React.StrictMode>
-      <Router>
-        <Suspense fallback={<LoadingScreen />}>
-          <BreadcrumbNav />
-          <Routes>
-            <Route path="/" element={<GoogleMapWrapper />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/master-plan" element={<MasterPlan />} />
-            <Route path="/callback" element={<ProtectedRoute element={<Callback />} />} />
-            <Route path="/villa-status" element={<ProtectedRoute element={<UpdateVillaStatus />} />} />
-            <Route path="/clusterView/:clusterId" element={<ClusterView />} />
-            <Route path="/clusterView/:clusterId/:FloorId" element={<VillaView />} />
-            <Route path="/clusterView/:clusterId/:FloorId/image" element={<PanoramaViewer />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
-        <ContactForm />
-      </Router>
+      <ContactModalProvider>
+        <Router>
+          <Suspense fallback={<LoadingScreen />}>
+            <BreadcrumbNav />
+            <Routes>
+              <Route path="/" element={<GoogleMapWrapper />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/master-plan" element={<MasterPlan />} />
+              <Route path="/callback" element={<ProtectedRoute element={<Callback />} />} />
+              <Route path="/villa-status" element={<ProtectedRoute element={<UpdateVillaStatus />} />} />
+              <Route path="/clusterView/:clusterId" element={<ClusterView />} />
+              <Route path="/clusterView/:clusterId/:FloorId" element={<VillaView />} />
+              <Route path="/clusterView/:clusterId/:FloorId/image" element={<PanoramaViewer />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
+          <ContactForm />
+        </Router>
+      </ContactModalProvider>
     </React.StrictMode>
   );
 }

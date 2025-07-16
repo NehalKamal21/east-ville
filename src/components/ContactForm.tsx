@@ -1,196 +1,116 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Modal, Form, Row, Col } from "react-bootstrap";
+import { Modal, Form, Button } from "react-bootstrap";
+import { useContactModal } from "../utils/ContactModalContext";
 import { RiMailLine } from "react-icons/ri";
 
 const ContactForm: React.FC = () => {
     const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const { isOpen, closeModal, prefillData, openModal } = useContactModal();
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        interestedUnit: "",
+        message: "",
+    });
 
     useEffect(() => {
-        console.log("ContactForm component mounted");
-       setInterval(() => {
-        console.log("Button shake effect triggered");
-            const btn = buttonRef.current;
-            console.log("Button reference:", btn);
-            if (btn) {
-                btn.classList.add('shake-intense');
+        if (prefillData.interestedUnit) {
+            setFormData((prev) => ({ ...prev, interestedUnit: prefillData.interestedUnit }));
+        }
+    }, [prefillData]);
 
-                setTimeout(() => {
-                    btn.classList.remove('shake-intense');
-                }, 1200); // match animation duration
-            }
-        }, 30000); // every 30 seconds
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
-        // return () => clearInterval(interval);
-    }, []);
-
-    const submitContactRequest = async (contactData: {
-        firstName: string;
-        lastName: string;
-        email: string;
-        phone: string;
-        residence: string;
-        nationality: string;
-        message: string;
-    }) => {
+    const handleSubmit = async () => {
         try {
-            const response = await axios.post("http://209.38.255.181/api/contact", contactData, {
-                withCredentials: true,
-            });
-
-            console.log("✅ Contact submitted:", response.data);
-            alert("Your message has been sent successfully!");
-        } catch (error) {
-            console.error("❌ Error submitting contact:", error);
-            alert("Failed to send your message.");
+            const response = await axios.post("http://209.38.255.181/api/contact", formData);
+            setShowSuccessModal(true); // ✅ show success modal
+            closeModal();
+        } catch (err) {
+            alert("Failed to send message.");
         }
     };
 
-    return (
-        <>
-            {/* Floating Contact Button with Accessible Label */}
-            <Button
-                ref={buttonRef}
-                variant="primary"
-                onClick={handleShow}
-                className="contact-button"
-                aria-label="Contact Us Form"
-            >
-                <RiMailLine size={24} />
-            </Button>
+    return (<>
+        <Button
+            ref={buttonRef}
+            variant="primary"
+            onClick={openModal}
+            className="contact-button"
+            aria-label="Contact Us Form"
+        >
+            <RiMailLine size={24} />
+        </Button>
+        <Modal show={isOpen} onHide={closeModal} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>Contact Us</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    </Form.Group>
 
-            {/* Accessible Modal */}
-            <Modal
-                show={show}
-                onHide={handleClose}
-                centered
-                backdrop="static"
-                aria-labelledby="contact-form-title"
-            >
-                <Modal.Header closeButton className="modal-header">
-                    <Modal.Title id="contact-form-title">Contact Us</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="modal-body">
-                    <Form>
-                        <Row className="justify-content-center">
-                            <Col xs={12} md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="first-name">First Name</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        id="first-name"
-                                        required
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="last-name">Last Name</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        id="last-name"
-                                        required
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="email">Email</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        id="email"
-                                        required
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="phone">Phone</Form.Label>
-                                    <Form.Control
-                                        type="tel"
-                                        id="phone"
-                                        required
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="residence">Residence</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        id="residence"
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="nationality">Nationality</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        id="nationality"
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="message">Prefred Call Time </Form.Label>
-                                    <Form.Select aria-label="Default select example">
-                                        <option>Open this select menu</option>
-                                        <option value="1">9:00 AM to 12:00 PM</option>
-                                        <option value="2">12:00 PM to 5:00 PM</option>
-                                        <option value="3">5:00 PM to 8:00 PM</option>
-                                    </Form.Select>
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="message">Message</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        id="message"
-                                        rows={3}
-                                        required
-                                        className="form-control"
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer className="modal-footerr">
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={() => {
-                            const formData = {
-                                firstName: (document.getElementById("first-name") as HTMLInputElement)?.value || "",
-                                lastName: (document.getElementById("last-name") as HTMLInputElement)?.value || "",
-                                email: (document.getElementById("email") as HTMLInputElement)?.value || "",
-                                phone: (document.getElementById("phone") as HTMLInputElement)?.value || "",
-                                residence: (document.getElementById("residence") as HTMLInputElement)?.value || "",
-                                nationality: (document.getElementById("nationality") as HTMLInputElement)?.value || "",
-                                message: (document.getElementById("message") as HTMLTextAreaElement)?.value || "",
-                            };
-                            submitContactRequest(formData);
-                        }}
-                    >
-                        Submit
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Interested Unit</Form.Label>
+                        <Form.Control type="text" name="interestedUnit" value={formData.interestedUnit} onChange={handleChange} />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Message</Form.Label>
+                        <Form.Control as="textarea" name="message" rows={3} value={formData.message} onChange={handleChange} required />
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer className="flex-column align-items-start">
+                <div className="mt-2 text-muted">
+                    Or call us on hotline <strong>XXX</strong>
+                </div>
+                <div className="w-100 d-flex justify-content-between align-items-center">
+                    <Button variant="secondary" onClick={closeModal}>Close</Button>
+                    <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+                </div>
+
+            </Modal.Footer>
+        </Modal>
+        <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>Success</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Your message has been sent successfully!</Modal.Body>
+            <Modal.Footer>
+                <Button
+                    variant="success"
+                    onClick={() => {
+                        setShowSuccessModal(false);
+                        closeModal();
+                    }}
+                >
+                    Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+    </>
     );
 };
 

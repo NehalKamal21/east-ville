@@ -1,6 +1,8 @@
+import { h } from "framer-motion/dist/types.d-B50aGbjN";
 import React from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { useContactModal } from "../utils/ContactModalContext";
 
 interface Room {
     name: string;
@@ -14,6 +16,9 @@ interface RoomDetailsPanelProps {
 const RoomDetailsPanel: React.FC<RoomDetailsPanelProps> = ({ rooms }) => {
     const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
     const navigate = useNavigate();
+
+    const { openModal } = useContactModal();
+
     return (
         <div className="room-details-panel">
             <Card className="bg-dark text-white shadow-lg rounded-4">
@@ -36,7 +41,7 @@ const RoomDetailsPanel: React.FC<RoomDetailsPanelProps> = ({ rooms }) => {
                     >
                         Interactive Tour
                     </Button>
-                    <Button variant="outline-light" className=" gap-2 mt-2 " style={{ fontSize: '10px'}}>
+                    <Button variant="outline-light" className=" gap-2 mt-2 " style={{ fontSize: '10px' }} onClick={() => openModal({ interestedUnit: "Unit A203" })} >
                         Callback
                     </Button>
 

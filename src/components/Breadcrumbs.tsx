@@ -10,7 +10,11 @@ const BreadcrumbNav: React.FC = () => {
 
   const crumbs: { label: string; icon?: JSX.Element; to?: string }[] = [];
 
-  crumbs.push({ label: "Location", to: "/" });
+  crumbs.push({
+    label: '',
+    icon: <img src="/ajna-logo.jpg" alt="Location" style={{ height: 30 }} />,
+    to: "/"
+  });
 
   if (segments[0] === "master-plan") {
     crumbs.push({ label: "Master Plan" });
@@ -59,6 +63,8 @@ const BreadcrumbNav: React.FC = () => {
               linkProps={crumb.to && !isLast ? { to: crumb.to } : undefined}
               active={isLast || !crumb.to}
             >
+              {crumb.icon && <span className="me-1">{crumb.icon}</span>}
+
               {crumb.label}
             </Breadcrumb.Item>
           );

@@ -73,3 +73,36 @@ export const locations = [
     type: "education",
   },
 ];
+
+
+export interface Hotspot {
+  pitch: number;
+  yaw: number;
+  target: {
+    location: string;
+  };
+}
+
+export interface Location {
+  id: string;
+  name: string;
+  imgName: string;
+  hotspots: Hotspot[];
+}
+
+export interface Floor {
+  [location: string]: Location;
+}
+
+export interface Cluster {
+  groundFloor?: Floor;
+  firstFloor?: Floor;
+  secondFloor?: Floor;
+  Roof?: Floor;
+}
+
+export interface PanoData {
+  ClusterA?: Cluster;
+  ClusterB?: Cluster;
+  ClusterTW?: Cluster;
+}
