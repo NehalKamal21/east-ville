@@ -3172,7 +3172,6 @@ __metadata:
     react-icons: ^5.5.0
     react-photo-sphere-viewer: ^6.2.3
     react-router-dom: ^7.6.3
-    three: ^0.178.0
     typescript: ~5.7.2
     typescript-eslint: ^8.26.1
     vite: ^7.0.4
@@ -6586,13 +6585,6 @@ __metadata:
   version: 0.175.0
   resolution: "three@npm:0.175.0"
   checksum: 9d24395620faae40fa91b83e352766932d70d0fba6589ab875bbaa08f47e6aa3f3b78f279ebfefc4468b6e21a8472c42ce27e0730427b21027c6dfa9c95e0994
-  languageName: node
-  linkType: hard
-
-"three@npm:^0.178.0":
-  version: 0.178.0
-  resolution: "three@npm:0.178.0"
-  checksum: 027aa4d1a95bc664b7a92020eb9f7db76ecb679ff6fee6032b7f48a79b1774f9edd634fea9bdcfb763aa393f8ae7b3ffe0cbb6f9af77b65a78989d4f2146a06b
   languageName: node
   linkType: hard
 
