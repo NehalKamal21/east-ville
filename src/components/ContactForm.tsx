@@ -31,7 +31,7 @@ const ContactForm: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post("http://209.38.255.181/api/contact", formData);
+            const response = await axios.post("/api/contact", formData);
             setShowSuccessModal(true); // ✅ show success modal
             closeModal();
         } catch (err) {

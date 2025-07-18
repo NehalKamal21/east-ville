@@ -45,7 +45,7 @@ const MasterPlan: React.FC = () => {
     useEffect(() => {
         const fetchCluster = async (): Promise<void> => {
             try {
-                const response = await axios.get(`http://209.38.255.181/api/clusters`);
+                const response = await axios.get(`/api/clusters`);
                 const data = response.data;
 
                 data.map((item: any) => {
@@ -72,7 +72,7 @@ const MasterPlan: React.FC = () => {
 
             <Button
                 variant="dark"
-                className="position-absolute top-0 end-0 m-3 shadow"
+                className="position-fixed top-0 end-0 m-3 shadow"
                 onClick={() => setShowCarousel(true)}
                 style={{ zIndex: '1000' }}
             >

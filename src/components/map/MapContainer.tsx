@@ -1,10 +1,11 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useMemo } from "react";
 import { GoogleMap } from "@react-google-maps/api";
 import MapPolygon from "./MapPolygon";
 import MapInfoWindow from "./MapInfoWindow";
 import MapPath from "./MapPath";
 import { containerStyle, eastVilleLocation, locations } from "../../utils/helpers";
 import MapMarkers from "./MapMarkers";
+import "../../styles/main.scss";
 
 interface MapContainerProps {
   isLoaded: boolean;
@@ -17,18 +18,16 @@ const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
   const [destination, setDestination] = useState<google.maps.LatLngLiteral | null>(null);
   const [routeDetails, setRouteDetails] = useState<{ distance: string; duration: string; steps: string[] } | null>(null);
 
-  // Function to calculate center
-  const calculateCenter = (points: { position: { lat: number; lng: number }, title: string }[]) => {
-    const sumLat = points.reduce((acc, loc) => acc + loc.position.lat, 0);
-    const sumLng = points.reduce((acc, loc) => acc + loc.position.lng, 0);
+  // Memoize map center calculation to prevent recalculation on every render
+  const mapCenter = useMemo(() => {
+    const sumLat = locations.reduce((acc, loc) => acc + loc.position.lat, 0);
+    const sumLng = locations.reduce((acc, loc) => acc + loc.position.lng, 0);
 
     return {
-      lat: sumLat / points.length,
-      lng: sumLng / points.length,
+      lat: sumLat / locations.length,
+      lng: sumLng / locations.length,
     };
-  };
-
-  const mapCenter = calculateCenter(locations);
+  }, []);
 
   // Function to fetch directions dynamically
   const fetchDirections = useCallback((dest: google.maps.LatLngLiteral) => {
@@ -54,7 +53,7 @@ const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
           setRouteDetails({
             distance: leg.distance?.text || "Unknown",
             duration: leg.duration?.text || "Unknown",
-            steps: leg.steps.map((step) => step.instructions), // Extract step-by-step instructions
+            steps: leg.steps.map((step) => step.instructions),
           });
         } else {
           console.error("Error fetching directions:", status);
@@ -64,45 +63,60 @@ const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
   }, [isLoaded]);
 
   // Function to animate the polyline
-  const animatePolyline = (route: google.maps.LatLngLiteral[]) => {
+  const animatePolyline = useCallback((route: google.maps.LatLngLiteral[]) => {
     let index = 0;
     setAnimatedPath([]);
-    animationRef.current = null;
+    if (animationRef.current) {
+      clearInterval(animationRef.current);
+    }
     animationRef.current = window.setInterval(() => {
       if (index < route.length) {
         setAnimatedPath((prevPath) => [...prevPath, route[index]]);
         index++;
       } else {
-        clearInterval(animationRef.current!);
+        if (animationRef.current) {
+          clearInterval(animationRef.current);
+          animationRef.current = null;
+        }
       }
     }, 10);
-  };
+  }, []);
 
   // Handle marker click to change destination
-  const handleMarkerClick = (position: google.maps.LatLngLiteral) => {
+  const handleMarkerClick = useCallback((position: google.maps.LatLngLiteral) => {
     setDestination(position);
     fetchDirections(position);
-  };
+  }, [fetchDirections]);
+
+  // Memoize map options to prevent recreation on every render
+  const mapOptions = useMemo(() => ({
+    mapTypeId: "roadmap",
+    disableDefaultUI: true,
+    zoomControl: false,
+    mapTypeControl: false,
+    fullscreenControl: false,
+    streetViewControl: false,
+    rotateControl: false,
+    draggable: false,
+    keyboardShortcuts: false,
+    scrollwheel: false,
+    gestureHandling: "none" as const,
+  }), []);
 
   return (
-    <GoogleMap mapContainerStyle={containerStyle} center={mapCenter} zoom={13.5} options={{
-      mapTypeId: "satellite", // 🌍 Set map to Satellite mode
-      disableDefaultUI: true, // Hides all default controls
-      zoomControl: false, // Disables zoom buttons
-      mapTypeControl: false, // Disables the map type switcher
-      fullscreenControl: false, // Disables fullscreen button
-      streetViewControl: false, // Disables Street View
-      rotateControl: false, // Disables rotate option
-      draggable: false, // Disables dragging
-      keyboardShortcuts: false, // Disables keyboard shortcuts
-      scrollwheel: false, // Disables zoom on scroll
-      gestureHandling: "none", // Disables all gestures
-    }}>
-      < MapPolygon />
-      <MapInfoWindow />
-      <MapPath animatedPath={animatedPath} />
-      <MapMarkers handleMarkerClick={handleMarkerClick} routeDetails={routeDetails} />
-    </GoogleMap >
+    <div className="map-container">
+      <GoogleMap 
+        mapContainerStyle={containerStyle} 
+        center={mapCenter} 
+        zoom={13.5} 
+        options={mapOptions}
+      >
+        <MapPolygon />
+        <MapInfoWindow />
+        <MapPath animatedPath={animatedPath} />
+        <MapMarkers handleMarkerClick={handleMarkerClick} routeDetails={routeDetails} />
+      </GoogleMap>
+    </div>
   );
 };
 

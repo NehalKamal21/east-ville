@@ -3,7 +3,6 @@ export const containerStyle: React.CSSProperties = {
   height: "100vh",
 };
 
-
 export const eastVilleLocation: google.maps.LatLngLiteral = {
   lat: 30.04620586690839,
   lng: 31.572817028510652,
@@ -28,6 +27,43 @@ export const polygonOptions: google.maps.PolygonOptions = {
   draggable: false,
   editable: false,
   geodesic: false,
+};
+
+// Function to create marker icons after Google Maps API is loaded
+export const createMarkerIcons = () => {
+  if (typeof google === 'undefined') {
+    return {};
+  }
+
+  // Base map pin icon from Flaticon
+  const basePinIcon = {
+    url: '/map-pin-icon.png',
+    scaledSize: new google.maps.Size(60, 60),
+    anchor: new google.maps.Point(20, 40), // Anchor at bottom center of pin
+  };
+
+  return {
+    residential: {
+      ...basePinIcon,
+      // You can add custom styling here if needed
+    },
+    sports: {
+      ...basePinIcon,
+      // You can add custom styling here if needed
+    },
+    commercial: {
+      ...basePinIcon,
+      // You can add custom styling here if needed
+    },
+    education: {
+      ...basePinIcon,
+      // You can add custom styling here if needed
+    },
+    default: {
+      ...basePinIcon,
+      // You can add custom styling here if needed
+    },
+  };
 };
 
 export const locations = [
@@ -65,7 +101,6 @@ export const locations = [
     position: { lat: 30.007344708483004, lng: 31.540707334929824 },
     title: "Emaar Mivida",
     type: "residential",
-
   },
   {
     position: { lat: 30.024831912211155, lng: 31.50153637346938 },
@@ -73,7 +108,6 @@ export const locations = [
     type: "education",
   },
 ];
-
 
 export interface Hotspot {
   pitch: number;

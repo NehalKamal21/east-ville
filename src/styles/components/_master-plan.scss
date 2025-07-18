@@ -1,0 +1,142 @@
+// Master Plan SVG Component Styles
+.master-plan-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  // Background image
+  #Background {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: contain;
+  }
+
+  // Villa hover and active states
+  .villa-A {
+
+    cursor: pointer;
+
+    &:hover,
+    &.active-A {
+      filter: brightness(0) saturate(100%) invert(25%) sepia(11%) saturate(4722%) hue-rotate(143deg) brightness(94%) contrast(98%);
+      opacity: 0.3;
+    }
+  }
+
+  .villa-B {
+
+    cursor: pointer;
+
+    &:hover,
+    &.active-B {
+      filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
+      opacity: 0.3;
+    }
+  }
+
+  .villa-TW {
+
+    cursor: pointer;
+
+    &:hover,
+    &.active-TW {
+      filter: brightness(0) saturate(100%) invert(84%) sepia(5%) saturate(2386%) hue-rotate(137deg) brightness(84%) contrast(84%);
+    opacity: 0.3;
+    }
+  }
+
+  // Tooltip styles
+  .tooltip-container {
+    pointer-events: none !important;
+    position: absolute;
+    z-index: 9999;
+    
+    .tooltip {
+      background-color: rgba(0, 0, 0, 0.95);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+      position: relative;
+      z-index: 10000;
+      white-space: nowrap;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      min-width: 150px;
+      max-width: 250px;
+      transition: all 0.2s ease;
+      pointer-events: none !important;
+      
+      // Animation for tooltip appearance
+      animation: tooltipFadeIn 0.2s ease-in-out;
+      
+      // Ensure tooltip is always visible
+      &::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid rgba(0, 0, 0, 0.95);
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+// Tooltip animation
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Full screen SVG styles
+.fullScreenSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  &+image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: contain;
+  }
+}
+
+// Rotate icon styles
+.rotateIcon {
+  flex: 1;
+}
+
+// 360 Icon styles
+.icon-360 {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    // transform: scale(1.1);
+    filter: brightness(1.2) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  image {
+    transition: all 0.3s ease;
+  }
+}

@@ -1,0 +1,9 @@
+// Main SCSS file - imports all component styles
+
+// Import component styles using @use (modern SCSS syntax)
+@use 'components/master-plan';
+@use 'components/search';
+@use 'components/map';
+@use 'components/cluster-view';
+
+// Global styles can be added here 

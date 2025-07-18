@@ -7,4 +7,5 @@ export const appRoutes = [
     { path: "/clusterView/:clusterId", name: "Cluster View" },
     { path: "/clusterView/:clusterId/:FloorId", name: "Villa View" },
     { path: "/clusterView/:clusterId/:FloorId/image", name: "Panorama" },
+    { path: "/exterior", name: "Exterior Panorama" },
 ];

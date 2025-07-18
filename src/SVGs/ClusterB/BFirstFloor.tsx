@@ -10,7 +10,7 @@ import img8 from "../../assets/clusterB/BFirstFloor/image_ec75dac7.png";
 
 const BFirstFloor: React.FC = () => {
   return (
-    <svg className="fullScreen" preserveAspectRatio='none'
+    <svg className="fullScreenSvg" preserveAspectRatio='none'
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width="2880"
@@ -18,13 +18,13 @@ const BFirstFloor: React.FC = () => {
       viewBox="0 0 2880 1800"
     >
       <image id="Layer_0" data-name="Layer 0" width="2880" height="1800" xlinkHref={img1} />
-      <image x="2345" y="429" width="37" height="26" xlinkHref={img2} />
-      <image x="2279" y="627" width="45" height="37" xlinkHref={img3} />
-      <image x="2242" y="891" width="36" height="31" xlinkHref={img4} />
-      <image x="2255" y="1079" width="36" height="31" xlinkHref={img5} />
-      <image x="2242" y="1342" width="36" height="29" xlinkHref={img6} />
-      <image x="2414" y="1351" width="36" height="32" xlinkHref={img7} />
-      <image x="2062" width="607" height="1800" xlinkHref={img8} />
+      <image  x="2345" y="429" width="37" height="26" xlinkHref={img2} />
+      <image  x="2279" y="627" width="45" height="37" xlinkHref={img3} />
+      <image  x="2242" y="891" width="36" height="31" xlinkHref={img4} />
+      <image  x="2255" y="1079" width="36" height="31" xlinkHref={img5} />
+      <image  x="2242" y="1342" width="36" height="29" xlinkHref={img6} />
+      <image  x="2414" y="1351" width="36" height="32" xlinkHref={img7} />
+      <image  x="2062" width="607" height="1800" xlinkHref={img8} />
     </svg>
   );
 };

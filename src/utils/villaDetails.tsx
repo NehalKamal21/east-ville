@@ -2,10 +2,6 @@ export const villaDetails = {
     "A": {
         "groundFloor": [
             {
-                "name": "BUA",
-                "dimensions": "230 m²"
-            },
-            {
                 "name": "Reception / Dining",
                 "dimensions": "6.30 × 4.85 m"
             },
@@ -95,10 +91,6 @@ export const villaDetails = {
     },
     "B": {
         "groundFloor": [
-            {
-                "name": "BUA",
-                "dimensions": "190 m²"
-            },
             {
                 "name": "Reception / Dining",
                 "dimensions": "6.60 × 4.00 m"
@@ -193,10 +185,6 @@ export const villaDetails = {
     },
     "TW": {
         "groundFloor": [
-            {
-                "name": "BUA",
-                "dimensions": "290 m²"
-            },
             {
                 "name": "Reception / Dining",
                 "dimensions": "6.15 × 6.55 m"

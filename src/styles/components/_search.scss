@@ -1,0 +1,72 @@
+// Search Component Styles
+
+// Floating search button
+.floating-search-button {
+  position: fixed;
+  top: 10%;
+  right: 20px;
+  z-index: 9999;
+  border: none;
+  font-size: 1.5rem;
+}
+
+// Search container
+.search-input-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  z-index: 9999;
+}
+
+// Error alert
+.search-error {
+  font-size: 0.8rem;
+}
+
+// Suggestions dropdown
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 0.25rem;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #e3f2fd;
+    border-left: 3px solid #67b1a4;
+    padding-left: 9px;
+    transform: translateX(2px);
+  }
+  
+  &:active {
+    background-color: #bbdefb;
+    transform: translateX(0);
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// No suggestions message
+.search-no-results {
+  font-size: 0.8rem;
+} 

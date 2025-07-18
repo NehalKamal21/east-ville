@@ -1,5 +1,5 @@
 // TODO: Define proper props interface
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Container,
@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 
 import RoomDetailsPanel from "../components/RoomDetailsPanel";
-import { villaDetails } from "../utils/villaDetails"; // Adjust the import path as necessary
+import { villaDetails } from "../utils/villaDetails";
 import { renderSVG } from "../utils/renderSVG";
 
 const Floors = [
@@ -19,28 +19,27 @@ const Floors = [
   { value: "RF", key: "Roof" },
 ];
 
-
 const VillaView: React.FC = () => {
   const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
   const navigate = useNavigate();
 
   const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
-  const defaultSelected = Floors.find((f) => f.key === FloorId) || Floors[0];
+  const defaultSelected = useMemo(() => 
+    Floors.find((f) => f.key === FloorId) || Floors[0], 
+    [FloorId]
+  );
   const [selectedFloor, setSelectedFloor] = useState(defaultSelected);
 
-  useEffect(() => {
-    const prefix = clusterId?.startsWith("A")
-      ? "A"
-      : clusterId?.startsWith("B")
-        ? "B"
-        : clusterId?.startsWith("T")
-          ? "TW"
-          : "";
-    getRoomsData(prefix, selectedFloor);
-  }, [clusterId, selectedFloor]);
+  // Memoize cluster prefix calculation
+  const clusterPrefix = useMemo(() => {
+    if (clusterId?.startsWith("A")) return "A";
+    if (clusterId?.startsWith("B")) return "B";
+    if (clusterId?.startsWith("T")) return "TW";
+    return "";
+  }, [clusterId]);
 
-  const getRoomsData = (clusterId: string | number, selectedFloor: { key: string | number; }) => {
-
+  // Memoize rooms data processing
+  const getRoomsData = useCallback((clusterId: string | number, selectedFloor: { key: string | number; }) => {
     const cluster = villaDetails[clusterId as keyof typeof villaDetails];
     if (!cluster) {
       console.error("Cluster not found");
@@ -54,23 +53,32 @@ const VillaView: React.FC = () => {
     }
 
     setRooms(floorData.map(room => ({ ...room, dimensions: room.dimensions || "N/A" })));
+  }, []);
 
-  }
+  useEffect(() => {
+    if (clusterPrefix) {
+      getRoomsData(clusterPrefix, selectedFloor);
+    }
+  }, [clusterId, selectedFloor, clusterPrefix, getRoomsData]);
 
   useEffect(() => {
     localStorage.setItem("rooms", JSON.stringify(rooms));
-  }, [rooms])
+  }, [rooms]);
+
+  // Memoize floor navigation handler
+  const handleFloorChange = useCallback((floor: typeof Floors[0]) => {
+    setSelectedFloor(floor);
+    navigate(`/clusterView/${clusterId}/${floor.key}`);
+  }, [clusterId, navigate]);
 
   return (
     <>
-      {/* SVG Viewer Fullscreen */}
       <Container fluid className="d-flex flex-row justify-content-center align-items-center vh-100 p-0">
-        <div className="fullScreen"> {renderSVG(clusterId || "", selectedFloor)}</div>
+        <div className="fullScreen">{renderSVG(clusterId || "", selectedFloor)}</div>
         <div style={{ position: "fixed", top: "10%", left: "20px", zIndex: 999 }}>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <RoomDetailsPanel rooms={rooms} />
 
-            {/* Sticky Floor Filter Panel */}
             <div className="floor-panel-container mt-2">
               <Card className="p-3 bg-dark text-white shadow-lg rounded-4">
                 <Card.Title className="text-center fs-6">Floors</Card.Title>
@@ -87,7 +95,7 @@ const VillaView: React.FC = () => {
                       value={floor.key}
                       variant="outline-light"
                       className="text-center"
-                      onClick={() => { setSelectedFloor(floor); navigate(`/clusterView/${clusterId}/${floor.key}`) }}
+                      onClick={() => handleFloorChange(floor)}
                     >
                       {floor.value}
                     </ToggleButton>
@@ -97,8 +105,7 @@ const VillaView: React.FC = () => {
             </div>
           </div>
         </div>
-      </Container >
-
+      </Container>
     </>
   );
 };

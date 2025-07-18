@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "react-bootstrap";
 import { FiRotateCcw } from "react-icons/fi";
-import '../master.css';
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import AFront from '../SVGs/ClusterA/AFront';
 import ABack from '../SVGs/ClusterA/ABack';
@@ -11,14 +9,14 @@ import BFront from '../SVGs/ClusterB/BFront';
 import BBack from '../SVGs/ClusterB/BBack';
 import TWFront from '../SVGs/ClusterTW/TWFront';
 import TWBack from '../SVGs/ClusterTW/TWBack';
+import { useCluster } from '../utils/hooks';
 
 const ClusterView: React.FC = () => {
-    const { clusterId } = useParams<{ clusterId: string }>(); // Get route param
+    const { clusterId } = useParams<{ clusterId: string }>();
     const [isFront, setIsFront] = useState(true);
-    // @ts-ignore
-    const [cluster, setCluster] = useState(null);
-    // @ts-ignore
-    const [error, setError] = useState<string | null>(null);
+    
+    // Use React Query for data fetching
+    const { data: cluster, error, isLoading } = useCluster(clusterId || '');
 
     useEffect(() => {
         const scrollToMiddle = () => {
@@ -29,40 +27,44 @@ const ClusterView: React.FC = () => {
         scrollToMiddle();
     }, [isFront]);
 
-    useEffect(() => {
-        const fetchCluster = async () => {
-            try {
-                const response = await axios.get(`http://209.38.255.181/api/clusters/clusterId/${clusterId}`);
-                setCluster(response.data);
-            } catch (err) {
-                setError("Cluster not found");
-            }
-        }
-        fetchCluster();
-    }, [clusterId]);
-
     const handleRotation = () => {
-        setIsFront((prev) => !prev); // Toggle flip state
+        setIsFront((prev) => !prev);
     };
+
+    if (isLoading) {
+        return <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>;
+    }
+
+    if (error) {
+        return <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="alert alert-danger">Cluster not found</div>
+        </div>;
+    }
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center vh-100">
-
-            {/* Background Image */}
             <div className="position-relative text-center">
                 {clusterId?.indexOf('A') !== -1 ? isFront ? <AFront /> : <ABack /> : null}
                 {clusterId?.indexOf('B') !== -1 ? isFront ? <BFront /> : <BBack /> : null}
                 {clusterId?.indexOf('T') !== -1 ? isFront ? <TWFront /> : <TWBack /> : null}
             </div>
 
-            {/* Centered Outline Button */}
-            <Button variant="dark" className="mb-3  position-fixed bottom-0 start-50 translate-middle-x" style={{
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                backdropFilter: 'blur(6px)'
-            }} onClick={handleRotation}>
-                Rotate Building <FiRotateCcw size={18} />
+            <Button 
+                variant="dark" 
+                className="mb-3 position-fixed bottom-0 start-50 translate-middle-x cluster-view-button" 
+                style={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(6px)'
+                }} 
+                onClick={handleRotation}
+            >
+               {isFront ? "Back Elevation" : "Front Elevation"} <FiRotateCcw size={18} />
             </Button>
-        </div >
+        </div>
     );
 };
 
