@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Marker, InfoWindow } from "@react-google-maps/api";
 import { FaEllipsisV } from "react-icons/fa";
-import { locations } from  "../../utils/helpers";
+import { locations, createMarkerIcons } from  "../../utils/helpers";
 import MarkerFilter from "./MarkerFilter";
 
 interface MapMarkersProps {
@@ -9,7 +9,7 @@ interface MapMarkersProps {
     routeDetails: { distance: string; duration: string; steps: string[] } | null;
 }
 
-const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails }) => {
+const MapMarkers: React.FC<MapMarkersProps> = React.memo(({ handleMarkerClick, routeDetails }) => {
     const [filteredTypes, setFilteredTypes] = useState<string[]>([]);
     
     interface MarkerType {
@@ -20,9 +20,20 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
 
     const [selectedMarker, setSelectedMarker] = useState<MarkerType | null>(null);
 
-    const filteredMarkers = filteredTypes.length > 0
-        ? locations.filter((marker) => filteredTypes.includes(marker.type))
-        : locations; // Show all markers if no filter is selected
+    // Memoize filtered markers to prevent recalculation on every render
+    const filteredMarkers = useMemo(() => {
+        return filteredTypes.length > 0
+            ? locations.filter((marker) => filteredTypes.includes(marker.type))
+            : locations;
+    }, [filteredTypes]);
+
+    // Memoize marker icons to prevent recreation on every render
+    const markerIcons = useMemo(() => createMarkerIcons(), []);
+
+    // Function to get the appropriate icon for a marker type
+    const getMarkerIcon = (type: string) => {
+        return markerIcons[type as keyof typeof markerIcons] || markerIcons.default;
+    };
 
     return (
         <>
@@ -30,9 +41,10 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
 
             {filteredMarkers.map((loc, index) => (
                 <Marker
-                    key={index}
+                    key={`${loc.title}-${index}`}
                     position={loc.position}
                     title={loc.title}
+                    icon={getMarkerIcon(loc.type)}
                     onClick={() => {
                         handleMarkerClick(loc.position);
                         setSelectedMarker(loc);
@@ -47,7 +59,7 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
                         lng: selectedMarker.position.lng,
                     }}
                     onCloseClick={() => setSelectedMarker(null)}
-                    options={{ pixelOffset: new window.google.maps.Size(0, -30) }} // Shift visually upwards
+                    options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
                 >
                     <div
                         className="p-3 bg-dark bg-opacity-75 text-white rounded text-center"
@@ -64,6 +76,7 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
                                     <small className="text-light">{routeDetails?.duration}</small>
                                 </div>
                                 <h6 className="fw-bold mt-1">{selectedMarker.title}</h6>
+                                <small className="text-light text-capitalize">{selectedMarker.type}</small>
                             </div>
                         </div>
                     </div>
@@ -71,6 +84,8 @@ const MapMarkers: React.FC<MapMarkersProps> = ({ handleMarkerClick, routeDetails
             )}
         </>
     );
-};
+});
+
+MapMarkers.displayName = 'MapMarkers';
 
 export default MapMarkers;

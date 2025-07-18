@@ -9,15 +9,15 @@ import img6 from "../../assets/clusterA/AGroundFloor/image_648b301d.png";
 
 const AGroundFloor: React.FC = () => {
   return (
-      <svg className="fullScreen" xmlns="http://www.w3.org/2000/svg" width="2880" height="1800" preserveAspectRatio='none' viewBox="0 0 2880 1800">
-        <image id="Layer_0" data-name="Layer 0" width="2880" height="1800" xlinkHref={layer0} />
-        <image x="2111" width="619" height="1800" xlinkHref={img1} />
-        <image x="2361" y="1448" width="38" height="28" xlinkHref={img2} />
-        <image x="2511" y="1320" width="34" height="31" xlinkHref={img3} />
-        <image x="2229" y="1294" width="40" height="35" xlinkHref={img4} />
-        <image x="2378" y="838" width="30" height="30" xlinkHref={img5} />
-        <image x="2401" y="455" width="38" height="32" xlinkHref={img6} />
-      </svg>
+    <svg className="fullScreenSvg" xmlns="http://www.w3.org/2000/svg" width="2880" height="1800" preserveAspectRatio='none' viewBox="0 0 2880 1800">
+      <image id="Layer_0" data-name="Layer 0" width="2880" height="1800" xlinkHref={layer0} />
+      <image x="2111" width="619" height="1800" xlinkHref={img1} />
+      <image x="2361" y="1448" width="38" height="28" xlinkHref={img2} />
+      <image x="2511" y="1320" width="34" height="31" xlinkHref={img3} />
+      <image x="2229" y="1294" width="40" height="35" xlinkHref={img4} />
+      <image x="2378" y="838" width="30" height="30" xlinkHref={img5} />
+      <image x="2401" y="455" width="38" height="32" xlinkHref={img6} />
+    </svg>
   );
 };
 

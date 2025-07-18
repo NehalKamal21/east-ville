@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { Spinner } from "react-bootstrap";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
@@ -17,10 +17,7 @@ interface Hotspot {
 import { panoramaData } from "../utils/panoData";
 import LoadingScreen from "../components/LoadingScreen";
 
-
-
 const PanoramaViewer: React.FC = () => {
-
   const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
 
   const Floors = [
@@ -29,8 +26,11 @@ const PanoramaViewer: React.FC = () => {
     { value: "2F", key: "secondFloor" },
     { value: "RF", key: "Roof" },
   ];
-  const defaultSelected = Floors.find((f) => f.key === FloorId) || Floors[0];
-  console.log("defaultSelected", defaultSelected);
+
+  const defaultSelected = useMemo(() =>
+    Floors.find((f) => f.key === FloorId) || Floors[0],
+    [FloorId]
+  );
 
   const [currentLocation, setCurrentLocation] = useState("location1");
   const [loading, setLoading] = useState(false);
@@ -38,20 +38,78 @@ const PanoramaViewer: React.FC = () => {
   const [showFloorPlan, setShowFloorPlan] = useState(false);
   const [floorSVG, setFloorSvg] = useState<React.ReactNode>(null);
   const [selectedPanorama, setSelectedPanorama] = useState<any>(null);
+  const [customPanoramaConfig, setCustomPanoramaConfig] = useState<any>(null);
+  const [isFromMasterPlan, setIsFromMasterPlan] = useState(false);
 
   const viewerRef = useRef<any>(null);
 
-  const handleHotspotClick = (targetLocation: string) => {
+  // Memoize cluster name calculation
+  const clusterName = useMemo(() => {
+    if (clusterId?.includes("A")) return "ClusterA";
+    if (clusterId?.includes("B")) return "ClusterB";
+    if (clusterId?.includes("T")) return "ClusterTW";
+    return null;
+  }, [clusterId]);
+
+  // Check for custom panorama configuration from 360 icons
+  useEffect(() => {
+    const storedConfig = localStorage.getItem('panoramaConfig');
+    if (storedConfig) {
+      try {
+        const config = JSON.parse(storedConfig);
+        setCustomPanoramaConfig(config);
+        setCurrentLocation(config.location || 'location1');
+        setIsFromMasterPlan(true); // Set flag when coming from master plan
+        localStorage.removeItem('panoramaConfig'); // Clear after reading
+      } catch (error) {
+        console.error('Error parsing panorama config:', error);
+      }
+    }
+  }, []);
+
+  // Memoize panorama data
+  const panoramaDataForCluster = useMemo(() => {
+    if (!clusterName) return {};
+    const floorKey = defaultSelected.key as keyof typeof panoramaData[typeof clusterName];
+    return panoramaData[clusterName]?.[floorKey] || {};
+  }, [clusterName, defaultSelected.key]);
+
+  // Get the specific panorama image based on configuration
+  const getPanoramaImage = useMemo(() => {
+    if (customPanoramaConfig) {
+      // Use the 360 icon ID to get the corresponding image from public/360Ext
+      const iconId = customPanoramaConfig.iconId; // e.g., "360-A", "360-B", etc.
+      if (iconId) {
+        // Extract the letter from the icon ID (e.g., "A" from "360-A")
+        const letter = iconId.split('-')[1];
+        if (letter) {
+          return `/360Ext/${letter}.jpg`;
+        }
+      }
+
+      // Fallback to the old method if no icon ID
+      const clusterKey = `Cluster${customPanoramaConfig.clusterId}` as keyof typeof panoramaData;
+      const floorKey = customPanoramaConfig.floorId;
+      const locationKey = customPanoramaConfig.location;
+
+      const clusterData = panoramaData[clusterKey] as any;
+      const floorData = clusterData?.[floorKey] as any;
+      return floorData?.[locationKey]?.imgName || null;
+    }
+    return null;
+  }, [customPanoramaConfig]);
+
+  const handleHotspotClick = useCallback((targetLocation: string) => {
     setLoading(true);
     setTimeout(() => {
       setCurrentLocation(targetLocation);
-    }, 100); // allow fade-out
+    }, 100);
     setTimeout(() => {
       setLoading(false);
-    }, 900); // allow fade-in
-  };
+    }, 900);
+  }, []);
 
-  const onReady = (viewer: any) => {
+  const onReady = useCallback((viewer: any) => {
     viewerRef.current = viewer;
     const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
@@ -77,7 +135,6 @@ const PanoramaViewer: React.FC = () => {
         tooltip: `Go to ${hotspot.target}`,
         data: { target: hotspot.target },
         size: { width: 32, height: 32 },
-
       }));
 
     markersPlugin.setMarkers(markers);
@@ -86,49 +143,36 @@ const PanoramaViewer: React.FC = () => {
       const target = e.marker?.data?.target;
       if (target) handleHotspotClick(target);
     });
-  };
-  useEffect(() => {
-    type ClusterIdName = "ClusterA" | "ClusterB" | "ClusterTW";
-    type FloorKey = "groundFloor" | "firstFloor" | "secondFloor" | "Roof";
-
-    let clusterName: ClusterIdName | null = null;
-    if (clusterId?.includes("A")) {
-      clusterName = "ClusterA";
-    } else if (clusterId?.includes("B")) {
-      clusterName = "ClusterB";
-    } else if (clusterId?.includes("T")) {
-      clusterName = "ClusterTW";
-    }
-    if (clusterName) {
-      const floorKey = defaultSelected.key as FloorKey;
-      const floorData = panoramaData[clusterName]?.[floorKey] || {};
-      setSelectedPanorama(floorData);
-    }
-  }, [clusterId, FloorId])
+  }, [selectedPanorama, currentLocation, handleHotspotClick]);
 
   useEffect(() => {
+    setSelectedPanorama(panoramaDataForCluster);
+  }, [panoramaDataForCluster]);
 
-    console.log(selectedPanorama)
-  }, [selectedPanorama])
-
-  // Optional: Preload the next image
+  // Preload next image
   useEffect(() => {
     const next = selectedPanorama && selectedPanorama[currentLocation]?.hotspots?.[0]?.target;
     if (next && selectedPanorama) {
       const preloadImg = new Image();
       preloadImg.src = selectedPanorama[next].imgName;
     }
-  }, [currentLocation]);
-  useEffect(() => {
-    setRooms(JSON.parse(localStorage.getItem("rooms") || "[]"))
-    setFloorSvg(renderSVG(clusterId || "", defaultSelected));
-  }, [])
+  }, [currentLocation, selectedPanorama]);
 
-  const getRandomLocation = (): string => {
+  useEffect(() => {
+    setRooms(JSON.parse(localStorage.getItem("rooms") || "[]"));
+    setFloorSvg(renderSVG(clusterId || "", defaultSelected));
+  }, [clusterId, defaultSelected]);
+
+  const getRandomLocation = useCallback((): string => {
     const locations = ["location1", "location2"];
     const index = Math.floor(Math.random() * locations.length);
     return locations[index];
-  };
+  }, []);
+
+  const toggleFloorPlan = useCallback(() => {
+    setShowFloorPlan(prev => !prev);
+  }, []);
+
   return (
     <div className="w-100 vh-100 position-relative bg-black">
       {loading && (
@@ -141,78 +185,71 @@ const PanoramaViewer: React.FC = () => {
         style={{
           opacity: loading ? 0 : 1,
           transition: "opacity 0.6s ease-in-out",
-          // width: "100%",
-          // height: "100vh",
         }}
       >
         <ReactPhotoSphereViewer
           key={currentLocation}
-          src={selectedPanorama && selectedPanorama[currentLocation]?.imgName}
+          src={getPanoramaImage || (selectedPanorama && selectedPanorama[currentLocation]?.imgName)}
           height="100vh"
           width="100%"
           plugins={[[MarkersPlugin, {}]]}
           onReady={onReady}
-          defaultYaw={0} // 0 = front-facing (horizontal)
-          defaultPitch={0} // 0 = center vertically (no tilt)
+          defaultYaw={0}
+          defaultPitch={0}
+          defaultZoomLvl={1}
         />
-        {/* Room Navigation Buttons */}
-        <div
-          className="position-absolute start-0 w-100 p-3 d-flex justify-content-center gap-2"
-          style={{ background: "rgba(0,0,0,0.5)", zIndex: 10, bottom: '40px' }}
-        >
-          {rooms.map((room: any) => (
-            <button
-              key={room.id}
-              className="btn btn-light btn-sm"
-              onClick={() => handleHotspotClick(getRandomLocation())}
-            >
-              {room.name}
-            </button>
-          ))}
-        </div>
-      </div>
-      {/* Floor Plan Toggle Button (bottom-right) */}
-      <div
-        className="position-absolute end-0 m-3"
-        style={{
-          backgroundColor: "#000",
-          padding: "8px",
-          borderRadius: "8px",
-          cursor: "pointer",
-          zIndex: 20,
-          bottom: '80px',
-        }}
-        onClick={() => setShowFloorPlan(!showFloorPlan)}
-      >
-        <img
-          src="/floorPlan.png"
-          alt="Floor Plan Icon"
-          style={{ width: 40, height: 40, objectFit: "contain" }}
-        />
-      </div>
 
-      {/* Floor Plan Panel */}
+        {/* Only show room buttons if not coming from master plan */}
+        {!isFromMasterPlan && (
+          <div
+            className="position-absolute start-0 w-100 p-3 d-flex justify-content-center gap-2"
+            style={{ background: "rgba(0,0,0,0.5)", zIndex: 10, bottom: '40px' }}
+          >
+            {rooms.map((room: any, index: number) => (
+              <button
+                key={room.id || `room-${index}`}
+                className="btn btn-light btn-sm"
+                onClick={() => handleHotspotClick(getRandomLocation())}
+              >
+                {room.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      {!isFromMasterPlan && (
+        <div
+          className="position-absolute end-0 m-3"
+          style={{
+            backgroundColor: "#000",
+            padding: "8px",
+            borderRadius: "8px",
+            cursor: "pointer",
+            zIndex: 20,
+            bottom: '80px',
+          }}
+          onClick={toggleFloorPlan}
+        >
+          <img
+            src="/floorPlan.png"
+            alt="Floor Plan Icon"
+            style={{ width: 40, height: 40, objectFit: "contain" }}
+          />
+        </div>
+      )}
       {showFloorPlan && (
         <div
           className="position-absolute mt-3 ms-3 p-3 bg-white shadow"
           style={{
             zIndex: 30,
             width: "300px",
-            maxHeight: "80vh",
+            maxHeight: "400px",
             overflow: "auto",
-            borderRadius: "12px",
-            bottom: '100px',
-            right: '75px',
           }}
         >
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <strong>Floor Plan</strong>
-            <button className="btn btn-sm btn-close" onClick={() => setShowFloorPlan(false)} />
-          </div>
           {floorSVG}
         </div>
       )}
-
     </div>
   );
 };

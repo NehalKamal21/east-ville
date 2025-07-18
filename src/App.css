@@ -61,6 +61,91 @@ html, body, #root {
   border: none;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 1050;
+  transition: all 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.contact-button:active {
+  transform: scale(1.05);
+}
+
+.contact-button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Location Button */
+.location-button {
+  position: fixed;
+  bottom: 20px;
+  right: 90px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background-color: #28a745;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1050;
+  transition: all 0.3s ease;
+}
+
+.location-button:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.location-button:active {
+  transform: scale(1.05);
+}
+
+.location-button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments for location button */
+@media (max-width: 768px) {
+  .location-button {
+    bottom: 20px;
+    right: 90px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .contact-button {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .location-button {
+    bottom: 15px;
+    right: 75px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  .contact-button {
+    bottom: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
 }
 
 .modal-header,
@@ -126,6 +211,12 @@ html, body, #root {
   text-decoration: none;
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+  color: #67b1a4;
+  transform: translateY(-1px);
 }
 
 .breadcrumb-item.active {
@@ -232,6 +323,18 @@ html, body, #root {
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(6px);
   width: 50px;
+  transition: all 0.3s ease;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+  transform: scale(1.1);
+}
+
+.carousel-control-prev:active,
+.carousel-control-next:active {
+  transform: scale(1.05);
 }
 
 .carousel-control-prev-icon,
