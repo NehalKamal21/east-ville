@@ -5,5 +5,70 @@
 @use 'components/search';
 @use 'components/map';
 @use 'components/cluster-view';
+@import "components/kasakoun-gallery";
 
-// Global styles can be added here 
+// Global styles can be added here
+
+// Panorama marker styles - make arrow-down icon white, remove border, and rotate 90 degrees
+.psv-marker {
+  filter: brightness(0) invert(1) !important; // Makes the icon white
+  transform: rotate(180deg) !important; // Rotate 90 degrees
+  border: none !important; // Remove any border
+  border-radius: 0 !important; // Remove border radius
+}
+
+// Breadcrumb responsive styles
+.breadcrumb-wrapper {
+  .static-logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .custom-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  // Mobile responsive styles
+  @media (max-width: 768px) {
+    .custom-breadcrumb {
+      font-size: 14px;
+      gap: 4px;
+      
+      .breadcrumb-item {
+        margin-right: 4px;
+        
+        img {
+          height: 24px !important;
+        }
+      }
+      
+      .static-logo img {
+        height: 24px !important;
+        margin-right: 15px !important;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .custom-breadcrumb {
+      font-size: 12px;
+      gap: 2px;
+      
+      .breadcrumb-item {
+        margin-right: 2px;
+        
+        img {
+          height: 20px !important;
+        }
+      }
+      
+      .static-logo img {
+        height: 20px !important;
+        margin-right: 10px !important;
+      }
+    }
+  }
+}

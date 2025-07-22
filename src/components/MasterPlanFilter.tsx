@@ -7,7 +7,7 @@ const TYPES = [
   { name: "TW", value: "TW" }
 ];
 
-const AREA_BREAKPOINTS = ["< 200 m²", "200 - 300 m²", "> 300 m²"];
+const AREA_BREAKPOINTS = ["< 130 m²", "130 - 230 m²", "> 290 m²"];
 
 interface MasterPlanFilterProps {
   onTypeChange: (type: string) => void;

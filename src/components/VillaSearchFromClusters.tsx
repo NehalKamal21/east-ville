@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useClusters } from "../utils/hooks";
@@ -76,7 +76,7 @@ const VillaSearchFromClusters: React.FC = () => {
         }
     }, [clustersError]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.toUpperCase();
         setQuery(value);
         setSelected(null);
@@ -106,7 +106,7 @@ const VillaSearchFromClusters: React.FC = () => {
                 setSuggestions([]);
             }
         }, 200);
-    };
+    }, [clusters]);
 
     const handleSelect = (clusterId: string) => {
         try {

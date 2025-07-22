@@ -19,12 +19,12 @@ const MapInfoWindow: React.FC = () => {
 
   return (
     <>
-      <Marker 
+      {/* <Marker 
         key={eastVilleLocation.lat} 
         position={eastVilleLocation} 
         title="Ajna"
         icon={markerIcon}
-      />
+      /> */}
 
       <InfoWindow
         position={{

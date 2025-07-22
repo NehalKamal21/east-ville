@@ -62,7 +62,12 @@ const VillaView: React.FC = () => {
   }, [clusterId, selectedFloor, clusterPrefix, getRoomsData]);
 
   useEffect(() => {
-    localStorage.setItem("rooms", JSON.stringify(rooms));
+    // Only store rooms data if it's not empty to minimize storage usage
+    if (rooms.length > 0) {
+      localStorage.setItem("rooms", JSON.stringify(rooms));
+    } else {
+      localStorage.removeItem("rooms");
+    }
   }, [rooms]);
 
   // Memoize floor navigation handler

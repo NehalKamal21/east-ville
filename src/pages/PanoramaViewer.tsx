@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
-import { Spinner } from "react-bootstrap";
+import { Spinner, ToggleButton, ToggleButtonGroup, Card } from "react-bootstrap";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import "@photo-sphere-viewer/core/index.css";
 import "@photo-sphere-viewer/markers-plugin/index.css";
 
-import { renderSVG } from "../utils/renderSVG";
-import { useParams } from "react-router-dom";
+import { renderImgs } from "../utils/renderImg";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 interface Hotspot {
   pitch: number;
@@ -15,10 +15,13 @@ interface Hotspot {
 }
 
 import { panoramaData } from "../utils/panoData";
+import { villaDetails } from "../utils/villaDetails";
 import LoadingScreen from "../components/LoadingScreen";
 
 const PanoramaViewer: React.FC = () => {
   const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const Floors = [
     { value: "GF", key: "groundFloor" },
@@ -40,6 +43,7 @@ const PanoramaViewer: React.FC = () => {
   const [selectedPanorama, setSelectedPanorama] = useState<any>(null);
   const [customPanoramaConfig, setCustomPanoramaConfig] = useState<any>(null);
   const [isFromMasterPlan, setIsFromMasterPlan] = useState(false);
+  const [selectedFloor, setSelectedFloor] = useState(defaultSelected);
 
   const viewerRef = useRef<any>(null);
 
@@ -51,6 +55,14 @@ const PanoramaViewer: React.FC = () => {
     return null;
   }, [clusterId]);
 
+  // Memoize cluster prefix for villa details
+  const clusterPrefix = useMemo(() => {
+    if (clusterId?.startsWith("A")) return "A";
+    if (clusterId?.startsWith("B")) return "B";
+    if (clusterId?.startsWith("T")) return "TW";
+    return "";
+  }, [clusterId]);
+
   // Check for custom panorama configuration from 360 icons
   useEffect(() => {
     const storedConfig = localStorage.getItem('panoramaConfig');
@@ -59,10 +71,12 @@ const PanoramaViewer: React.FC = () => {
         const config = JSON.parse(storedConfig);
         setCustomPanoramaConfig(config);
         setCurrentLocation(config.location || 'location1');
-        setIsFromMasterPlan(true); // Set flag when coming from master plan
-        localStorage.removeItem('panoramaConfig'); // Clear after reading
+        // Clear immediately after reading to minimize storage impact
+        localStorage.removeItem('panoramaConfig');
       } catch (error) {
         console.error('Error parsing panorama config:', error);
+        // Clear invalid data
+        localStorage.removeItem('panoramaConfig');
       }
     }
   }, []);
@@ -70,9 +84,9 @@ const PanoramaViewer: React.FC = () => {
   // Memoize panorama data
   const panoramaDataForCluster = useMemo(() => {
     if (!clusterName) return {};
-    const floorKey = defaultSelected.key as keyof typeof panoramaData[typeof clusterName];
+    const floorKey = selectedFloor.key as keyof typeof panoramaData[typeof clusterName];
     return panoramaData[clusterName]?.[floorKey] || {};
-  }, [clusterName, defaultSelected.key]);
+  }, [clusterName, selectedFloor.key]);
 
   // Get the specific panorama image based on configuration
   const getPanoramaImage = useMemo(() => {
@@ -101,6 +115,8 @@ const PanoramaViewer: React.FC = () => {
 
   const handleHotspotClick = useCallback((targetLocation: string) => {
     setLoading(true);
+    // Hide floor plan when changing location
+    setShowFloorPlan(false);
     setTimeout(() => {
       setCurrentLocation(targetLocation);
     }, 100);
@@ -128,7 +144,7 @@ const PanoramaViewer: React.FC = () => {
         position: { yaw: '45deg', pitch: '0deg' },
         longitude: hotspot.yaw * (Math.PI / 180),
         latitude: hotspot.pitch * (Math.PI / 180),
-        image: "/marker-icon.png",
+        image: "/arrow-down-marker.png",
         width: 32,
         height: 32,
         anchor: "bottom center",
@@ -159,9 +175,33 @@ const PanoramaViewer: React.FC = () => {
   }, [currentLocation, selectedPanorama]);
 
   useEffect(() => {
-    setRooms(JSON.parse(localStorage.getItem("rooms") || "[]"));
-    setFloorSvg(renderSVG(clusterId || "", defaultSelected));
-  }, [clusterId, defaultSelected]);
+    // Get rooms for current floor from villaDetails
+    if (clusterPrefix && selectedFloor) {
+      const cluster = villaDetails[clusterPrefix as keyof typeof villaDetails];
+      if (cluster) {
+        const floorData = cluster[selectedFloor.key as keyof typeof cluster];
+        if (floorData) {
+          setRooms(floorData.map(room => ({ ...room, dimensions: room.dimensions || "N/A" })));
+        } else {
+          setRooms([]);
+        }
+      } else {
+        setRooms([]);
+      }
+    } else {
+      setRooms([]);
+    }
+    setFloorSvg(renderImgs(clusterId || "", selectedFloor, handleHotspotClick));
+  }, [clusterId, selectedFloor, clusterPrefix]);
+
+  useEffect(() => {
+    // Set isFromMasterPlan based on the current route
+    if (location.pathname === "/exterior") {
+      setIsFromMasterPlan(true);
+    } else {
+      setIsFromMasterPlan(false);
+    }
+  }, [location.pathname]);
 
   const getRandomLocation = useCallback((): string => {
     const locations = ["location1", "location2"];
@@ -173,8 +213,48 @@ const PanoramaViewer: React.FC = () => {
     setShowFloorPlan(prev => !prev);
   }, []);
 
+  const handleFloorChange = useCallback((floor: typeof Floors[0]) => {
+    setSelectedFloor(floor);
+    // Reset to first location when changing floors
+    setCurrentLocation("location1");
+    // Hide floor plan when changing floors
+    setShowFloorPlan(false);
+    // Navigate to the new floor panorama
+    if (clusterId) {
+      navigate(`/clusterView/${clusterId}/${floor.key}/image`);
+    }
+  }, [clusterId, navigate]);
+
   return (
     <div className="w-100 vh-100 position-relative bg-black">
+      {/* Floor Panel - positioned below breadcrumb */}
+      {!isFromMasterPlan && <div style={{ position: "fixed", top: "80px", left: "20px", zIndex: 999 }}>
+        <div className="floor-panel-container">
+          <Card className="p-3 bg-dark text-white shadow-lg rounded-4">
+            <Card.Title className="text-center fs-6">Floors</Card.Title>
+
+            <ToggleButtonGroup
+              type="radio"
+              name="floors"
+              value={selectedFloor.key}
+            >
+              {Floors.map((floor) => (
+                <ToggleButton
+                  key={floor.key}
+                  id={`floor-${floor.key}`}
+                  value={floor.key}
+                  variant="outline-light"
+                  className="text-center"
+                  onClick={() => handleFloorChange(floor)}
+                >
+                  {floor.value}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </Card>
+        </div>
+      </div>
+      }
       {loading && (
         <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 d-flex align-items-center justify-content-center z-3">
           <LoadingScreen />
@@ -209,7 +289,7 @@ const PanoramaViewer: React.FC = () => {
               <button
                 key={room.id || `room-${index}`}
                 className="btn btn-light btn-sm"
-                onClick={() => handleHotspotClick(getRandomLocation())}
+                onClick={() => handleHotspotClick(room.target)}
               >
                 {room.name}
               </button>
@@ -218,7 +298,7 @@ const PanoramaViewer: React.FC = () => {
         )}
       </div>
       {!isFromMasterPlan && (
-        <div
+        <button
           className="position-absolute end-0 m-3"
           style={{
             backgroundColor: "#000",
@@ -235,16 +315,18 @@ const PanoramaViewer: React.FC = () => {
             alt="Floor Plan Icon"
             style={{ width: 40, height: 40, objectFit: "contain" }}
           />
-        </div>
+        </button>
       )}
       {showFloorPlan && (
         <div
-          className="position-absolute mt-3 ms-3 p-3 bg-white shadow"
+          className="position-fixed bg-white shadow"
           style={{
             zIndex: 30,
             width: "300px",
             maxHeight: "400px",
             overflow: "auto",
+            bottom: '115px',
+            right: '80px'
           }}
         >
           {floorSVG}

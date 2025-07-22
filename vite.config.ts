@@ -1,11 +1,42 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
     react(), 
     svgr(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+              }
+            }
+          },
+          {
+            urlPattern: /\.(png|jpg|jpeg|svg|gif|webp)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+              }
+            }
+          }
+        ]
+      }
+    })
   ],
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -23,11 +54,35 @@ export default defineConfig({
           panorama: ['react-photo-sphere-viewer', '@photo-sphere-viewer/core', '@photo-sphere-viewer/markers-plugin'],
           ui: ['react-bootstrap', 'bootstrap'],
           utils: ['axios', 'js-cookie'],
+          // Split heavy libraries
+          three: ['three'],
+          icons: ['react-icons'],
+          animations: ['@react-spring/web', 'framer-motion'],
+        },
+        // Optimize chunk naming for better caching
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
+          return `js/[name]-[hash].js`;
+        },
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.name || 'asset';
+          const info = name.split('.');
+          const ext = info[info.length - 1];
+          if (/\.(css)$/.test(name)) {
+            return `css/[name]-[hash].${ext}`;
+          }
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(name)) {
+            return `images/[name]-[hash].${ext}`;
+          }
+          return `assets/[name]-[hash].${ext}`;
         },
       },
     },
     // Enable source maps for debugging
     sourcemap: process.env.NODE_ENV === 'development',
+    // Optimize build performance
+    target: 'es2015',
+    cssCodeSplit: true,
   },
   server: {
     open: true,

@@ -17,6 +17,7 @@ import img10 from '../assets/10.png';
 import img11 from '../assets/11.png';
 import MasterPlanFilter from '../components/MasterPlanFilter';
 import VillaSearchFromClusters from '../components/VillaSearchFromClusters';
+import KasakounGalleryCarousel from '../components/KasakounGalleryCarousel';
 
 
 const MasterPlan: React.FC = () => {
@@ -31,6 +32,58 @@ const MasterPlan: React.FC = () => {
     const compoundImages = [
         img1, img10, img11, img2, img3, img4, img5, img6, img7, img8, img9
     ];
+
+    // Images for Kasakoun Gallery tabs from public/KASAKOUN
+    const kasakounTabImages = [
+        [
+            '/KASAKOUN/1%20BEDROOM/1.jpg',
+            '/KASAKOUN/1%20BEDROOM/2.jpg',
+            '/KASAKOUN/1%20BEDROOM/3.jpg',
+            '/KASAKOUN/1%20BEDROOM/4.jpg',
+            '/KASAKOUN/1%20BEDROOM/5.jpg',
+            '/KASAKOUN/1%20BEDROOM/6.jpg',
+        ],
+        [
+            '/KASAKOUN/2%20BEDROOM/1.jpg',
+            '/KASAKOUN/2%20BEDROOM/2.jpg',
+            '/KASAKOUN/2%20BEDROOM/3.jpg',
+            '/KASAKOUN/2%20BEDROOM/4.jpg',
+            '/KASAKOUN/2%20BEDROOM/5.jpg',
+            '/KASAKOUN/2%20BEDROOM/6.jpg',
+            '/KASAKOUN/2%20BEDROOM/7.jpg',
+            '/KASAKOUN/2%20BEDROOM/8.jpg',
+        ],
+        [
+            '/KASAKOUN/Corridor/1.jpg',
+            '/KASAKOUN/Corridor/2.jpg',
+            '/KASAKOUN/Corridor/3.jpg',
+        ],
+        [
+            '/KASAKOUN/ENTRANCE/1.jpg',
+            '/KASAKOUN/ENTRANCE/2.jpg',
+            '/KASAKOUN/ENTRANCE/3.jpg',
+            '/KASAKOUN/ENTRANCE/4.jpg',
+            '/KASAKOUN/ENTRANCE/5.jpg',
+        ],
+        [
+            '/KASAKOUN/KASAKOUN/KASAKOUN_.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_02.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_03.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_04.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_05.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_06.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN-01.jpg',
+        ],
+        [
+            '/KASAKOUN/STUDIO/1.jpg',
+            '/KASAKOUN/STUDIO/2.jpg',
+            '/KASAKOUN/STUDIO/3.jpg',
+            '/KASAKOUN/STUDIO/4.jpg',
+            '/KASAKOUN/STUDIO/5.jpg',
+            '/KASAKOUN/STUDIO/6.jpg',
+        ],
+    ];
+    const kasakounTabTitles = ["1 BEDROOM", "2 BEDROOM", "Corridor", "ENTRANCE", "Kasakoun", "Studio"];
 
     const handleTypeChange = (type: string) => {
         console.log("Type:", type);
@@ -64,31 +117,45 @@ const MasterPlan: React.FC = () => {
         }
     }, []);
     const [showCarousel, setShowCarousel] = useState(false);
+    const [showKasakoun, setShowKasakoun] = useState(false);
 
     return (
-        <div style={{ position: "relative", height: "100vh" }}>
-            <VillaSearchFromClusters />
-            <MasterPlanSvg points={clusters} selectedArea={selectedArea} selectedType={selectedType} />
+        <div className="master-plan-container" style={{ position: "relative", height: "100vh" }}>
+            {/* Floating Gallery Buttons - top right */}
+            <div className="floating-gallery-buttons">
+                <Button
+                    variant="dark"
+                    className="shadow"
+                    onClick={() => setShowCarousel(true)}
+                >
+                    View Compound Gallery
+                </Button>
+                <Button
+                    variant="dark"
+                    className="shadow"
+                    onClick={() => setShowKasakoun(true)}
+                >
+                    View KASAKOUN Gallery
+                </Button>
+            </div>
 
-            <Button
-                variant="dark"
-                className="position-fixed top-0 end-0 m-3 shadow"
-                onClick={() => setShowCarousel(true)}
-                style={{ zIndex: '1000' }}
-            >
-                View Compound Gallery
-            </Button>
+            <VillaSearchFromClusters />
             <CompoundImageCarousel
                 show={showCarousel}
                 onClose={() => setShowCarousel(false)}
                 images={compoundImages}
             />
-
+            <KasakounGalleryCarousel
+                show={showKasakoun}
+                onClose={() => setShowKasakoun(false)}
+                tabImages={kasakounTabImages}
+                tabTitles={kasakounTabTitles}
+            />
+            <MasterPlanSvg points={clusters} selectedArea={selectedArea} selectedType={selectedType} />
             <MasterPlanFilter
                 onTypeChange={handleTypeChange}
                 onAreaChange={handleAreaChange}
             />
-
         </div>
     );
 };
