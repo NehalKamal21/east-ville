@@ -10,7 +10,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
+        globPatterns: ['**/*.{js,css,html,ico}'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10MB limit
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -29,7 +30,7 @@ export default defineConfig({
             options: {
               cacheName: 'images-cache',
               expiration: {
-                maxEntries: 100,
+                maxEntries: 200,
                 maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
               }
             }
