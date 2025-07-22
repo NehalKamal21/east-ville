@@ -11,11 +11,11 @@ const BreadcrumbNav: React.FC = () => {
   const crumbs: { label: string; icon?: JSX.Element; to?: string }[] = [];
 
   // Check if we're coming from master plan (360 icon navigation)
-  const isFromMasterPlan = localStorage.getItem('panoramaConfig') !== null;
+  const isFromMasterPlan = pathname === "/exterior";
 
   crumbs.push({
     label: '',
-    icon: <img src="/ajna-logo.jpg" alt="Location" style={{ height: 30 }} />,
+    icon: <img src="/eastville.png" alt="Location" style={{ height: 30 }} />, 
     to: "/"
   });
 
@@ -25,7 +25,6 @@ const BreadcrumbNav: React.FC = () => {
 
   if (segments[0] === "exterior") {
     crumbs.push({ label: "Exterior Panorama" });
-
   }
 
   if (segments[0] === "clusterView") {
@@ -62,24 +61,14 @@ const BreadcrumbNav: React.FC = () => {
   }
 
   return (
-    <div className="breadcrumb-wrapper scrollable-breadcrumb">
-
-      <Breadcrumb className="custom-breadcrumb">
-        {crumbs.map((crumb, index) => {
-          const isLast = index === crumbs.length - 1;
-          return (
-            <Breadcrumb.Item
-              key={index}
-              linkAs={crumb.to && !isLast ? Link : undefined}
-              linkProps={crumb.to && !isLast ? { to: crumb.to } : undefined}
-              active={isLast || !crumb.to}
-            >
-              {crumb.icon && <span className="me-1">{crumb.icon}</span>}
-
-              {crumb.label}
-            </Breadcrumb.Item>
-          );
-        })}
+    <div className="breadcrumb-wrapper px-3 py-2 sticky-top" style={{ zIndex: 100 }}>
+      <Breadcrumb className="custom-breadcrumb mb-0">
+        {crumbs.map((crumb, idx) => (
+          <Breadcrumb.Item key={idx} linkAs={crumb.to ? Link : 'span'} linkProps={crumb.to ? { to: crumb.to } : undefined} active={!crumb.to} className="breadcrumb-item">
+            {crumb.icon}
+            {crumb.label}
+          </Breadcrumb.Item>
+        ))}
       </Breadcrumb>
     </div>
   );

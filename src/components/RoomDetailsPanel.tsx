@@ -1,4 +1,4 @@
-import { h } from "framer-motion/dist/types.d-B50aGbjN";
+// Remove incorrect framer-motion import
 import React from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";

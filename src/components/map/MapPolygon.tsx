@@ -12,9 +12,9 @@ const MapPolygon: React.FC = () => {
           lng: point.lng + 0.0001,
         }))}
         options={{
-          fillColor: "rgba(0, 0, 0, 0.2)", // Shadow color
-          fillOpacity: 0.4,
-          strokeColor: "rgba(0, 0, 0, 0.4)",
+          fillColor: "#67b1a4", // Shadow color
+          fillOpacity: 0.6,
+          strokeColor: "#67b1a4",
           strokeWeight: 4,
           zIndex: 1,
         }}
@@ -24,9 +24,9 @@ const MapPolygon: React.FC = () => {
       <Polygon
         paths={polygonCoordinates}
         options={{
-          fillColor: "linear-gradient(135deg, #00FF00 50%, #158000 100%)",
+          fillColor: "linear-gradient(135deg, #67b1a4 50%, #67b1a4 100%)",
           fillOpacity: 0.6,
-          strokeColor: "#158000",
+          strokeColor: "#67b1a4",
           strokeOpacity: 1,
           strokeWeight: 2,
           zIndex: 2,

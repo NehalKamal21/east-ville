@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import img01 from "../assets/masterplan/image_1.png";
 import img02 from "../assets/masterplan/image_2.png";
@@ -66,6 +66,19 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
     const navigate = useNavigate();
     const [hovered, setHovered] = useState<string | null>(null);
     const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect mobile/tablet devices
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth <= 1023);
+        };
+
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
 
     const handleClick = (event: React.MouseEvent<SVGImageElement, MouseEvent>) => {
         const ClusterId = event.currentTarget.id; // Get the ID of clicked Cluster
@@ -131,17 +144,17 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
         // Prevent event bubbling to avoid multiple clicks
         event.preventDefault();
         event.stopPropagation();
-        
+
         // Get the clicked element to determine which icon was clicked
         const target = event.currentTarget as HTMLElement;
         const iconId = target.id; // Get the icon ID (e.g., "360-A", "360-B", etc.)
-        
+
         console.log('360 icon clicked:', iconId); // Debug log
-        
+
         if (iconId && iconId.startsWith('360-')) {
             // Extract the letter from the icon ID (e.g., "A" from "360-A")
             const letter = iconId.split('-')[1];
-            
+
             // Create panorama configuration with the icon ID
             const panoramaConfig = {
                 iconId: iconId,
@@ -149,12 +162,12 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 floorId: 'groundFloor', // Default floor
                 location: 'location1' // Default location
             };
-            
+
             console.log('Navigating to panorama with config:', panoramaConfig); // Debug log
-            
+
             // Store panorama configuration in localStorage for the viewer to use
             localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
-            
+
             // Navigate to exterior panorama viewer (from master plan)
             navigate('/exterior');
         } else {
@@ -163,8 +176,16 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
     };
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="1920" height="1217.25" viewBox="0 0 7680 4869" preserveAspectRatio='none' className='master-plan-svg'>
-            <image id="Background" width="7680" height="4869" xlinkHref={img01} onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} />
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width="1920"
+            height="1217.25"
+            viewBox="0 0 7680 4869"
+            preserveAspectRatio={isMobile ? undefined : 'none'}
+            className='master-plan-svg-responsive'
+        >
+            <image id="background" width="7680" height="4869" xlinkHref={img01} />
 
             <image
                 x="2988" y="416" width="382" height="367" id="B-36"
@@ -585,7 +606,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
 
             {/* 360 Icon */}
             <g
-                className="icon-360" id="360-E"
+                id="360-E"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
@@ -593,17 +614,17 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 <circle
                     cx="6475"
                     cy="3255"
-                    r="120"
+                    r="70"
                     fill="white"
                     stroke="#e0e0e0"
                     strokeWidth="2"
                     opacity="0.95"
                 />
                 <image
-                    x="6400"
-                    y="3180"
-                    width="150"
-                    height="150"
+                    x="6435"
+                    y="3215"
+                    width="80"
+                    height="80"
                     href="/icons/360-degrees-icon.png"
                     opacity="0.9"
                     style={{ pointerEvents: 'none' }}
@@ -612,7 +633,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
 
             {/* Second 360 Icon */}
             <g
-                className="icon-360" id="360-C"
+                id="360-C"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
@@ -620,17 +641,17 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 <circle
                     cx="2800"
                     cy="1550"
-                    r="120"
+                    r="70"
                     fill="white"
                     stroke="#e0e0e0"
                     strokeWidth="2"
                     opacity="0.95"
                 />
                 <image
-                    x="2725"
-                    y="1475"
-                    width="150"
-                    height="150"
+                    x="2760"
+                    y="1510"
+                    width="80"
+                    height="80"
                     href="/icons/360-degrees-icon.png"
                     opacity="0.9"
                     style={{ pointerEvents: 'none' }}
@@ -639,7 +660,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
 
             {/* Third 360 Icon */}
             <g
-                className="icon-360" id="360-F"
+                id="360-F"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
@@ -647,17 +668,17 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 <circle
                     cx="4500"
                     cy="1550"
-                    r="120"
+                    r="70"
                     fill="white"
                     stroke="#e0e0e0"
                     strokeWidth="2"
                     opacity="0.95"
                 />
                 <image
-                    x="4425"
-                    y="1475"
-                    width="150"
-                    height="150"
+                    x="4460"
+                    y="1510"
+                    width="80"
+                    height="80"
                     href="/icons/360-degrees-icon.png"
                     opacity="0.9"
                     style={{ pointerEvents: 'none' }}
@@ -665,7 +686,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             </g>
             {/* 4th 360 Icon */}
             <g
-                className="icon-360" id="360-A"
+                id="360-A"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
@@ -673,74 +694,261 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 <circle
                     cx="2900"
                     cy="1050"
-                    r="120"
+                    r="70"
                     fill="white"
                     stroke="#e0e0e0"
                     strokeWidth="2"
                     opacity="0.95"
                 />
                 <image
-                    x="2825"
-                    y="975"
-                    width="150"
-                    height="150"
+                    x="2860"
+                    y="1010"
+                    width="80"
+                    height="80"
                     href="/icons/360-degrees-icon.png"
                     opacity="0.9"
                     style={{ pointerEvents: 'none' }}
                 />
             </g>
-                         {/* 5th 360 Icon */}
-             <g
-                 className="icon-360" id="360-B"
-                 style={{ cursor: 'pointer' }}
-                 onClick={handle360IconClick}
-             >
-                 {/* White background circle */}
-                 <circle
-                     cx="4200"
-                     cy="1050"
-                     r="120"
-                     fill="white"
-                     stroke="#e0e0e0"
-                     strokeWidth="2"
-                     opacity="0.95"
-                 />
-                 <image
-                     x="4125"
-                     y="975"
-                     width="150"
-                     height="150"
-                     href="/icons/360-degrees-icon.png"
-                     opacity="0.9"
-                     style={{ pointerEvents: 'none' }}
-                 />
-             </g>
+            {/* 5th 360 Icon */}
+            <g
+                id="360-B"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                    cx="4200"
+                    cy="1050"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="4160"
+                    y="1010"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
             {/* 6th 360 Icon */}
+            <g
+                id="360-D"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                    cx="3500"
+                    cy="1000"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="3460"
+                    y="960"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+
+            {/* 7th 360 Icon */}
+            <g
+                id="360-G"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                    cx="2000"
+                    cy="1600"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="1960"
+                    y="1560"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+
+            {/* 8th 360 Icon */}
+            <g
+                id="360-J"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                    cx="2000" 
+                    cy="2000"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="1960"
+                    y="1960"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+
+              {/* 9th 360 Icon */}
+              <g
+                id="360-K"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                  cx="3000" 
+                  cy="2800"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="2960"
+                    y="2760"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+
+             {/* 10th 360 Icon */}
              <g
-                 className="icon-360" id="360-D"
-                 style={{ cursor: 'pointer' }}
-                 onClick={handle360IconClick}
-             >
-                 {/* White background circle */}
-                 <circle
-                     cx="3500"
-                     cy="1000"
-                     r="120"
-                     fill="white"
-                     stroke="#e0e0e0"
-                     strokeWidth="2"
-                     opacity="0.95"
-                 />
-                 <image
-                     x="3425"
-                     y="925"
-                     width="150"
-                     height="150"
-                     href="/icons/360-degrees-icon.png"
-                     opacity="0.9"
-                     style={{ pointerEvents: 'none' }}
-                 />
-             </g>
+                id="360-H"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                 cx="3200" 
+                 cy="2300"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="3160"
+                    y="2260"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+             {/* 11th 360 Icon */}
+             <g
+                id="360-L"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+                cx="4400" 
+                cy="3000"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="4360"
+                    y="2960"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+              {/* 12th 360 Icon */}
+              <g
+                id="360-I"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+               cx="4000"
+                cy="2000"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="3960"
+                    y="1960"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
+
+              {/* 13th 360 Icon */}
+              <g
+                id="360-M"
+                style={{ cursor: 'pointer' }}
+                onClick={handle360IconClick}
+            >
+                {/* White background circle */}
+                <circle
+              cx="4500" 
+              cy="4000"
+                    r="70"
+                    fill="white"
+                    stroke="#e0e0e0"
+                    strokeWidth="2"
+                    opacity="0.95"
+                />
+                <image
+                    x="4460"
+                    y="3960"
+                    width="80"
+                    height="80"
+                    href="/icons/360-degrees-icon.png"
+                    opacity="0.9"
+                    style={{ pointerEvents: 'none' }}
+                />
+            </g>
         </svg>
 
     );

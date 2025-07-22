@@ -7,7 +7,7 @@ interface CompoundImageCarouselProps {
     images: string[];
 }
 
-const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = ({
+const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = React.memo(({
     show,
     onClose,
     images,
@@ -33,6 +33,7 @@ const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = ({
                                 alt={`Slide ${idx + 1}`}
                                 className="d-block w-100"
                                 style={{ maxHeight: "80vh", objectFit: "cover" }}
+                                loading="lazy"
                             />
                         </Carousel.Item>
                     ))}
@@ -40,7 +41,9 @@ const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = ({
             </Modal.Body>
         </Modal>
     );
-};
+});
+
+CompoundImageCarousel.displayName = 'CompoundImageCarousel';
 
 export default CompoundImageCarousel;
 // Usage example:

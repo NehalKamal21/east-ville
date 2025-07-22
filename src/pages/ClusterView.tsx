@@ -57,8 +57,8 @@ const ClusterView: React.FC = () => {
                 variant="dark" 
                 className="mb-3 position-fixed bottom-0 start-50 translate-middle-x cluster-view-button" 
                 style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                    backdropFilter: 'blur(6px)'
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                backdropFilter: 'blur(6px)'
                 }} 
                 onClick={handleRotation}
             >

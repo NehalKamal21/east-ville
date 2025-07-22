@@ -306,10 +306,10 @@ export const panoramaData = {
                 "name": "Cluster TW - Ground Floor - Location 2",
                 "imgName": "/panos/ClusterTW/groundFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location3" }
+                    { "pitch": 0, "yaw": 90, "target": "location4" }
                 ]
             },
-            "location3": {
+            "location4": {
                 "id": "TW-gf-loc3",
                 "name": "Cluster TW - Ground Floor - Location 3",
                 "imgName": "/panos/ClusterTW/groundFloor/04.jpg",
