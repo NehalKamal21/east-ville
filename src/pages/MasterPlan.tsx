@@ -55,8 +55,9 @@ const MasterPlan: React.FC = () => {
                     );
                 });
 
-                // Register compound images with loading manager
-                compoundImages.forEach((img, index) => {
+                // Register compound images with loading manager using imported variables
+                const importedCompoundImages = [img1, img10, img11, img2, img3, img4, img5, img6, img7, img8, img9];
+                importedCompoundImages.forEach((img, index) => {
                     loadingManager.registerItem(
                         `compound-image-${index}`,
                         img,
@@ -65,8 +66,28 @@ const MasterPlan: React.FC = () => {
                     );
                 });
 
-                // Preload critical master plan and compound images
+                // Preload critical master plan images
                 await preloadAllCriticalImages();
+                
+                // Preload first few compound images (imported variables)
+                console.log('🏠 Preloading compound images...');
+                const criticalCompoundImages = [img1, img10, img11];
+                const preloadPromises = criticalCompoundImages.map((img, index) => {
+                    return new Promise<void>((resolve) => {
+                        const image = new Image();
+                        image.onload = () => {
+                            loadingManager.markLoaded(`compound-image-${index}`);
+                            resolve();
+                        };
+                        image.onerror = () => {
+                            console.warn(`Failed to preload compound image ${index}`);
+                            resolve();
+                        };
+                        image.src = img;
+                    });
+                });
+                
+                await Promise.allSettled(preloadPromises);
                 
                 console.log('Master plan and compound images preloaded successfully');
             } catch (error) {

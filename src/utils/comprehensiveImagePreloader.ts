@@ -73,7 +73,8 @@ export const criticalImages = [
   '/FRONT.png',
 ];
 
-// Compound images (imported assets)
+// Compound images (imported assets) - these will be imported as variables
+// The actual paths are handled by the bundler when imported
 export const compoundImages = [
   '/assets/01.png',
   '/assets/02.png',
@@ -259,10 +260,8 @@ export const registerAllImages = () => {
     loadingManager.registerItem(`masterplan-${index + 1}`, src, 'image', 'high');
   });
   
-  // Register compound images
-  compoundImages.forEach((src, index) => {
-    loadingManager.registerItem(`compound-${index}`, src, 'image', index < 3 ? 'critical' : 'high');
-  });
+  // Compound images are handled separately by MasterPlan component
+  // since they are imported as variables
   
   // Register first few panorama images as high priority
   panoramaImages.slice(0, 10).forEach((src, index) => {
@@ -301,16 +300,6 @@ export const preloadAllCriticalImages = async (): Promise<void> => {
     await preloadImage(masterPlanImages[0]);
     loadingManager.markLoaded('master-plan-bg');
     
-    // Preload first few compound images
-    console.log('🏠 Preloading compound images...');
-    await preloadImages(compoundImages.slice(0, 3), (loaded, total) => {
-      console.log(`Compound images: ${loaded}/${total}`);
-    });
-    
-    compoundImages.slice(0, 3).forEach((_, index) => {
-      loadingManager.markLoaded(`compound-${index}`);
-    });
-    
     console.log('✅ Critical images preloaded successfully!');
     
   } catch (error) {
@@ -330,8 +319,7 @@ export const preloadRemainingImages = async (): Promise<void> => {
       }
     });
     
-    // Preload remaining compound images
-    await preloadImages(compoundImages.slice(3));
+    // Compound images are handled separately by MasterPlan component
     
     // Preload panorama images
     await preloadImages(panoramaImages.slice(0, 20));
