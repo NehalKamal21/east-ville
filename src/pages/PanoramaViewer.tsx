@@ -17,6 +17,9 @@ interface Hotspot {
 import { panoramaData } from "../utils/panoData";
 import { villaDetails } from "../utils/villaDetails";
 import LoadingScreen from "../components/LoadingScreen";
+import { validateAndFixPanoramaData, isValidNavigationTarget } from "../utils/panoramaValidation";
+import { testPanoramaData } from "../utils/testPanoramaData";
+import { testPanoramaImages } from "../utils/debugPanorama";
 
 const PanoramaViewer: React.FC = () => {
   const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
@@ -44,6 +47,7 @@ const PanoramaViewer: React.FC = () => {
   const [customPanoramaConfig, setCustomPanoramaConfig] = useState<any>(null);
   const [isFromMasterPlan, setIsFromMasterPlan] = useState(false);
   const [selectedFloor, setSelectedFloor] = useState(defaultSelected);
+  const [viewerKey, setViewerKey] = useState(0);
 
   const viewerRef = useRef<any>(null);
 
@@ -81,11 +85,20 @@ const PanoramaViewer: React.FC = () => {
     }
   }, []);
 
-  // Memoize panorama data
+  // Memoize panorama data with validation
   const panoramaDataForCluster = useMemo(() => {
     if (!clusterName) return {};
     const floorKey = selectedFloor.key as keyof typeof panoramaData[typeof clusterName];
-    return panoramaData[clusterName]?.[floorKey] || {};
+    const rawData = panoramaData[clusterName]?.[floorKey] || {};
+    
+    // Validate and fix the panorama data
+    const validatedData = validateAndFixPanoramaData({
+      [clusterName]: {
+        [floorKey]: rawData
+      }
+    });
+    
+    return validatedData[clusterName]?.[floorKey] || {};
   }, [clusterName, selectedFloor.key]);
 
   // Get the specific panorama image based on configuration
@@ -113,23 +126,78 @@ const PanoramaViewer: React.FC = () => {
     return null;
   }, [customPanoramaConfig]);
 
+  // Get the current panorama image source
+  const getCurrentPanoramaImage = useMemo(() => {
+    // If we have a custom panorama config (from 360 icons), use that
+    if (getPanoramaImage) {
+      console.log('Using custom panorama image:', getPanoramaImage);
+      return getPanoramaImage;
+    }
+    
+    // Otherwise, get the image from the selected panorama data
+    if (selectedPanorama && currentLocation) {
+      const locationData = selectedPanorama[currentLocation];
+      if (locationData?.imgName) {
+        console.log('Using panorama data image:', locationData.imgName, 'for location:', currentLocation);
+        return locationData.imgName;
+      }
+    }
+    
+    console.warn('No panorama image found for location:', currentLocation);
+    console.log('Selected panorama data:', selectedPanorama);
+    console.log('Current location:', currentLocation);
+    // Fallback
+    return '';
+  }, [getPanoramaImage, selectedPanorama, currentLocation]);
+
   const handleHotspotClick = useCallback((targetLocation: string) => {
+    console.log('Navigating to:', targetLocation);
+    
+    // Validate that the target location exists
+    if (!selectedPanorama || !selectedPanorama[targetLocation]) {
+      console.error('Target location not found:', targetLocation);
+      return;
+    }
+    
+    // Additional validation using the utility function
+    if (!isValidNavigationTarget(panoramaData, clusterName || '', selectedFloor.key, targetLocation)) {
+      console.error('Invalid navigation target:', targetLocation);
+      return;
+    }
+    
     setLoading(true);
     // Hide floor plan when changing location
     setShowFloorPlan(false);
-    setTimeout(() => {
-      setCurrentLocation(targetLocation);
-    }, 100);
+    
+    // Destroy current viewer if it exists
+    if (viewerRef.current) {
+      try {
+        viewerRef.current.destroy();
+        viewerRef.current = null;
+      } catch (error) {
+        console.warn('Error destroying viewer:', error);
+      }
+    }
+    
+    // Update current location
+    setCurrentLocation(targetLocation);
+    
+    // Force a re-render by incrementing the viewer key
+    setViewerKey(prev => prev + 1);
+    
+    // Force a re-render of the panorama viewer
     setTimeout(() => {
       setLoading(false);
-    }, 900);
-  }, []);
+    }, 1200);
+  }, [selectedPanorama, panoramaData, clusterName, selectedFloor.key]);
 
   const onReady = useCallback((viewer: any) => {
+    console.log('Panorama viewer ready, current location:', currentLocation, 'image:', getCurrentPanoramaImage);
     viewerRef.current = viewer;
     const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
     const hotspots = selectedPanorama[currentLocation]?.hotspots ?? [];
+    console.log('Available hotspots:', hotspots);
 
     const markers = hotspots
       .filter(
@@ -153,24 +221,79 @@ const PanoramaViewer: React.FC = () => {
         size: { width: 32, height: 32 },
       }));
 
+    console.log('Setting markers:', markers);
     markersPlugin.setMarkers(markers);
 
+    // Remove existing event listeners to prevent duplicates
+    markersPlugin.removeEventListener("select-marker");
+    
     markersPlugin.addEventListener("select-marker", (e: any) => {
       const target = e.marker?.data?.target;
+      console.log('Marker clicked, target:', target);
       if (target) handleHotspotClick(target);
     });
-  }, [selectedPanorama, currentLocation, handleHotspotClick]);
+  }, [selectedPanorama, currentLocation, handleHotspotClick, getCurrentPanoramaImage]);
 
   useEffect(() => {
+    console.log('Setting selected panorama data:', panoramaDataForCluster);
     setSelectedPanorama(panoramaDataForCluster);
+    // Force a re-render when panorama data changes
+    setViewerKey(prev => prev + 1);
   }, [panoramaDataForCluster]);
 
-  // Preload next image
+  // Debug current location changes
   useEffect(() => {
-    const next = selectedPanorama && selectedPanorama[currentLocation]?.hotspots?.[0]?.target;
-    if (next && selectedPanorama) {
-      const preloadImg = new Image();
-      preloadImg.src = selectedPanorama[next].imgName;
+    console.log('Current location changed to:', currentLocation);
+    console.log('Available locations:', selectedPanorama ? Object.keys(selectedPanorama) : []);
+  }, [currentLocation, selectedPanorama]);
+
+  // Debug viewer key changes
+  useEffect(() => {
+    console.log('Viewer key changed to:', viewerKey);
+  }, [viewerKey]);
+
+
+
+  // Run panorama data test on component mount
+  useEffect(() => {
+    testPanoramaData();
+    testPanoramaImages();
+  }, []);
+
+  // Cleanup viewer when component unmounts or image source changes
+  useEffect(() => {
+    return () => {
+      if (viewerRef.current) {
+        try {
+          viewerRef.current.destroy();
+        } catch (error) {
+          console.warn('Error destroying viewer:', error);
+        }
+        viewerRef.current = null;
+      }
+    };
+  }, [getCurrentPanoramaImage]);
+
+  // Preload adjacent panorama images for smoother navigation
+  useEffect(() => {
+    if (selectedPanorama && currentLocation) {
+      const currentLocationData = selectedPanorama[currentLocation];
+      if (currentLocationData?.hotspots) {
+        // Preload all adjacent locations
+        const adjacentLocations = currentLocationData.hotspots.map((h: Hotspot) => h.target);
+        console.log('Preloading adjacent locations:', adjacentLocations);
+        
+        adjacentLocations.forEach((target: string) => {
+          const targetData = selectedPanorama[target];
+          if (targetData?.imgName) {
+            console.log('Preloading image:', targetData.imgName);
+            const preloadImg = new Image();
+            preloadImg.onload = () => console.log('Preloaded:', targetData.imgName);
+            preloadImg.onerror = () => console.error('Failed to preload:', targetData.imgName);
+            preloadImg.src = targetData.imgName;
+          }
+        });
+      }
     }
   }, [currentLocation, selectedPanorama]);
 
@@ -219,6 +342,8 @@ const PanoramaViewer: React.FC = () => {
     setCurrentLocation("location1");
     // Hide floor plan when changing floors
     setShowFloorPlan(false);
+    // Force a re-render by incrementing the viewer key
+    setViewerKey(prev => prev + 1);
     // Navigate to the new floor panorama
     if (clusterId) {
       navigate(`/clusterView/${clusterId}/${floor.key}/image`);
@@ -267,17 +392,54 @@ const PanoramaViewer: React.FC = () => {
           transition: "opacity 0.6s ease-in-out",
         }}
       >
-        <ReactPhotoSphereViewer
-          key={currentLocation}
-          src={getPanoramaImage || (selectedPanorama && selectedPanorama[currentLocation]?.imgName)}
-          height="100vh"
-          width="100%"
-          plugins={[[MarkersPlugin, {}]]}
-          onReady={onReady}
-          defaultYaw={0}
-          defaultPitch={0}
-          defaultZoomLvl={1}
-        />
+        {getCurrentPanoramaImage && !loading ? (
+          <>
+            {/* Debug info */}
+            {process.env.NODE_ENV === 'development' && (
+              <div
+                className="position-absolute top-0 end-0 p-2"
+                style={{ background: "rgba(0,0,0,0.8)", zIndex: 1000, color: "white", fontSize: "10px" }}
+              >
+                <div>Key: {`${currentLocation}-${getCurrentPanoramaImage}-${viewerKey}`}</div>
+                <div>Image: {getCurrentPanoramaImage}</div>
+              </div>
+            )}
+            <ReactPhotoSphereViewer
+              key={`${currentLocation}-${getCurrentPanoramaImage}-${viewerKey}`}
+              src={getCurrentPanoramaImage}
+              height="100vh"
+              width="100%"
+              plugins={[[MarkersPlugin, {}]]}
+              onReady={onReady}
+              defaultYaw={0}
+              defaultPitch={0}
+              defaultZoomLvl={1}
+            />
+          </>
+        ) : (
+          <div className="d-flex align-items-center justify-content-center h-100 bg-dark text-white">
+            <div className="text-center">
+              <h4>No panorama image available</h4>
+              <p>Location: {currentLocation}</p>
+              <p>Cluster: {clusterName}</p>
+              <p>Floor: {selectedFloor.key}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Debug panel - only show in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <div
+            className="position-absolute top-0 start-0 p-2"
+            style={{ background: "rgba(0,0,0,0.8)", zIndex: 1000, color: "white", fontSize: "12px" }}
+          >
+            <div>Location: {currentLocation}</div>
+            <div>Image: {getCurrentPanoramaImage}</div>
+            <div>Cluster: {clusterName}</div>
+            <div>Floor: {selectedFloor.key}</div>
+            <div>Rooms: {rooms.length}</div>
+          </div>
+        )}
 
         {/* Only show room buttons if not coming from master plan */}
         {!isFromMasterPlan && (
@@ -289,7 +451,10 @@ const PanoramaViewer: React.FC = () => {
               <button
                 key={room.id || `room-${index}`}
                 className="btn btn-light btn-sm"
-                onClick={() => handleHotspotClick(room.target)}
+                onClick={() => {
+                  console.log('Room button clicked:', room.name, 'target:', room.target);
+                  handleHotspotClick(room.target);
+                }}
               >
                 {room.name}
               </button>

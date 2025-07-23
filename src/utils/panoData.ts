@@ -152,7 +152,7 @@ export const panoramaData = {
                 "name": "Cluster B - Ground Floor - Location 1",
                 "imgName": "/panos/ClusterB/groundFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location1" }
+                    { "pitch": 0, "yaw": 90, "target": "location2" }
                 ]
             },
             "location2": {

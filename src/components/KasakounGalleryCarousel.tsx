@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Carousel, Tabs, Tab } from "react-bootstrap";
+import ProgressiveImage from './ProgressiveImage';
+import { preloadImages } from '../utils/imageOptimization';
 
 interface KasakounGalleryCarouselProps {
     show: boolean;
@@ -15,6 +17,26 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = React.me
     tabTitles = ["1 Bed Room", "2 Bed Room", "Corridor", "Entrance", "Kasakoun", "Studio"],
 }) => {
     const [activeTab, setActiveTab] = useState<string>("0");
+    const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+
+    // Preload images for the active tab when modal opens
+    useEffect(() => {
+        if (show && tabImages.length > 0) {
+            const activeTabIndex = parseInt(activeTab);
+            const activeTabImages = tabImages[activeTabIndex] || [];
+            
+            const preloadTabImages = async () => {
+                try {
+                    await preloadImages(activeTabImages);
+                    setPreloadedImages(new Set(activeTabImages));
+                } catch (error) {
+                    console.warn('Failed to preload some tab images:', error);
+                }
+            };
+            preloadTabImages();
+        }
+    }, [show, activeTab, tabImages]);
+
     return (
         <Modal
             show={show}
@@ -39,11 +61,11 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = React.me
                             <Carousel fade className="kasakoun-carousel">
                                 {images.map((img, imgIdx) => (
                                     <Carousel.Item key={imgIdx}>
-                                        <img
+                                        <ProgressiveImage
                                             src={img}
                                             alt={`Tab ${idx + 1} Slide ${imgIdx + 1}`}
                                             className="d-block mx-auto kasakoun-carousel-img"
-                                            loading="lazy"
+                                            priority={imgIdx === 0} // First image in each tab loads with priority
                                         />
                                     </Carousel.Item>
                                 ))}

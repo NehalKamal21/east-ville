@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "npm run setup-assets && vite",
+    "build": "npm run setup-assets && tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup-assets": "mkdir -p public/assets/masterplan && cp -r src/assets/masterplan/* public/assets/masterplan/ 2>/dev/null || true"
   },
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.13.2",

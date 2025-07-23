@@ -18,6 +18,8 @@ import img11 from '../assets/11.png';
 import MasterPlanFilter from '../components/MasterPlanFilter';
 import VillaSearchFromClusters from '../components/VillaSearchFromClusters';
 import KasakounGalleryCarousel from '../components/KasakounGalleryCarousel';
+import { preloadImages } from '../utils/imageOptimization';
+import { loadingManager } from '../utils/loadingManager';
 
 
 const MasterPlan: React.FC = () => {
@@ -32,6 +34,38 @@ const MasterPlan: React.FC = () => {
     const compoundImages = [
         img1, img10, img11, img2, img3, img4, img5, img6, img7, img8, img9
     ];
+
+    // Register and preload critical images on component mount
+    useEffect(() => {
+        const preloadCriticalImages = async () => {
+            try {
+                // Register critical images with loading manager
+                compoundImages.forEach((img, index) => {
+                    loadingManager.registerItem(
+                        `compound-image-${index}`,
+                        img,
+                        'image',
+                        index < 3 ? 'critical' : 'high'
+                    );
+                });
+
+                // Preload the first few compound images for better UX
+                const criticalImages = compoundImages.slice(0, 3);
+                await preloadImages(criticalImages);
+                
+                // Mark critical images as loaded
+                criticalImages.forEach((_, index) => {
+                    loadingManager.markLoaded(`compound-image-${index}`);
+                });
+                
+                console.log('Critical images preloaded successfully');
+            } catch (error) {
+                console.warn('Failed to preload some critical images:', error);
+            }
+        };
+        
+        preloadCriticalImages();
+    }, []);
 
     // Images for Kasakoun Gallery tabs from public/KASAKOUN
     const kasakounTabImages = [
@@ -116,11 +150,23 @@ const MasterPlan: React.FC = () => {
             fetchCluster();
         }
     }, []);
+
+    // Add/remove body class for mobile scrolling fix
+    useEffect(() => {
+        const isMobile = window.innerWidth <= 1023;
+        if (isMobile) {
+            document.body.classList.add('master-plan-body');
+        }
+        
+        return () => {
+            document.body.classList.remove('master-plan-body');
+        };
+    }, []);
     const [showCarousel, setShowCarousel] = useState(false);
     const [showKasakoun, setShowKasakoun] = useState(false);
 
     return (
-        <div className="master-plan-container" style={{ position: "relative", height: "100vh" }}>
+        <div className="master-plan-container master-plan-page">
             {/* Floating Gallery Buttons - top right */}
             <div className="floating-gallery-buttons">
                 <Button
