@@ -605,3 +605,119 @@ img {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* Master Plan Background Loading Styles */
+.master-plan-background-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.master-plan-background-loading .loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: #333;
+}
+
+.master-plan-background-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(103, 177, 164, 0.3);
+  border-top: 4px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.master-plan-background-loading p {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.master-plan-background-error {
+  position: relative;
+}
+
+.master-plan-background-error .error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #666;
+}
+
+.master-plan-background-error p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.master-plan-background-error button {
+  padding: 10px 20px;
+  background-color: #67b1a4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.master-plan-background-error button:hover {
+  background-color: #5a9a8e;
+}
+
+.master-plan-background-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.master-plan-background {
+  display: block;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Ensure smooth image rendering */
+.master-plan-background,
+.progressive-image-main {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Master Plan SVG Loading Styles */
+.master-plan-svg-loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3eae4;
+}
+
+.master-plan-svg-loading .loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: #333;
+}
+
+.master-plan-svg-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(103, 177, 164, 0.3);
+  border-top: 4px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.master-plan-svg-loading p {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}

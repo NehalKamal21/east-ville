@@ -67,6 +67,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
     const [hovered, setHovered] = useState<string | null>(null);
     const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const [backgroundLoaded, setBackgroundLoaded] = useState(false);
 
     // Detect mobile/tablet devices
     useEffect(() => {
@@ -78,6 +79,11 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
         window.addEventListener('resize', checkScreenSize);
 
         return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
+
+    // Background is now handled by MasterPlanBackground component
+    useEffect(() => {
+        setBackgroundLoaded(true);
     }, []);
 
     const handleClick = (event: React.MouseEvent<SVGImageElement, MouseEvent>) => {
@@ -174,6 +180,18 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             console.log('360 icon clicked with ID:', iconId);
         }
     };
+
+    // Show loading state until background is loaded
+    if (!backgroundLoaded) {
+        return (
+            <div className="master-plan-svg-loading">
+                <div className="loading-spinner">
+                    <div className="spinner"></div>
+                    <p>Loading Master Plan...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <svg

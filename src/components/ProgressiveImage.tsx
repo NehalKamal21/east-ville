@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { performanceMonitor, measureImageLoad } from '../utils/performanceMonitor';
 import { loadingManager } from '../utils/loadingManager';
+import { preloadImage } from '../utils/comprehensiveImagePreloader';
 
 interface ProgressiveImageProps {
   src: string;
@@ -35,36 +36,49 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
       loadingManager.registerItem(itemId, src, 'image', 'critical');
     }
 
-    if (priority) {
-      // Load immediately for priority images
-      setCurrentSrc(src);
-    } else {
-      // Use intersection observer for lazy loading
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && imgRef.current) {
-              setCurrentSrc(src);
-              observer.unobserve(entry.target);
+    const loadImage = async () => {
+      try {
+        // Preload the image completely before displaying
+        await preloadImage(src);
+        
+        if (priority) {
+          // For priority images, set source immediately after preloading
+          setCurrentSrc(src);
+        } else {
+          // For non-priority images, use intersection observer
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && imgRef.current) {
+                  setCurrentSrc(src);
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              rootMargin: '200px', // Start loading 200px before the image comes into view
+              threshold: 0.1,
             }
-          });
-        },
-        {
-          rootMargin: '200px', // Start loading 200px before the image comes into view
-          threshold: 0.1,
-        }
-      );
+          );
 
-      if (imgRef.current) {
-        observer.observe(imgRef.current);
+          if (imgRef.current) {
+            observer.observe(imgRef.current);
+          }
+
+          return () => {
+            if (imgRef.current) {
+              observer.unobserve(imgRef.current);
+            }
+          };
+        }
+      } catch (error) {
+        console.warn(`Failed to preload image: ${src}`, error);
+        // Fallback to direct loading if preloading fails
+        setCurrentSrc(src);
       }
+    };
 
-      return () => {
-        if (imgRef.current) {
-          observer.unobserve(imgRef.current);
-        }
-      };
-    }
+    loadImage();
   }, [src, priority]);
 
   const handleLoad = () => {

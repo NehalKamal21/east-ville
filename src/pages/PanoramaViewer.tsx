@@ -20,6 +20,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import { validateAndFixPanoramaData, isValidNavigationTarget } from "../utils/panoramaValidation";
 import { testPanoramaData } from "../utils/testPanoramaData";
 import { testPanoramaImages } from "../utils/debugPanorama";
+import { useImagePreloader } from "../utils/useImagePreloader";
 
 const PanoramaViewer: React.FC = () => {
   const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
@@ -150,7 +151,26 @@ const PanoramaViewer: React.FC = () => {
     return '';
   }, [getPanoramaImage, selectedPanorama, currentLocation]);
 
-  const handleHotspotClick = useCallback((targetLocation: string) => {
+  // Use the custom image preloader hook
+  const { isPreloaded, isPreloading, error } = useImagePreloader(getCurrentPanoramaImage);
+
+  // Preload image function
+  const preloadImage = useCallback((imageSrc: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        console.log(`✅ Image preloaded successfully: ${imageSrc}`);
+        resolve();
+      };
+      img.onerror = () => {
+        console.error(`❌ Failed to preload image: ${imageSrc}`);
+        reject(new Error(`Failed to preload: ${imageSrc}`));
+      };
+      img.src = imageSrc;
+    });
+  }, []);
+
+  const handleHotspotClick = useCallback(async (targetLocation: string) => {
     console.log('Navigating to:', targetLocation);
     
     // Validate that the target location exists
@@ -189,7 +209,7 @@ const PanoramaViewer: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1200);
-  }, [selectedPanorama, panoramaData, clusterName, selectedFloor.key]);
+  }, [selectedPanorama, panoramaData, clusterName, selectedFloor.key, preloadImage]);
 
   const onReady = useCallback((viewer: any) => {
     console.log('Panorama viewer ready, current location:', currentLocation, 'image:', getCurrentPanoramaImage);
@@ -254,6 +274,8 @@ const PanoramaViewer: React.FC = () => {
 
 
 
+
+
   // Run panorama data test on component mount
   useEffect(() => {
     testPanoramaData();
@@ -286,16 +308,15 @@ const PanoramaViewer: React.FC = () => {
         adjacentLocations.forEach((target: string) => {
           const targetData = selectedPanorama[target];
           if (targetData?.imgName) {
-            console.log('Preloading image:', targetData.imgName);
-            const preloadImg = new Image();
-            preloadImg.onload = () => console.log('Preloaded:', targetData.imgName);
-            preloadImg.onerror = () => console.error('Failed to preload:', targetData.imgName);
-            preloadImg.src = targetData.imgName;
+            console.log('Preloading adjacent image:', targetData.imgName);
+            preloadImage(targetData.imgName)
+              .then(() => console.log('✅ Preloaded adjacent image:', targetData.imgName))
+              .catch(() => console.warn('⚠️ Failed to preload adjacent image:', targetData.imgName));
           }
         });
       }
     }
-  }, [currentLocation, selectedPanorama]);
+  }, [currentLocation, selectedPanorama, preloadImage]);
 
   useEffect(() => {
     // Get rooms for current floor from villaDetails
@@ -380,9 +401,16 @@ const PanoramaViewer: React.FC = () => {
         </div>
       </div>
       }
-      {loading && (
+      {(loading || !isPreloaded) && (
         <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 d-flex align-items-center justify-content-center z-3">
-          <LoadingScreen />
+          <div className="text-center text-white">
+            <div className="spinner-border mb-3" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div>
+              {!isPreloaded ? 'Preloading panorama image...' : 'Loading panorama viewer...'}
+            </div>
+          </div>
         </div>
       )}
 
@@ -392,7 +420,7 @@ const PanoramaViewer: React.FC = () => {
           transition: "opacity 0.6s ease-in-out",
         }}
       >
-        {getCurrentPanoramaImage && !loading ? (
+        {getCurrentPanoramaImage && !loading && isPreloaded ? (
           <>
             {/* Debug info */}
             {process.env.NODE_ENV === 'development' && (
@@ -402,6 +430,7 @@ const PanoramaViewer: React.FC = () => {
               >
                 <div>Key: {`${currentLocation}-${getCurrentPanoramaImage}-${viewerKey}`}</div>
                 <div>Image: {getCurrentPanoramaImage}</div>
+                <div>Preloaded: {isPreloaded ? 'Yes' : 'No'}</div>
               </div>
             )}
             <ReactPhotoSphereViewer

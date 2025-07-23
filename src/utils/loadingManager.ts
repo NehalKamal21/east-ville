@@ -1,4 +1,10 @@
 // Loading Manager for tracking critical image loading
+import { 
+  registerAllImages, 
+  preloadAllCriticalImages, 
+  preloadRemainingImages 
+} from './comprehensiveImagePreloader';
+import { preloadCriticalImagesOptimized } from './universalImageOptimizer';
 
 export interface LoadingItem {
   id: string;
@@ -158,35 +164,23 @@ class LoadingManager {
     this.preloadCriticalImages();
   }
 
-  // Preload critical images
+  // Preload critical images using comprehensive preloader
   private async preloadCriticalImages() {
-    const criticalImages = [
-      '/ajna-logo.jpg',
-      '/icons/360-degrees-icon.png',
-      '/map-pin-icon.png',
-      '/assets/masterplan/image_1.png', // Master plan background
-    ];
-
-    const promises = criticalImages.map(src => {
-      return new Promise<void>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          console.log(`✅ Loaded critical image: ${src}`);
-          this.markLoaded(this.getItemIdBySrc(src));
-          resolve();
-        };
-        img.onerror = () => {
-          console.warn(`⚠️ Failed to load critical image: ${src}`);
-          this.markError(this.getItemIdBySrc(src));
-          // Don't reject, just mark as error and continue
-          resolve();
-        };
-        img.src = src;
-      });
-    });
-
     try {
-      await Promise.allSettled(promises);
+      // Register all images with loading manager
+      registerAllImages();
+      
+      // Preload critical images with optimization
+      await preloadCriticalImagesOptimized();
+      
+      // Preload all critical images
+      await preloadAllCriticalImages();
+      
+      // Start preloading remaining images in background
+      preloadRemainingImages().catch((error: Error) => {
+        console.warn('Background image preloading failed:', error);
+      });
+      
       console.log('🎉 Critical images preload completed');
     } catch (error) {
       console.warn('Some critical images failed to load:', error);

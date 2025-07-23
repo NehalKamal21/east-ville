@@ -20,6 +20,12 @@ import VillaSearchFromClusters from '../components/VillaSearchFromClusters';
 import KasakounGalleryCarousel from '../components/KasakounGalleryCarousel';
 import { preloadImages } from '../utils/imageOptimization';
 import { loadingManager } from '../utils/loadingManager';
+import { 
+  masterPlanImages, 
+  compoundImages, 
+  preloadAllCriticalImages 
+} from '../utils/comprehensiveImagePreloader';
+import MasterPlanBackground from '../components/MasterPlanBackground';
 
 
 const MasterPlan: React.FC = () => {
@@ -39,7 +45,17 @@ const MasterPlan: React.FC = () => {
     useEffect(() => {
         const preloadCriticalImages = async () => {
             try {
-                // Register critical images with loading manager
+                // Register master plan images with loading manager
+                masterPlanImages.forEach((img, index) => {
+                    loadingManager.registerItem(
+                        `masterplan-${index}`,
+                        img,
+                        'image',
+                        index === 0 ? 'critical' : index < 10 ? 'high' : 'normal'
+                    );
+                });
+
+                // Register compound images with loading manager
                 compoundImages.forEach((img, index) => {
                     loadingManager.registerItem(
                         `compound-image-${index}`,
@@ -49,16 +65,10 @@ const MasterPlan: React.FC = () => {
                     );
                 });
 
-                // Preload the first few compound images for better UX
-                const criticalImages = compoundImages.slice(0, 3);
-                await preloadImages(criticalImages);
+                // Preload critical master plan and compound images
+                await preloadAllCriticalImages();
                 
-                // Mark critical images as loaded
-                criticalImages.forEach((_, index) => {
-                    loadingManager.markLoaded(`compound-image-${index}`);
-                });
-                
-                console.log('Critical images preloaded successfully');
+                console.log('Master plan and compound images preloaded successfully');
             } catch (error) {
                 console.warn('Failed to preload some critical images:', error);
             }
@@ -197,7 +207,9 @@ const MasterPlan: React.FC = () => {
                 tabImages={kasakounTabImages}
                 tabTitles={kasakounTabTitles}
             />
-            <MasterPlanSvg points={clusters} selectedArea={selectedArea} selectedType={selectedType} />
+            <MasterPlanBackground>
+                <MasterPlanSvg points={clusters} selectedArea={selectedArea} selectedType={selectedType} />
+            </MasterPlanBackground>
             <MasterPlanFilter
                 onTypeChange={handleTypeChange}
                 onAreaChange={handleAreaChange}
