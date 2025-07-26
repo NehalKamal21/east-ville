@@ -2,7 +2,7 @@
 
 import { loadingManager } from './loadingManager';
 
-// All master plan images (imported as assets)
+// All master plan images (public assets)
 export const masterPlanImages = [
   '/assets/masterplan/image_1.png',
   '/assets/masterplan/image_2.png',
@@ -71,22 +71,6 @@ export const criticalImages = [
   '/eastville.png',
   '/floorPlan.png',
   '/FRONT.png',
-];
-
-// Compound images (imported assets) - these will be imported as variables
-// The actual paths are handled by the bundler when imported
-export const compoundImages = [
-  '/assets/01.png',
-  '/assets/02.png',
-  '/assets/03.png',
-  '/assets/04.png',
-  '/assets/05.png',
-  '/assets/06.png',
-  '/assets/07.png',
-  '/assets/08.png',
-  '/assets/09.png',
-  '/assets/10.png',
-  '/assets/11.png',
 ];
 
 // Kasakoun gallery images
@@ -165,10 +149,9 @@ export const panoramaImages = [
   '/panos/ClusterB/Roof/01.jpg',
   '/panos/ClusterB/Roof/02.jpg',
   // Cluster TW
-  '/panos/ClusterTW/groundFloor/01.jpg',
-  '/panos/ClusterTW/groundFloor/02.jpg',
-  '/panos/ClusterTW/groundFloor/03.jpg',
-  '/panos/ClusterTW/groundFloor/04.jpg',
+      '/panos/ClusterTW/groundFloor/01.jpg',
+    '/panos/ClusterTW/groundFloor/02.jpg',
+    '/panos/ClusterTW/groundFloor/04.jpg',
   '/panos/ClusterTW/firstFloor/01.jpg',
   '/panos/ClusterTW/firstFloor/02.jpg',
   '/panos/ClusterTW/firstFloor/03.jpg',
@@ -260,9 +243,6 @@ export const registerAllImages = () => {
     loadingManager.registerItem(`masterplan-${index + 1}`, src, 'image', 'high');
   });
   
-  // Compound images are handled separately by MasterPlan component
-  // since they are imported as variables
-  
   // Register first few panorama images as high priority
   panoramaImages.slice(0, 10).forEach((src, index) => {
     loadingManager.registerItem(`panorama-${index}`, src, 'image', 'high');
@@ -318,8 +298,6 @@ export const preloadRemainingImages = async (): Promise<void> => {
         console.log(`Master plan images: ${loaded}/${total}`);
       }
     });
-    
-    // Compound images are handled separately by MasterPlan component
     
     // Preload panorama images
     await preloadImages(panoramaImages.slice(0, 20));

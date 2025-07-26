@@ -13,7 +13,7 @@ const filterOptions = [
 ];
 
 const MarkerFilter: React.FC<MarkerFilterProps> = ({ onFilterChange }) => {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(filterOptions.map((option) => option.value));
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   const handleCheckboxChange = (type: string) => {
     setSelectedTypes((prev) => {

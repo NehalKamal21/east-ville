@@ -28,7 +28,6 @@ export const testPanoramaImages = async () => {
     '/panos/ClusterB/groundFloor/04.jpg',
     '/panos/ClusterTW/groundFloor/01.jpg',
     '/panos/ClusterTW/groundFloor/02.jpg',
-    '/panos/ClusterTW/groundFloor/03.jpg',
     '/panos/ClusterTW/groundFloor/04.jpg',
   ];
   

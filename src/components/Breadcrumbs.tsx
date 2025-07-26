@@ -11,7 +11,7 @@ const BreadcrumbNav: React.FC = () => {
   const crumbs: { label: string; icon?: JSX.Element; to?: string }[] = [];
 
   // Check if we're coming from master plan (360 icon navigation)
-  const isFromMasterPlan = pathname === "/exterior";
+  const isFromMasterPlan = pathname.startsWith("/exterior");
 
   crumbs.push({
     label: '',
@@ -24,7 +24,13 @@ const BreadcrumbNav: React.FC = () => {
   }
 
   if (segments[0] === "exterior") {
-    crumbs.push({ label: "Exterior Panorama" });
+    if (segments[1]) {
+      // Has iconId parameter
+      crumbs.push({ label: `Exterior Panorama - ${segments[1]}` });
+    } else {
+      // No iconId parameter (fallback)
+      crumbs.push({ label: "Exterior Panorama" });
+    }
   }
 
   if (segments[0] === "clusterView") {

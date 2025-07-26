@@ -6,9 +6,16 @@
   "scripts": {
     "dev": "npm run setup-assets && vite",
     "build": "npm run setup-assets && tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "setup-assets": "mkdir -p public/assets/masterplan && cp -r src/assets/masterplan/* public/assets/masterplan/ 2>/dev/null || true"
+    "setup-assets": "mkdir -p public/assets/masterplan && cp -r src/assets/masterplan/* public/assets/masterplan/ 2>/dev/null || true",
+    "img:convert": "node scripts/convert-images.cjs",
+    "img:responsive": "node scripts/generate-responsive-images.cjs",
+    "img:compress": "node scripts/compress-images.cjs",
+    "img:all": "npm run img:convert && npm run img:responsive && npm run img:compress",
+    "img:optimize": "npm run img:all && npm run svgo",
+    "svgo": "npx svgo -f src/SVGs --recursive --config=svgo.config.js",
+    "test:images": "node scripts/test-image-loading.js"
   },
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.13.2",
@@ -56,7 +63,8 @@
     "typescript-eslint": "^8.26.1",
     "vite": "^6.0.0",
     "vite-plugin-pwa": "^0.21.1",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "sharp": "^0.33.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

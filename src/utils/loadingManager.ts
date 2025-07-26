@@ -5,6 +5,7 @@ import {
   preloadRemainingImages 
 } from './comprehensiveImagePreloader';
 import { preloadCriticalImagesOptimized } from './universalImageOptimizer';
+import img01 from '../assets/masterplan/image_1.png';
 
 export interface LoadingItem {
   id: string;
@@ -155,7 +156,7 @@ class LoadingManager {
   // Register critical images
   private registerCriticalImages() {
     // Master plan background and key images
-    this.registerItem('master-plan-bg', '/assets/masterplan/image_1.png', 'image', 'critical');
+    this.registerItem('master-plan-bg', img01, 'image', 'critical');
     this.registerItem('ajna-logo', '/ajna-logo.jpg', 'image', 'critical');
     this.registerItem('360-icon', '/icons/360-degrees-icon.png', 'image', 'critical');
     this.registerItem('map-pin', '/map-pin-icon.png', 'image', 'critical');

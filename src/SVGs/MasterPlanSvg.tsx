@@ -175,7 +175,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
 
             // Navigate to exterior panorama viewer (from master plan)
-            navigate('/exterior');
+            navigate(`/exterior/${iconId}`);
         } else {
             console.log('360 icon clicked with ID:', iconId);
         }

@@ -1,83 +1,121 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Carousel, Tabs, Tab } from "react-bootstrap";
-import ProgressiveImage from './ProgressiveImage';
-import { preloadImages } from '../utils/imageOptimization';
+import React, { useState, useEffect } from 'react';
+import { Modal, Carousel, Tabs, Tab } from 'react-bootstrap';
+import ResponsiveImage from './ResponsiveImage';
 
 interface KasakounGalleryCarouselProps {
-    show: boolean;
-    onClose: () => void;
-    tabImages: string[][]; // Array of image arrays, one per tab
-    tabTitles?: string[]; // Optional: titles for each tab
+  show: boolean;
+  onClose: () => void;
+  tabImages: string[][]; // Array of image arrays, one per tab
+  tabTitles?: string[]; // Optional: titles for each tab
+  alt?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  interval?: number;
+  indicators?: boolean;
+  controls?: boolean;
+  fade?: boolean;
+  pause?: 'hover' | false;
+  onSelect?: (index: number) => void;
 }
 
-const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = React.memo(({
-    show,
-    onClose,
-    tabImages,
-    tabTitles = ["1 Bed Room", "2 Bed Room", "Corridor", "Entrance", "Kasakoun", "Studio"],
+const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = ({
+  show,
+  onClose,
+  tabImages,
+  tabTitles = ["1 Bed Room", "2 Bed Room", "Corridor", "Entrance", "Kasakoun", "Studio"],
+  alt = 'Kasakoun Gallery',
+  className = '',
+  style = {},
+  interval = 4000,
+  indicators = true,
+  controls = true,
+  fade = true,
+  pause = 'hover',
+  onSelect,
 }) => {
-    const [activeTab, setActiveTab] = useState<string>("0");
-    const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<string>("0");
+  const [activeIndex, setActiveIndex] = useState(0);
 
-    // Preload images for the active tab when modal opens
-    useEffect(() => {
-        if (show && tabImages.length > 0) {
-            const activeTabIndex = parseInt(activeTab);
-            const activeTabImages = tabImages[activeTabIndex] || [];
-            
-            const preloadTabImages = async () => {
-                try {
-                    await preloadImages(activeTabImages);
-                    setPreloadedImages(new Set(activeTabImages));
-                } catch (error) {
-                    console.warn('Failed to preload some tab images:', error);
-                }
-            };
-            preloadTabImages();
-        }
-    }, [show, activeTab, tabImages]);
+  const handleSelect = (selectedIndex: number) => {
+    setActiveIndex(selectedIndex);
+    onSelect?.(selectedIndex);
+  };
 
+  const currentTabImages = tabImages[parseInt(activeTab)] || [];
+
+  if (!tabImages || tabImages.length === 0) {
     return (
-        <Modal
-            show={show}
-            onHide={onClose}
-            size="lg"
-            centered
-            dialogClassName="kasakoun-modal"
-        >
-            <Modal.Header closeButton className="border-0 text-white kasakoun-modal-header">
-                <Modal.Title className="text-white">KASAKOUN Gallery</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="kasakoun-modal-body">
-                <Tabs
-                    id="kasakoun-gallery-tabs"
-                    activeKey={activeTab}
-                    onSelect={(k) => setActiveTab(k || "0")}
-                    className="mb-3 justify-content-center kasakoun-tabs"
-                    variant="pills"
-                >
-                    {tabImages.map((images, idx) => (
-                        <Tab eventKey={String(idx)} title={tabTitles[idx] || `Tab ${idx + 1}`} key={idx}>
-                            <Carousel fade className="kasakoun-carousel">
-                                {images.map((img, imgIdx) => (
-                                    <Carousel.Item key={imgIdx}>
-                                        <ProgressiveImage
-                                            src={img}
-                                            alt={`Tab ${idx + 1} Slide ${imgIdx + 1}`}
-                                            className="d-block mx-auto kasakoun-carousel-img"
-                                            priority={imgIdx === 0} // First image in each tab loads with priority
-                                        />
-                                    </Carousel.Item>
-                                ))}
-                            </Carousel>
-                        </Tab>
-                    ))}
-                </Tabs>
-            </Modal.Body>
-        </Modal>
+      <Modal show={show} onHide={onClose} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>KASAKOUN Gallery</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="no-images-message">
+            <p>No gallery images available</p>
+          </div>
+        </Modal.Body>
+      </Modal>
     );
-});
+  }
 
-KasakounGalleryCarousel.displayName = 'KasakounGalleryCarousel';
+  return (
+    <Modal show={show} onHide={onClose} size="lg" centered>
+      <Modal.Header closeButton>
+        <Modal.Title>KASAKOUN Gallery</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Tabs
+          id="kasakoun-gallery-tabs"
+          activeKey={activeTab}
+          onSelect={(k) => {
+            setActiveTab(k || "0");
+            setActiveIndex(0); // Reset to first image when changing tabs
+          }}
+          className="mb-3"
+        >
+          {tabTitles.map((title, index) => (
+            <Tab key={index} eventKey={index.toString()} title={title}>
+              {tabImages[index] && tabImages[index].length > 0 ? (
+                <Carousel
+                  activeIndex={activeIndex}
+                  onSelect={handleSelect}
+                  interval={interval}
+                  indicators={indicators}
+                  controls={controls}
+                  fade={fade}
+                  pause={pause}
+                  className="kasakoun-carousel"
+                >
+                  {tabImages[index].map((image, imageIndex) => (
+                    <Carousel.Item key={imageIndex} className="kasakoun-carousel-item">
+                      <ResponsiveImage
+                        src={image}
+                        alt={`${title} ${imageIndex + 1}`}
+                        className="kasakoun-carousel-image"
+                        priority={imageIndex === 0}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+                        aspectRatio={4/3}
+                        objectFit="cover"
+                        fallbackOnly={true} // Use fallback mode until optimized images are available
+                      />
+                      {/* <Carousel.Caption className="kasakoun-carousel-caption">
+                        <h5>{`${title} ${imageIndex + 1}`}</h5>
+                        <p>{`Gallery Image ${imageIndex + 1} of ${tabImages[index].length}`}</p>
+                      </Carousel.Caption> */}
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+              ) : (
+                <div className="no-images-message">
+                  <p>No images available for {title}</p>
+                </div>
+              )}
+            </Tab>
+          ))}
+        </Tabs>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
 export default KasakounGalleryCarousel; 

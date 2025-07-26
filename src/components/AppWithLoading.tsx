@@ -91,7 +91,8 @@ const AppWithLoading: React.FC = () => {
                 <Routes>
                   <Route path="/login" element={<Login />} />
                   <Route path="/" element={<MasterPlan />} />
-                  <Route path="/exterior" element={<PanoramaViewer />} />
+                  <Route path="/exterior/:iconId" element={<PanoramaViewer />} />
+                  <Route path="/exterior" element={<Navigate to="/" />} />
                   <Route path="/map" element={<GoogleMapWrapper />} />
                   <Route path="/callback" element={<ProtectedRoute element={<Callback />} />} />
                   <Route path="/villa-status" element={<ProtectedRoute element={<UpdateVillaStatus />} />} />

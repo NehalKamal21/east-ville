@@ -1,68 +1,96 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Carousel } from "react-bootstrap";
-import ProgressiveImage from './ProgressiveImage';
-import { preloadImages } from '../utils/imageOptimization';
+import React, { useState, useEffect } from 'react';
+import { Modal, Carousel } from 'react-bootstrap';
+import ResponsiveImage from './ResponsiveImage';
 
 interface CompoundImageCarouselProps {
-    show: boolean;
-    onClose: () => void;
-    images: string[];
+  show: boolean;
+  onClose: () => void;
+  images: string[];
+  alt?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  interval?: number;
+  indicators?: boolean;
+  controls?: boolean;
+  fade?: boolean;
+  pause?: 'hover' | false;
+  onSelect?: (index: number) => void;
 }
 
-const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = React.memo(({
-    show,
-    onClose,
-    images,
+const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = ({
+  show,
+  onClose,
+  images,
+  alt = 'Compound Images',
+  className = '',
+  style = {},
+  interval = 5000,
+  indicators = true,
+  controls = true,
+  fade = true,
+  pause = 'hover',
+  onSelect,
 }) => {
-    const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+  const [activeIndex, setActiveIndex] = useState(0);
 
-    // Preload images when modal opens
-    useEffect(() => {
-        if (show && images.length > 0) {
-            const preloadCarouselImages = async () => {
-                try {
-                    await preloadImages(images);
-                    setPreloadedImages(new Set(images));
-                } catch (error) {
-                    console.warn('Failed to preload some carousel images:', error);
-                }
-            };
-            preloadCarouselImages();
-        }
-    }, [show, images]);
+  const handleSelect = (selectedIndex: number) => {
+    setActiveIndex(selectedIndex);
+    onSelect?.(selectedIndex);
+  };
 
+  if (!images || images.length === 0) {
     return (
-        <Modal
-            show={show}
-            onHide={onClose}
-            size="lg"
-            centered
-            dialogClassName="compound-carousel-modal"
-            contentClassName="bg-dark"
-        >
-            <Modal.Header closeButton className="border-0 text-white">
-                <Modal.Title className="text-white">Compound Gallery</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Carousel fade>
-                    {images.map((img, idx) => (
-                        <Carousel.Item key={idx}>
-                            <ProgressiveImage
-                                src={img}
-                                alt={`Slide ${idx + 1}`}
-                                className="d-block w-100"
-                                style={{ maxHeight: "80vh", objectFit: "cover" }}
-                                priority={idx === 0} // First image loads with priority
-                            />
-                        </Carousel.Item>
-                    ))}
-                </Carousel>
-            </Modal.Body>
-        </Modal>
+      <Modal show={show} onHide={onClose} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Compound Gallery</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="no-images-message">
+            <p>No images available</p>
+          </div>
+        </Modal.Body>
+      </Modal>
     );
-});
+  }
 
-CompoundImageCarousel.displayName = 'CompoundImageCarousel';
+  return (
+    <Modal show={show} onHide={onClose} size="lg" centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Compound Gallery</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Carousel
+          activeIndex={activeIndex}
+          onSelect={handleSelect}
+          interval={interval}
+          indicators={indicators}
+          controls={controls}
+          fade={fade}
+          pause={pause}
+          className="compound-carousel"
+        >
+          {images.map((image, index) => (
+            <Carousel.Item key={index} className="compound-carousel-item">
+              <ResponsiveImage
+                src={image}
+                alt={`${alt} ${index + 1}`}
+                className="compound-carousel-image"
+                priority={index === 0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                aspectRatio={16/9}
+                objectFit="cover"
+                fallbackOnly={true} // Use fallback mode until optimized images are available
+              />
+              {/* <Carousel.Caption className="compound-carousel-caption">
+                <h5>{`${alt} ${index + 1}`}</h5>
+                <p>{`Image ${index + 1} of ${images.length}`}</p>
+              </Carousel.Caption> */}
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
 export default CompoundImageCarousel;
-// Usage example:

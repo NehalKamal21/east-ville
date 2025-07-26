@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { preloadImage } from '../utils/comprehensiveImagePreloader';
 import { loadingManager } from '../utils/loadingManager';
+import ResponsiveImage from './ResponsiveImage';
+import img01 from '../assets/masterplan/image_1.png'; // Imported
 
 interface MasterPlanBackgroundProps {
   className?: string;
@@ -20,28 +22,20 @@ const MasterPlanBackground: React.FC<MasterPlanBackgroundProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isPreloading, setIsPreloading] = useState(true);
-  
-  const backgroundSrc = '/assets/masterplan/image_1.png';
+
+  const backgroundSrc = img01; // Use imported variable
 
   useEffect(() => {
     const preloadBackground = async () => {
       try {
         setIsPreloading(true);
         console.log('🔄 Preloading master plan background...');
-        
-        // Register with loading manager
         loadingManager.registerItem('master-plan-bg', backgroundSrc, 'image', 'critical');
-        
-        // Preload the image completely
         await preloadImage(backgroundSrc);
-        
-        // Mark as loaded in loading manager
         loadingManager.markLoaded('master-plan-bg');
-        
         setIsLoaded(true);
         setIsPreloading(false);
         onLoad?.();
-        
         console.log('✅ Master plan background preloaded successfully');
       } catch (error) {
         console.warn('⚠️ Failed to preload master plan background:', error);
@@ -50,27 +44,18 @@ const MasterPlanBackground: React.FC<MasterPlanBackgroundProps> = ({
         onError?.();
       }
     };
-
     preloadBackground();
   }, [onLoad, onError]);
 
   if (isPreloading) {
     return (
-      <div 
-        className={`master-plan-background-loading ${className}`}
-        style={{
-          width: '100%',
-          height: '100vh',
-          backgroundColor: '#f3eae4',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          ...style,
-        }}
+      <div
+        className={`master-plan-background-container master-plan-background-loading ${className}`}
+        style={style}
       >
         <div className="loading-spinner">
           <div className="spinner"></div>
-          <p>Loading Master Plan...</p>
+          <p>Loading Master Plan Background...</p>
         </div>
       </div>
     );
@@ -78,28 +63,22 @@ const MasterPlanBackground: React.FC<MasterPlanBackgroundProps> = ({
 
   if (hasError) {
     return (
-      <div 
-        className={`master-plan-background-error ${className}`}
-        style={{
-          width: '100%',
-          height: '100vh',
-          backgroundColor: '#f3eae4',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          ...style,
-        }}
+      <div
+        className={`master-plan-background-container master-plan-background-error ${className}`}
+        style={style}
       >
         <div className="error-message">
           <p>Failed to load master plan background</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
+          <button onClick={() => window.location.reload()}>
+            Retry
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div 
+    <div
       className={`master-plan-background-container ${className}`}
       style={{
         position: 'relative',
@@ -108,7 +87,7 @@ const MasterPlanBackground: React.FC<MasterPlanBackgroundProps> = ({
         ...style,
       }}
     >
-      <img
+      <ResponsiveImage
         src={backgroundSrc}
         alt="Master Plan Background"
         className="master-plan-background"
@@ -122,6 +101,11 @@ const MasterPlanBackground: React.FC<MasterPlanBackgroundProps> = ({
           objectPosition: 'center',
           zIndex: 0,
         }}
+        priority={true}
+        sizes="100vw"
+        aspectRatio={16/9}
+        objectFit="cover"
+        fallbackOnly={true} // Use fallback mode until optimized images are available
         onLoad={() => {
           setIsLoaded(true);
           onLoad?.();

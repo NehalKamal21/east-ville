@@ -22,7 +22,6 @@ import { preloadImages } from '../utils/imageOptimization';
 import { loadingManager } from '../utils/loadingManager';
 import { 
   masterPlanImages, 
-  compoundImages, 
   preloadAllCriticalImages 
 } from '../utils/comprehensiveImagePreloader';
 import MasterPlanBackground from '../components/MasterPlanBackground';

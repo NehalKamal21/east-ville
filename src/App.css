@@ -721,3 +721,499 @@ img {
   font-weight: 500;
   margin: 0;
 }
+
+/* Responsive Image Component Styles */
+.responsive-image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.responsive-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.responsive-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.responsive-image-main.loaded {
+  opacity: 1;
+}
+
+.responsive-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+}
+
+.responsive-image-spinner .spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(103, 177, 164, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.responsive-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  color: #666;
+}
+
+.responsive-image-error .error-message {
+  text-align: center;
+  padding: 20px;
+}
+
+.responsive-image-error p {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+}
+
+.responsive-image-error button {
+  padding: 8px 16px;
+  background-color: #67b1a4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.responsive-image-error button:hover {
+  background-color: #5a9a8e;
+}
+
+/* Picture element optimization */
+picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive behavior for different screen sizes */
+@media (max-width: 768px) {
+  .responsive-image-container {
+    aspect-ratio: 16/9;
+  }
+  
+  .responsive-image-spinner .spinner {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-image-container {
+    aspect-ratio: 4/3;
+  }
+  
+  .responsive-image-spinner .spinner {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* High DPI display optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .responsive-image-main {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .responsive-image-main,
+  .responsive-image-placeholder {
+    transition: none;
+  }
+  
+  .responsive-image-spinner .spinner {
+    animation: none;
+  }
+}
+
+/* Simple Image Component Styles */
+.simple-image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.simple-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.simple-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.simple-image-main.loaded {
+  opacity: 1;
+}
+
+.simple-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+}
+
+.simple-image-spinner .spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(103, 177, 164, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.simple-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  color: #666;
+}
+
+.simple-image-error .error-message {
+  text-align: center;
+  padding: 20px;
+}
+
+.simple-image-error p {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+}
+
+.simple-image-error button {
+  padding: 8px 16px;
+  background-color: #67b1a4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.simple-image-error button:hover {
+  background-color: #5a9a8e;
+}
+
+/* Modal Carousel Styles */
+.compound-carousel,
+.kasakoun-carousel {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.compound-carousel-image,
+.kasakoun-carousel-image {
+  max-width: 100%;
+  max-height: 480px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background: #222;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  margin: 0 auto;
+  display: block;
+}
+
+.compound-carousel-caption,
+.kasakoun-carousel-caption {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.no-images-message {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* Kasakoun Tabs Styles */
+.kasakoun-tabs {
+  display: flex;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #222;
+}
+
+.kasakoun-tabs .nav {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.kasakoun-tabs .nav-link {
+  color: #bbb;
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin: 0 0.5rem;
+  transition: color 0.2s;
+  white-space: nowrap;
+  min-width: 120px;
+  text-align: center;
+}
+
+.kasakoun-tabs .nav-link.active {
+  color: #fff;
+  background: #222;
+  border-radius: 8px;
+}
+
+/* Responsive adjustments for modal carousels */
+@media (max-width: 1000px) {
+  .compound-carousel,
+  .kasakoun-carousel {
+    max-width: 99vw;
+  }
+  
+  .compound-carousel-image,
+  .kasakoun-carousel-image {
+    max-height: 300px;
+  }
+  
+  .kasakoun-tabs .nav-link {
+    min-width: 100px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .compound-carousel-image,
+  .kasakoun-carousel-image {
+    max-height: 180px;
+  }
+  
+  .kasakoun-tabs .nav-link {
+    min-width: 90px;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+.kasakoun-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kasakoun-tabs::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.kasakoun-tabs::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 4px;
+}
+
+/* Room Navigation Buttons - Mobile Responsive */
+.room-navigation-btn {
+  transition: all 0.2s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.room-navigation-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.room-navigation-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .room-navigation-btn {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem !important;
+    max-width: 100px !important;
+    min-width: 60px !important;
+  }
+  
+  /* Adjust room navigation container for mobile */
+  .room-navigation-container {
+    bottom: 10px !important;
+    padding: 0.5rem !important;
+    gap: 0.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-navigation-btn {
+    font-size: 0.65rem !important;
+    padding: 0.2rem 0.4rem !important;
+    max-width: 80px !important;
+    min-width: 50px !important;
+  }
+  
+  /* Further reduce spacing on very small screens */
+  .room-navigation-container {
+    bottom: 5px !important;
+    padding: 0.25rem !important;
+    gap: 0.2rem !important;
+  }
+}
+
+/* Ensure buttons don't wrap awkwardly */
+@media (max-width: 576px) {
+  .room-navigation-container {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .room-navigation-btn {
+    flex: 0 0 auto !important;
+    margin: 0.1rem !important;
+  }
+}
+
+/* Touch-friendly button sizing for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .room-navigation-btn {
+    min-height: 36px !important;
+    min-width: 60px !important;
+  }
+}
+
+/* Floor Plan Button - Mobile Responsive */
+.floor-plan-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.floor-plan-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
+}
+
+.floor-plan-btn:active {
+  transform: scale(1.02);
+}
+
+/* Mobile adjustments for floor plan button */
+@media (max-width: 768px) {
+  .floor-plan-btn {
+    bottom: 70px !important;
+    padding: 6px !important;
+  }
+  
+  .floor-plan-btn img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floor-plan-btn {
+    bottom: 60px !important;
+    padding: 4px !important;
+  }
+  
+  .floor-plan-btn img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+/* Floor Plan Modal - Mobile Responsive */
+@media (max-width: 768px) {
+  .floor-plan-modal {
+    width: 90vw !important;
+    max-width: 300px !important;
+    bottom: 100px !important;
+    right: 5vw !important;
+    left: 5vw !important;
+    max-height: 60vh !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floor-plan-modal {
+    width: 95vw !important;
+    max-width: none !important;
+    bottom: 80px !important;
+    right: 2.5vw !important;
+    left: 2.5vw !important;
+    max-height: 50vh !important;
+  }
+}

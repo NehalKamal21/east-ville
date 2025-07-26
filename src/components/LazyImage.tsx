@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ResponsiveImage from './ResponsiveImage';
 
 interface LazyImageProps {
   src: string;
@@ -8,73 +9,101 @@ interface LazyImageProps {
   placeholder?: string;
   onLoad?: () => void;
   onError?: () => void;
+  threshold?: number;
+  rootMargin?: string;
+  sizes?: string;
+  aspectRatio?: number;
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({
   src,
   alt,
-  className,
-  style,
-  placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PC9zdmc+',
+  className = '',
+  style = {},
+  placeholder,
   onLoad,
   onError,
+  threshold = 0.1,
+  rootMargin = '200px',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  aspectRatio,
+  objectFit = 'cover',
 }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasIntersected, setHasIntersected] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && imgRef.current) {
-            imgRef.current.src = src;
+          if (entry.isIntersecting && !hasIntersected) {
+            setIsVisible(true);
+            setHasIntersected(true);
             observer.unobserve(entry.target);
           }
         });
       },
       {
-        rootMargin: '50px',
-        threshold: 0.1,
+        threshold,
+        rootMargin,
       }
     );
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
       }
     };
-  }, [src]);
-
-  const handleLoad = () => {
-    setIsLoaded(true);
-    onLoad?.();
-  };
-
-  const handleError = () => {
-    setHasError(true);
-    onError?.();
-  };
+  }, [threshold, rootMargin, hasIntersected]);
 
   return (
-    <img
-      ref={imgRef}
-      src={placeholder}
-      alt={alt}
-      className={className}
-      style={{
-        ...style,
-        opacity: isLoaded ? 1 : 0.5,
-        transition: 'opacity 0.3s ease-in-out',
-      }}
-      onLoad={handleLoad}
-      onError={handleError}
-      loading="lazy"
-    />
+    <div
+      ref={containerRef}
+      className={`lazy-image-container ${className}`}
+      style={style}
+    >
+      {isVisible ? (
+        <ResponsiveImage
+          src={src}
+          alt={alt}
+          className="lazy-image"
+          placeholder={placeholder}
+          onLoad={onLoad}
+          onError={onError}
+          sizes={sizes}
+          aspectRatio={aspectRatio}
+          objectFit={objectFit}
+          loading="lazy"
+        />
+      ) : (
+        <div className="lazy-image-placeholder">
+          {placeholder && (
+            <img
+              src={placeholder}
+              alt=""
+              className="placeholder-image"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit,
+                filter: 'blur(10px)',
+                transform: 'scale(1.1)',
+                opacity: 0.7,
+              }}
+            />
+          )}
+          <div className="lazy-image-spinner">
+            <div className="spinner"></div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react';
-import { preloadOptimizedImage, monitorImageLoadPerformance } from './imageOptimizer';
 
 interface ImagePreloaderState {
   isPreloaded: boolean;
@@ -16,12 +15,22 @@ export const useImagePreloader = (imageSrc: string | null) => {
 
   const preloadImage = useCallback(async (src: string): Promise<void> => {
     try {
-      // Monitor performance
-      await monitorImageLoadPerformance(src);
+      console.log(`🔄 Preloading image: ${src}`);
       
-      // Preload optimized image
-      await preloadOptimizedImage(src);
-      console.log(`✅ Image preloaded successfully: ${src}`);
+      // Simple image preloading without complex optimization
+      await new Promise<void>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          console.log(`✅ Image preloaded successfully: ${src}`);
+          resolve();
+        };
+        img.onerror = () => {
+          console.error(`❌ Failed to preload image: ${src}`);
+          reject(new Error(`Failed to load: ${src}`));
+        };
+        img.crossOrigin = 'anonymous';
+        img.src = src;
+      });
     } catch (error) {
       console.error(`❌ Failed to preload image: ${src}`, error);
       throw error;

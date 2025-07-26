@@ -28,11 +28,12 @@ export const handlePanoramaClick = (
   }
 
   const panoramaConfig: PanoramaConfig = {
-    clusterId: clusterPrefix,
+    clusterId: `Cluster${clusterPrefix}`,
     floorId: floorId || 'groundFloor',
     location: location
   };
 
+  console.log('💾 Storing panorama config:', panoramaConfig);
   localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
   navigate(`/clusterView/${clusterId}/${floorId}/image`);
 };
