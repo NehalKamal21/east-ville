@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { preloadImage } from '../utils/comprehensiveImagePreloader';
-import { loadingManager } from '../utils/loadingManager';
-import { 
-  generateSrcSet, 
-  generatePictureSources, 
-  getOptimalFormat,
-  getConnectionAwareSettings,
-  generatePlaceholder,
-  SUPPORTED_FORMATS 
-} from '../utils/responsiveImageUtils';
+import { lazyLoadingOptimizer, ImageLoadMetrics } from '../utils/lazyLoadingOptimizer';
+import { generateSrcSet, generateSizes, supportsImageFormat } from '../utils/responsiveImageUtils';
 
 interface ResponsiveImageProps {
   src: string;
@@ -19,13 +11,12 @@ interface ResponsiveImageProps {
   onLoad?: () => void;
   onError?: () => void;
   priority?: boolean;
+  loading?: 'lazy' | 'eager';
   sizes?: string;
   aspectRatio?: number;
   objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
-  loading?: 'lazy' | 'eager';
-  decoding?: 'async' | 'sync' | 'auto';
-  formats?: ('avif' | 'webp' | 'jpeg' | 'png')[];
-  fallbackOnly?: boolean; // New prop to use only original format
+  fallbackOnly?: boolean;
+  imageType?: string; // New prop for optimization
 }
 
 const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
@@ -37,105 +28,53 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
   onLoad,
   onError,
   priority = false,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  loading = 'lazy',
+  sizes,
   aspectRatio,
   objectFit = 'cover',
-  loading = 'lazy',
-  decoding = 'async',
-  formats,
-  fallbackOnly = false, // Default to false
+  fallbackOnly = false,
+  imageType,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState<string>('');
-  const [optimalFormats, setOptimalFormats] = useState<typeof SUPPORTED_FORMATS>([]);
+  const [webpSupported, setWebpSupported] = useState(false);
+  const [avifSupported, setAvifSupported] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+  const loadStartTime = useRef<number>(Date.now());
 
-  // Initialize optimal formats based on browser support and connection
-  useEffect(() => {
-    const connectionSettings = getConnectionAwareSettings();
-    const supportedFormats = formats 
-      ? SUPPORTED_FORMATS.filter(f => formats.includes(f.type))
-      : SUPPORTED_FORMATS;
-    
-    setOptimalFormats(supportedFormats);
-  }, [formats]);
-
-  // Generate responsive image sources for optimal formats
-  const generateOptimalSrcSet = (baseSrc: string, format: typeof SUPPORTED_FORMATS[0]) => {
-    return generateSrcSet(baseSrc, format);
-  };
-
-  // Generate picture sources for different formats
-  const generatePictureSourcesForFormats = (baseSrc: string) => {
-    if (fallbackOnly) {
-      // Only use the original image format
-      return [];
-    }
-    
-    return optimalFormats.map(format => ({
-      type: format.mimeType,
-      srcSet: generateOptimalSrcSet(baseSrc, format),
-      sizes,
-    }));
-  };
+  // Get lazy loading configuration
+  const lazyConfig = lazyLoadingOptimizer.getConfig(src, imageType);
 
   useEffect(() => {
-    if (priority) {
-      const itemId = `responsive-${src}`;
-      loadingManager.registerItem(itemId, src, 'image', 'critical');
-    }
-
-    const loadImage = async () => {
-      try {
-        console.log(`🔄 Loading responsive image: ${src}`);
-        await preloadImage(src);
-
-        if (priority) {
-          setCurrentSrc(src);
-        } else {
-          const observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting && imgRef.current) {
-                  setCurrentSrc(src);
-                  observer.unobserve(entry.target);
-                }
-              });
-            },
-            { rootMargin: '200px', threshold: 0.1 }
-          );
-
-          if (imgRef.current) {
-            observer.observe(imgRef.current);
-          }
-
-          return () => {
-            if (imgRef.current) {
-              observer.unobserve(imgRef.current);
-            }
-          };
-        }
-      } catch (error) {
-        console.warn(`⚠️ Failed to preload responsive image: ${src}`, error);
-        setCurrentSrc(src); // Fallback to direct loading
-      }
+    // Detect browser support for modern formats
+    const detectSupport = () => {
+      setWebpSupported(supportsImageFormat('webp'));
+      setAvifSupported(supportsImageFormat('avif'));
     };
-
-    loadImage();
-  }, [src, priority]);
+    detectSupport();
+  }, []);
 
   const handleLoad = () => {
-    console.log(`✅ Responsive image loaded: ${src}`);
+    const loadTime = Date.now() - loadStartTime.current;
+    console.log(`✅ ResponsiveImage loaded: ${src} in ${loadTime}ms`);
+    
     setIsLoaded(true);
-    if (priority) {
-      loadingManager.markLoaded(`responsive-${src}`);
-    }
+    
+    // Record metrics for performance monitoring
+    const metrics: ImageLoadMetrics = {
+      src,
+      loadTime,
+      size: (imgRef.current?.naturalWidth || 0) * (imgRef.current?.naturalHeight || 0) * 4, // Rough estimate
+      cacheHit: false, // Could be enhanced with actual cache detection
+      timestamp: Date.now(),
+    };
+    lazyLoadingOptimizer.recordImageLoad(metrics);
+    
     onLoad?.();
   };
 
   const handleError = (error: any) => {
-    console.error(`❌ Responsive image failed to load: ${src}`, error);
+    console.error(`❌ ResponsiveImage failed to load: ${src}`, error);
     setHasError(true);
     onError?.();
   };
@@ -158,36 +97,43 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
     transition: 'opacity 0.3s ease-in-out',
   };
 
-  // Generate placeholder if not provided
-  const finalPlaceholder = placeholder || generatePlaceholder(400, 300);
+  // Generate responsive sources if not in fallback mode
+  const generateSources = () => {
+    if (fallbackOnly) return null;
 
-  if (!currentSrc) {
-    return (
-      <div className={`responsive-image-container ${className}`} style={containerStyle}>
-        {finalPlaceholder && (
-          <img
-            src={finalPlaceholder}
-            alt=""
-            className="responsive-image-placeholder"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit,
-              filter: 'blur(10px)',
-              transform: 'scale(1.1)',
-              opacity: 0.7,
-            }}
-          />
-        )}
-        <div className="responsive-image-spinner">
-          <div className="spinner"></div>
-        </div>
-      </div>
-    );
-  }
+    const sources = [];
+    const optimalSizes = sizes || generateSizes();
+
+    // AVIF source (highest quality)
+    if (avifSupported) {
+      const avifFormat = { type: 'avif' as const, extension: '.avif', mimeType: 'image/avif', quality: 80 };
+      const avifSrcSet = generateSrcSet(src, avifFormat);
+      sources.push(
+        <source
+          key="avif"
+          type="image/avif"
+          srcSet={avifSrcSet}
+          sizes={optimalSizes}
+        />
+      );
+    }
+
+    // WebP source
+    if (webpSupported) {
+      const webpFormat = { type: 'webp' as const, extension: '.webp', mimeType: 'image/webp', quality: 85 };
+      const webpSrcSet = generateSrcSet(src, webpFormat);
+      sources.push(
+        <source
+          key="webp"
+          type="image/webp"
+          srcSet={webpSrcSet}
+          sizes={optimalSizes}
+        />
+      );
+    }
+
+    return sources;
+  };
 
   if (hasError) {
     return (
@@ -200,11 +146,14 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
     );
   }
 
+  const sources = generateSources();
+  const shouldUsePicture = sources && sources.length > 0;
+
   return (
     <div className={`responsive-image-container ${className}`} style={containerStyle}>
-      {finalPlaceholder && !isLoaded && (
+      {placeholder && !isLoaded && (
         <img
-          src={finalPlaceholder}
+          src={placeholder}
           alt=""
           className="responsive-image-placeholder"
           style={{
@@ -221,28 +170,36 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
         />
       )}
       
-      <picture>
-        {generatePictureSourcesForFormats(src).map((source, index) => (
-          <source
-            key={`${source.type}-${index}`}
-            type={source.type}
-            srcSet={source.srcSet}
-            sizes={source.sizes}
+      {shouldUsePicture ? (
+        <picture>
+          {sources}
+          <img
+            ref={imgRef}
+            src={src}
+            alt={alt}
+            className="responsive-image-main"
+            style={imageStyle}
+            onLoad={handleLoad}
+            onError={handleError}
+            loading={priority ? 'eager' : loading}
+            decoding="async"
+            sizes={sizes || generateSizes()}
           />
-        ))}
+        </picture>
+      ) : (
         <img
           ref={imgRef}
-          src={currentSrc}
+          src={src}
           alt={alt}
           className="responsive-image-main"
           style={imageStyle}
           onLoad={handleLoad}
           onError={handleError}
           loading={priority ? 'eager' : loading}
-          decoding={decoding}
-          sizes={sizes}
+          decoding="async"
+          sizes={sizes || generateSizes()}
         />
-      </picture>
+      )}
 
       {!isLoaded && (
         <div className="responsive-image-spinner">

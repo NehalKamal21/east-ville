@@ -1,6 +1,7 @@
 // src/components/LoadingScreen.tsx
 import React, { useState, useEffect } from "react";
 import { loadingManager } from "../utils/loadingManager";
+import ResponsiveImage from "./ResponsiveImage";
 
 interface LoadingScreenProps {
   onLoadingComplete?: () => void;
@@ -44,10 +45,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = React.memo(({ onLoadingCompl
   return (
     <div className="loading-screen">
       <div className="loading-content">
-        <img
+        <ResponsiveImage
           src="/ajna-logo.jpg"
           alt="Ajna"
           className="loading-logo"
+          priority={true}
+          loading="eager"
+          fallbackOnly={true}
         />
         
         {/* Progress bar */}

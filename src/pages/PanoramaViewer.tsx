@@ -21,6 +21,7 @@ import { validateAndFixPanoramaData, isValidNavigationTarget } from "../utils/pa
 import { testPanoramaData } from "../utils/testPanoramaData";
 import { testPanoramaImages } from "../utils/debugPanorama";
 import { useImagePreloader } from "../utils/useImagePreloader";
+import ResponsiveImage from "../components/ResponsiveImage";
 
 // Component for 360 icon panoramas (from master plan)
 const IconPanoramaViewer: React.FC<{ iconId: string }> = ({ iconId }) => {
@@ -660,10 +661,13 @@ const ClusterPanoramaViewer: React.FC = () => {
         }}
         onClick={toggleFloorPlan}
       >
-        <img
+        <ResponsiveImage
           src="/floorPlan.png"
           alt="Floor Plan Icon"
           style={{ width: 40, height: 40, objectFit: "contain" }}
+          priority={false}
+          loading="lazy"
+          fallbackOnly={true}
         />
       </button>
 

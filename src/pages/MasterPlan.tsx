@@ -50,27 +50,28 @@ const MasterPlan: React.FC = () => {
                         `masterplan-${index}`,
                         img,
                         'image',
-                        index === 0 ? 'critical' : index < 10 ? 'high' : 'normal'
+                        index === 0 ? 'critical' : index < 5 ? 'high' : 'normal' // Reduced from 10 to 5
                     );
                 });
 
                 // Register compound images with loading manager using imported variables
+                // Only register first 3 as critical, rest as normal priority
                 const importedCompoundImages = [img1, img10, img11, img2, img3, img4, img5, img6, img7, img8, img9];
                 importedCompoundImages.forEach((img, index) => {
                     loadingManager.registerItem(
                         `compound-image-${index}`,
                         img,
                         'image',
-                        index < 3 ? 'critical' : 'high'
+                        index < 3 ? 'critical' : 'normal' // Changed from 'high' to 'normal' for non-critical
                     );
                 });
 
                 // Preload critical master plan images
                 await preloadAllCriticalImages();
                 
-                // Preload first few compound images (imported variables)
-                console.log('🏠 Preloading compound images...');
-                const criticalCompoundImages = [img1, img10, img11];
+                // Preload only first 2 compound images (reduced from 3)
+                console.log('🏠 Preloading critical compound images...');
+                const criticalCompoundImages = [img1, img10]; // Reduced from 3 to 2
                 const preloadPromises = criticalCompoundImages.map((img, index) => {
                     return new Promise<void>((resolve) => {
                         const image = new Image();
@@ -88,7 +89,7 @@ const MasterPlan: React.FC = () => {
                 
                 await Promise.allSettled(preloadPromises);
                 
-                console.log('Master plan and compound images preloaded successfully');
+                console.log('Master plan and critical compound images preloaded successfully');
             } catch (error) {
                 console.warn('Failed to preload some critical images:', error);
             }
@@ -154,46 +155,31 @@ const MasterPlan: React.FC = () => {
         setSelectedType(type);
     };
 
-    const handleAreaChange = (index: number) => {
-        console.log("Area filter:", index); // 0, 1, or 2
-        setSelectedArea(index);
+    const handleAreaChange = (area: number) => {
+        console.log("Area:", area);
+        setSelectedArea(area);
     };
 
-    useEffect(() => {
-        const fetchCluster = async (): Promise<void> => {
-            try {
-                const response = await axios.get(`/api/clusters`);
-                const data = response.data;
-
-                data.map((item: any) => {
-                    item.availableUnits = item.villas.filter((villa: any) => villa.status === "Available").length;
-                    item.totalVillas = item.villas.length;
-                    // return item;
-                });
-                setClusters(data);
-            } catch (err) {
-                setError("Cluster not found");
-            }
-        }
-        if (!effectRun.current) {
-            effectRun.current = true;
-            fetchCluster();
-        }
-    }, []);
-
-    // Add/remove body class for mobile scrolling fix
-    useEffect(() => {
-        const isMobile = window.innerWidth <= 1023;
-        if (isMobile) {
-            document.body.classList.add('master-plan-body');
-        }
-        
-        return () => {
-            document.body.classList.remove('master-plan-body');
-        };
-    }, []);
     const [showCarousel, setShowCarousel] = useState(false);
     const [showKasakoun, setShowKasakoun] = useState(false);
+
+    // Fetch clusters data
+    useEffect(() => {
+        const fetchClusters = async () => {
+            if (effectRun.current) return;
+            effectRun.current = true;
+
+            try {
+                const response = await axios.get("http://209.38.255.181:5001/api/clusters");
+                setClusters(response.data);
+            } catch (err) {
+                console.error("Error fetching clusters:", err);
+                setError("Failed to load clusters");
+            }
+        };
+
+        fetchClusters();
+    }, []);
 
     return (
         <div className="master-plan-container master-plan-page">

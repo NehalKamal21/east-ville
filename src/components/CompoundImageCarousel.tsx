@@ -38,6 +38,14 @@ const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = ({
     onSelect?.(selectedIndex);
   };
 
+  // Determine if an image should be loaded eagerly based on its position relative to active index
+  const shouldLoadEagerly = (index: number) => {
+    const isActive = index === activeIndex;
+    const isAdjacent = Math.abs(index - activeIndex) <= 1;
+    const isFirst = index === 0; // Always load first image eagerly
+    return isActive || isAdjacent || isFirst;
+  };
+
   if (!images || images.length === 0) {
     return (
       <Modal show={show} onHide={onClose} size="lg" centered>
@@ -75,7 +83,8 @@ const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = ({
                 src={image}
                 alt={`${alt} ${index + 1}`}
                 className="compound-carousel-image"
-                priority={index === 0}
+                priority={shouldLoadEagerly(index)}
+                loading={shouldLoadEagerly(index) ? 'eager' : 'lazy'}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                 aspectRatio={16/9}
                 objectFit="cover"

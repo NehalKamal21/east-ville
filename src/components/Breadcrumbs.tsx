@@ -2,6 +2,7 @@
 import React, { JSX } from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
+import ResponsiveImage from "./ResponsiveImage";
 
 const BreadcrumbNav: React.FC = () => {
   const location = useLocation();
@@ -15,7 +16,16 @@ const BreadcrumbNav: React.FC = () => {
 
   crumbs.push({
     label: '',
-    icon: <img src="/eastville.png" alt="Location" style={{ height: 30 }} />, 
+    icon: (
+      <ResponsiveImage 
+        src="/eastville.png" 
+        alt="Location" 
+        style={{ height: 30 }}
+        priority={true} // Logo is critical for navigation
+        loading="eager"
+        fallbackOnly={true}
+      />
+    ), 
     to: "/"
   });
 

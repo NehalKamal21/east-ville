@@ -1217,3 +1217,348 @@ picture img {
     max-height: 50vh !important;
   }
 }
+
+/* Lazy SVG Image Component Styles */
+.lazy-svg-image-container {
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.lazy-svg-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lazy-svg-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lazy-svg-image-main[src] {
+  opacity: 1;
+}
+
+.lazy-svg-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+.lazy-svg-image-spinner .spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.lazy-svg-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.lazy-svg-image-error .error-message {
+  text-align: center;
+  padding: 1rem;
+}
+
+.lazy-svg-image-error .error-message button {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.lazy-svg-image-error .error-message button:hover {
+  background: #c82333;
+}
+
+/* Enhanced Lazy Image Container Styles */
+.lazy-image-container {
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.lazy-image-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lazy-image-placeholder .placeholder-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lazy-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+.lazy-image-spinner .spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Enhanced Responsive Image Styles */
+.responsive-image-container {
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.responsive-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.responsive-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.responsive-image-main[src] {
+  opacity: 1;
+}
+
+.responsive-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+.responsive-image-spinner .spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.responsive-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.responsive-image-error .error-message {
+  text-align: center;
+  padding: 1rem;
+}
+
+.responsive-image-error .error-message button {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.responsive-image-error .error-message button:hover {
+  background: #c82333;
+}
+
+/* Enhanced Simple Image Styles */
+.simple-image-container {
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.simple-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.simple-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.simple-image-main[src] {
+  opacity: 1;
+}
+
+.simple-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+.simple-image-spinner .spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.simple-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.simple-image-error .error-message {
+  text-align: center;
+  padding: 1rem;
+}
+
+.simple-image-error .error-message button {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.simple-image-error .error-message button:hover {
+  background: #c82333;
+}
+
+/* Enhanced Progressive Image Styles */
+.progressive-image-container {
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.progressive-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transform: scale(1.1);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.progressive-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.progressive-image-main[src] {
+  opacity: 1;
+}
+
+.progressive-image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #67b1a4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.progressive-image-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

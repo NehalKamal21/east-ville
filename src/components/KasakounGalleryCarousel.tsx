@@ -22,26 +22,47 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = ({
   show,
   onClose,
   tabImages,
-  tabTitles = ["1 Bed Room", "2 Bed Room", "Corridor", "Entrance", "Kasakoun", "Studio"],
-  alt = 'Kasakoun Gallery',
+  tabTitles = [],
+  alt = 'Kasakoun Images',
   className = '',
   style = {},
-  interval = 4000,
+  interval = 5000,
   indicators = true,
   controls = true,
   fade = true,
   pause = 'hover',
   onSelect,
 }) => {
-  const [activeTab, setActiveTab] = useState<string>("0");
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
+  const [activeIndices, setActiveIndices] = useState<number[]>(new Array(tabImages.length).fill(0));
 
-  const handleSelect = (selectedIndex: number) => {
-    setActiveIndex(selectedIndex);
-    onSelect?.(selectedIndex);
+  const handleTabSelect = (tabIndex: number) => {
+    setActiveTab(tabIndex);
+    // Reset active index for the new tab
+    setActiveIndices(prev => {
+      const newIndices = [...prev];
+      newIndices[tabIndex] = 0;
+      return newIndices;
+    });
   };
 
-  const currentTabImages = tabImages[parseInt(activeTab)] || [];
+  const handleCarouselSelect = (imageIndex: number, tabIndex: number) => {
+    setActiveIndices(prev => {
+      const newIndices = [...prev];
+      newIndices[tabIndex] = imageIndex;
+      return newIndices;
+    });
+    onSelect?.(imageIndex);
+  };
+
+  // Determine if an image should be loaded eagerly based on its position relative to active index
+  const shouldLoadEagerly = (imageIndex: number, tabIndex: number) => {
+    const activeIndex = activeIndices[tabIndex];
+    const isActive = imageIndex === activeIndex;
+    const isAdjacent = Math.abs(imageIndex - activeIndex) <= 1;
+    const isFirst = imageIndex === 0; // Always load first image eagerly
+    return isActive || isAdjacent || isFirst;
+  };
 
   if (!tabImages || tabImages.length === 0) {
     return (
@@ -51,7 +72,7 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = ({
         </Modal.Header>
         <Modal.Body>
           <div className="no-images-message">
-            <p>No gallery images available</p>
+            <p>No images available</p>
           </div>
         </Modal.Body>
       </Modal>
@@ -65,20 +86,16 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = ({
       </Modal.Header>
       <Modal.Body>
         <Tabs
-          id="kasakoun-gallery-tabs"
           activeKey={activeTab}
-          onSelect={(k) => {
-            setActiveTab(k || "0");
-            setActiveIndex(0); // Reset to first image when changing tabs
-          }}
-          className="mb-3"
+          onSelect={(k) => handleTabSelect(Number(k))}
+          className="kasakoun-tabs"
         >
           {tabTitles.map((title, index) => (
-            <Tab key={index} eventKey={index.toString()} title={title}>
+            <Tab key={index} eventKey={index} title={title}>
               {tabImages[index] && tabImages[index].length > 0 ? (
                 <Carousel
-                  activeIndex={activeIndex}
-                  onSelect={handleSelect}
+                  activeIndex={activeIndices[index]}
+                  onSelect={(selectedIndex) => handleCarouselSelect(selectedIndex, index)}
                   interval={interval}
                   indicators={indicators}
                   controls={controls}
@@ -92,7 +109,8 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = ({
                         src={image}
                         alt={`${title} ${imageIndex + 1}`}
                         className="kasakoun-carousel-image"
-                        priority={imageIndex === 0}
+                        priority={shouldLoadEagerly(imageIndex, index)}
+                        loading={shouldLoadEagerly(imageIndex, index) ? 'eager' : 'lazy'}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
                         aspectRatio={4/3}
                         objectFit="cover"

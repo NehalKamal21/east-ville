@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { InfoWindow, Marker } from "@react-google-maps/api";
 import logo from "../../assets/ajna.webp";
 import { eastVilleLocation } from  "../../utils/helpers";
+import ResponsiveImage from "../ResponsiveImage";
 
 const MapInfoWindow: React.FC = () => {
   // Create marker icon using the same Flaticon pin
@@ -37,7 +38,15 @@ const MapInfoWindow: React.FC = () => {
           style={{ maxWidth: "220px", cursor: "pointer" }}
           onClick={() => (window.location.href = "/")}
         >
-          <img src={logo} alt="Ajna" className="img-fluid" style={{ maxWidth: '150px' }} />
+          <ResponsiveImage 
+            src={logo} 
+            alt="Ajna" 
+            className="img-fluid" 
+            style={{ maxWidth: '150px' }}
+            priority={false}
+            loading="lazy"
+            fallbackOnly={true}
+          />
         </div>
       </InfoWindow>
     </>
