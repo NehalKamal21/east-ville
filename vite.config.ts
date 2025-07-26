@@ -88,6 +88,7 @@ export default defineConfig({
   server: {
     open: true,
     port: 3000,
+    host: '0.0.0.0', // Allow external access
     proxy: {
       '/api': {
         target: process.env.NODE_ENV === 'production' 
