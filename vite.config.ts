@@ -81,14 +81,21 @@ export default defineConfig({
     },
     // Enable source maps for debugging
     sourcemap: process.env.NODE_ENV === 'development',
-    // Optimize build performance
-    target: 'es2015',
+    // Optimize build performance for iOS compatibility
+    target: 'es2020', // Updated for better iOS Safari support
     cssCodeSplit: true,
+    // iOS-specific optimizations
+    assetsInlineLimit: 4096, // Inline small assets
   },
   server: {
     open: true,
     port: 3000,
     host: '0.0.0.0', // Allow external access
+    // iOS-specific server settings
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'unsafe-none',
+      'Cross-Origin-Opener-Policy': 'unsafe-none',
+    },
     proxy: {
       '/api': {
         target: process.env.NODE_ENV === 'production' 
@@ -109,5 +116,9 @@ export default defineConfig({
       'react-bootstrap',
       'bootstrap',
     ],
+    // iOS-specific optimizations
+    esbuildOptions: {
+      target: 'es2020', // Ensure consistent target
+    },
   },
 });
