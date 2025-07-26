@@ -20,7 +20,8 @@ const ClusterView = lazy(() => import("./pages/ClusterView"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const Login = lazy(() => import("./pages/Login"));
 const VillaView = lazy(() => import("./pages/VillaView"));
-const PanoramaViewer = lazy(() => import("./pages/PanoramaViewer"));
+const IconPanoramaViewer = lazy(() => import("./pages/IconPanoramaViewer"));
+const ClusterPanoramaViewer = lazy(() => import("./pages/ClusterPanoramaViewer"));
 const Callback = lazy(() => import("./pages/Callback"));
 const UpdateVillaStatus = lazy(() => import("./pages/UpdateVillaStatus"));
 import "./styles/main.scss";
@@ -56,13 +57,13 @@ function App() {
                 {/* <Route path="/" element={<GoogleMapWrapper />} /> */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<MasterPlan />} />
-                <Route path="/exterior" element={<PanoramaViewer />} />
+                <Route path="/exterior/:iconId" element={<IconPanoramaViewer />} />
                 <Route path="/map" element={<GoogleMapWrapper />} />
                 <Route path="/callback" element={<ProtectedRoute element={<Callback />} />} />
                 <Route path="/villa-status" element={<ProtectedRoute element={<UpdateVillaStatus />} />} />
                 <Route path="/clusterView/:clusterId" element={<ClusterView />} />
                 <Route path="/clusterView/:clusterId/:FloorId" element={<VillaView />} />
-                <Route path="/clusterView/:clusterId/:FloorId/image" element={<PanoramaViewer />} />
+                <Route path="/clusterView/:clusterId/:FloorId/image" element={<ClusterPanoramaViewer />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>

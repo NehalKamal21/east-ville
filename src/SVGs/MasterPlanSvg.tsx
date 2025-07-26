@@ -159,7 +159,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             const panoramaConfig = {
                 iconId: iconId,
                 clusterId: letter, // Use the letter as cluster ID
-                floorId: 'groundFloor', // Default floor
+                floorKey: 'groundFloor', // Default floor
                 location: 'location1' // Default location
             };
 
@@ -168,8 +168,8 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             // Store panorama configuration in localStorage for the viewer to use
             localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
 
-            // Navigate to exterior panorama viewer (from master plan)
-            navigate('/exterior');
+            // Navigate to exterior panorama viewer with iconId parameter
+            navigate(`/exterior/${iconId}`);
         } else {
             console.log('360 icon clicked with ID:', iconId);
         }
