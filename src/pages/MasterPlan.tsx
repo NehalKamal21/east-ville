@@ -15,15 +15,19 @@ import img8 from '../assets/08.png';
 import img9 from '../assets/09.png';
 import img10 from '../assets/10.png';
 import img11 from '../assets/11.png';
+import backgroundImage from '../assets/masterplan/image_1.png';
 import MasterPlanFilter from '../components/MasterPlanFilter';
 import VillaSearchFromClusters from '../components/VillaSearchFromClusters';
 import KasakounGalleryCarousel from '../components/KasakounGalleryCarousel';
+import LoadingScreen from '../components/LoadingScreen';
 
 
 const MasterPlan: React.FC = () => {
     const [clusters, setClusters] = useState([]);
     // @ts-ignore
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [backgroundImageLoaded, setBackgroundImageLoaded] = useState(false);
 
     const [selectedArea, setSelectedArea] = useState<number>(-1);
     const [selectedType, setSelectedType] = useState<string>("");
@@ -95,6 +99,23 @@ const MasterPlan: React.FC = () => {
         setSelectedArea(index);
     };
 
+    // Preload background image
+    useEffect(() => {
+        const preloadBackgroundImage = () => {
+            const img = new Image();
+            img.onload = () => {
+                setBackgroundImageLoaded(true);
+            };
+            img.onerror = () => {
+                console.error('Failed to load background image');
+                setBackgroundImageLoaded(true); // Continue anyway
+            };
+            img.src = backgroundImage;
+        };
+
+        preloadBackgroundImage();
+    }, []);
+
     useEffect(() => {
         const fetchCluster = async (): Promise<void> => {
             try {
@@ -107,8 +128,10 @@ const MasterPlan: React.FC = () => {
                     // return item;
                 });
                 setClusters(data);
+                setIsLoading(false);
             } catch (err) {
                 setError("Cluster not found");
+                setIsLoading(false);
             }
         }
         if (!effectRun.current) {
@@ -118,6 +141,14 @@ const MasterPlan: React.FC = () => {
     }, []);
     const [showCarousel, setShowCarousel] = useState(false);
     const [showKasakoun, setShowKasakoun] = useState(false);
+
+    // Combined loading state - wait for both data and background image
+    const isFullyLoaded = !isLoading && backgroundImageLoaded;
+
+    // Show loading screen until everything is ready
+    if (!isFullyLoaded) {
+        return <LoadingScreen />;
+    }
 
     return (
         <div className="master-plan-container" style={{ position: "relative", height: "100vh" }}>

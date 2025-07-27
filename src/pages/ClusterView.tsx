@@ -10,6 +10,7 @@ import BBack from '../SVGs/ClusterB/BBack';
 import TWFront from '../SVGs/ClusterTW/TWFront';
 import TWBack from '../SVGs/ClusterTW/TWBack';
 import { useCluster } from '../utils/hooks';
+import LoadingScreen from '../components/LoadingScreen';
 
 const ClusterView: React.FC = () => {
     const { clusterId } = useParams<{ clusterId: string }>();
@@ -32,11 +33,7 @@ const ClusterView: React.FC = () => {
     };
 
     if (isLoading) {
-        return <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </div>
-        </div>;
+        return <LoadingScreen />;
     }
 
     if (error) {

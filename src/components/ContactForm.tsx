@@ -31,9 +31,15 @@ const ContactForm: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post("/api/contact", formData);
-            setShowSuccessModal(true); // ✅ show success modal
+            // Commented out API call for now
+            // const response = await axios.post("/api/contact", formData);
+            
+            // Show success message without API call
+            setShowSuccessModal(true);
             closeModal();
+            
+            // Log form data for debugging
+            console.log("Form submitted:", formData);
         } catch (err) {
             alert("Failed to send message.");
         }

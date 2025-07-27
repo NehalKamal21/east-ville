@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useMemo, useCallback } from "react"
 import { Form, Button, Alert } from "react-bootstrap";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useClusters } from "../utils/hooks";
+import LoadingScreen from './LoadingScreen';
 import "../styles/main.scss";
 
 interface Villa {
@@ -167,6 +168,9 @@ const VillaSearchFromClusters: React.FC = () => {
                     {/* Loading Indicator */}
                     {isLoading && (
                         <div className="text-center mt-2">
+                            <div className="loading-spinner-small">
+                                <div className="spinner-ring-small"></div>
+                            </div>
                             <small className="text-muted">Loading search data...</small>
                         </div>
                     )}

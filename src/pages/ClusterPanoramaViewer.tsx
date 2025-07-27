@@ -117,9 +117,14 @@ const ClusterPanoramaViewer: React.FC = () => {
       
       setRooms(allRooms);
       setSelectedPanorama(clusterPanoramaData);
+      
+      // Generate floor SVG
+      const svg = renderImgs(clusterId || "", selectedFloor, handleRoomNavigation);
+      console.log('🏗️ Generated floor SVG:', svg);
+      setFloorSvg(svg);
     }
     setLoading(false);
-  }, [clusterName, selectedFloor.key, clusterPrefix, panoramaDataForCluster]);
+  }, [clusterName, selectedFloor.key, clusterPrefix, panoramaDataForCluster, clusterId, selectedFloor]);
 
   // Fallback to hide loading screen if onReady doesn't fire
   useEffect(() => {
@@ -196,17 +201,6 @@ const ClusterPanoramaViewer: React.FC = () => {
         ))}
       </div>
 
-      <button
-        className="floor-plan-btn"
-        onClick={toggleFloorPlan}
-      >
-        <img
-          src="/floorPlan.png"
-          alt="Floor Plan Icon"
-          style={{ width: 40, height: 40, objectFit: "contain" }}
-        />
-      </button>
-
       {/* Panorama Viewer */}
       <div style={{ 
         width: '100vw', 
@@ -238,31 +232,73 @@ const ClusterPanoramaViewer: React.FC = () => {
                 markers: currentPanoramaData?.hotspots?.map((hotspot: Hotspot, index: number) => ({
                   id: `hotspot-${index}`,
                   position: { pitch: hotspot.pitch, yaw: hotspot.yaw },
-                  html: `<div class="hotspot-marker">📍</div>`,
+                  html: `<div class="hotspot-marker"></div>`,
                   data: { target: hotspot.target },
                 })) || [],
               },
             ],
           ]}
-          onReady={() => {
+          onReady={(viewer) => {
             console.log('✅ Cluster Panorama viewer ready, current location:', currentLocation, 'image:', currentImage);
             console.log('🔍 Current panorama data:', currentPanoramaData);
             console.log('🖼️ Image source:', currentImage);
             console.log('🏢 Current floor:', selectedFloor);
+            
+            // Set up hotspot click handling
+            const markersPlugin = viewer.getPlugin(MarkersPlugin);
+            markersPlugin.addEventListener("select-marker", (e: any) => {
+              const target = e.marker?.data?.target;
+              if (target) {
+                console.log(`🎯 Hotspot clicked: ${target}`);
+                handleHotspotClick({ pitch: 0, yaw: 0, target });
+              }
+            });
+            
             setImageLoading(false);
           }}
         />
       </div>
 
+        <button
+          className="position-absolute end-0 m-3"
+          style={{
+            backgroundColor: "#000",
+            padding: "8px",
+            borderRadius: "8px",
+            cursor: "pointer",
+            zIndex: 20,
+            bottom: '80px',
+          }}
+          onClick={toggleFloorPlan}
+        >
+          <img
+            src="/floorPlan.png"
+            alt="Floor Plan Icon"
+            style={{ width: 40, height: 40, objectFit: "contain" }}
+          />
+        </button>
+   
       {showFloorPlan && (
-        <div className="floor-plan-modal" onClick={toggleFloorPlan}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <h3>Floor Plan</h3>
-            <img
-              src="/floor-plan/twinhouse_ground.jpg"
-              alt="Floor Plan"
-            />
-            <button onClick={toggleFloorPlan}>×</button>
+        <div
+          className="floor-plan position-fixed bg-white shadow"
+          style={{
+            zIndex: 30,
+            width: "300px !important",
+            height: "400px",
+            minHeight: "300px",
+            overflow: "auto",
+            bottom: '115px',
+            right: '80px',
+            padding: "15px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
+          }}
+        >
+          <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+            <h6 style={{ marginBottom: "10px", textAlign: "center", fontWeight: "600" }}>Floor Plan</h6>
+            <div style={{ flex: 1, overflow: "auto" }}>
+              {floorSVG}
+            </div>
           </div>
         </div>
       )}

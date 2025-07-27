@@ -13,7 +13,7 @@ const filterOptions = [
 ];
 
 const MarkerFilter: React.FC<MarkerFilterProps> = ({ onFilterChange }) => {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(filterOptions.map((option) => option.value));
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   const handleCheckboxChange = (type: string) => {
     setSelectedTypes((prev) => {
@@ -48,13 +48,15 @@ const MarkerFilter: React.FC<MarkerFilterProps> = ({ onFilterChange }) => {
           type="switch"
           id="custom-switch"
           label="Select all"
-          checked={selectedTypes.length === 3}
+          checked={selectedTypes.length === filterOptions.length}
           onChange={(e) => {
             if (e.target.checked) {
               setSelectedTypes(filterOptions.map((option) => option.value));
               onFilterChange(filterOptions.map((option) => option.value));
+            } else {
+              setSelectedTypes([]);
+              onFilterChange([]);
             }
-
           }}
         />
         {filterOptions.map((option) => (

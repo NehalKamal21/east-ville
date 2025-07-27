@@ -180,16 +180,27 @@ const IconPanoramaViewer: React.FC = () => {
                 markers: currentPanoramaData?.hotspots?.map((hotspot: Hotspot, index: number) => ({
                   id: `hotspot-${index}`,
                   position: { pitch: hotspot.pitch, yaw: hotspot.yaw },
-                  html: `<div class="hotspot-marker">📍</div>`,
+                  html: `<div class="hotspot-marker"></div>`,
                   data: { target: hotspot.target },
                 })) || [],
               },
             ],
           ]}
-          onReady={() => {
+          onReady={(viewer) => {
             console.log('✅ Icon Panorama viewer ready, current location:', currentLocation, 'image:', currentImage);
             console.log('🔍 Current panorama data:', currentPanoramaData);
             console.log('🖼️ Image source:', currentImage);
+            
+            // Set up hotspot click handling
+            const markersPlugin = viewer.getPlugin(MarkersPlugin);
+            markersPlugin.addEventListener("select-marker", (e: any) => {
+              const target = e.marker?.data?.target;
+              if (target) {
+                console.log(`🎯 Hotspot clicked: ${target}`);
+                handleHotspotClick({ pitch: 0, yaw: 0, target });
+              }
+            });
+            
             setImageLoading(false);
           }}
         />

@@ -10,7 +10,7 @@ import BFirstFloor from "../SVGs/ClusterB/BFirstFloor";
 import BSecondFloor from "../SVGs/ClusterB/BSecondFloor";
 import BRoof from "../SVGs/ClusterB/BRoof";
 
-// import TWGroundFloor from "../SVGs/ClusterTW/TWGroundFloor";
+import TWGroundFloor from "../SVGs/ClusterTW/TWGroundFloor";
 import TWFirstFloor from "../SVGs/ClusterTW/TWFirstFloor";
 import TWSecondFloor from "../SVGs/ClusterTW/TWSecondFloor";
 import TWRoof from "../SVGs/ClusterTW/TWRoof";
@@ -136,23 +136,7 @@ export const renderImgs = (clusterId: string, selectedFloor: { value: string, ke
     BFirstFloor: <BFirstFloor />,
     BSecondFloor: <BSecondFloor />,
     BRoof: <BRoof />,
-    TWGroundFloor: <div style={{ 
-      position: 'relative',
-      width: '100%', 
-      height: '100%',
-      minHeight: '300px'
-    }}>
-      <div style={{ 
-        backgroundImage: 'url(/floor-plan/twinhouse_ground.jpg)', 
-        backgroundSize: 'contain', 
-        backgroundRepeat: 'no-repeat', 
-        backgroundPosition: 'center',
-        width: '100%', 
-        height: '100%',
-        minHeight: '300px'
-      }} />
-      {renderPanoramaIcons('TW', 'groundFloor', onLocationChange)}
-    </div>,
+    TWGroundFloor: <TWGroundFloor />,
     TWFirstFloor: <TWFirstFloor />,
     TWSecondFloor: <TWSecondFloor />,
     TWRoof: <TWRoof />,

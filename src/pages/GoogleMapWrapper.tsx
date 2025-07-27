@@ -2,6 +2,7 @@
 import React from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import MapContainer from "../components/map/MapContainer";
+import LoadingScreen from "../components/LoadingScreen";
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyD-S37CD9We5WgqiDCNrS6ZjBirzZk4k2U';
 
@@ -12,7 +13,7 @@ const GoogleMapWrapper: React.FC = () => {
     libraries: ["places", "maps"],
   });
 
-  if (!isLoaded) return <p>Loading Google Maps...</p>;
+  if (!isLoaded) return <LoadingScreen />;
 
   return <MapContainer isLoaded />;
 };
