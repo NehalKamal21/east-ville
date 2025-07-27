@@ -13,6 +13,16 @@ html, body, #root {
   background-color: #f3eae4; /* ✅ eliminates white flash */
 }
 
+/* Enable overflow for master plan on mobile/iPad */
+@media (max-width: 1023px) {
+  html, body, #root {
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
@@ -204,7 +214,8 @@ html, body, #root {
 }
 
 .breadcrumb-item,
-.breadcrumb-item a {
+.breadcrumb-item a,
+.breadcrumb-item button {
   color: #fff;
   font-weight: 500;
   font-size: 0.9rem;
@@ -214,7 +225,8 @@ html, body, #root {
   transition: all 0.3s ease;
 }
 
-.breadcrumb-item a:hover {
+.breadcrumb-item a:hover,
+.breadcrumb-item button:hover {
   color: #67b1a4;
   transform: translateY(-1px);
 }
@@ -448,70 +460,7 @@ html, body, #root {
   animation: spin 1s linear infinite;
 }
 
-/* Panorama Loading Screens */
-.panorama-loading-screen {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
 
-.panorama-loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  backdrop-filter: blur(5px);
-}
-
-.loading-content {
-  text-align: center;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  max-width: 400px;
-}
-
-.loading-content h3,
-.loading-content h4 {
-  margin: 1rem 0 0.5rem 0;
-  color: white;
-  font-weight: 600;
-}
-
-.loading-content p {
-  margin: 0.5rem 0 0 0;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-}
-
-.loading-content .spinner-border {
-  width: 3rem;
-  height: 3rem;
-  border-width: 0.25em;
-}
-
-.loading-content .alert {
-  background: rgba(220, 53, 69, 0.9);
-  border: 1px solid rgba(220, 53, 69, 0.5);
-  color: white;
-}
-
-.loading-content .alert h3 {
-  color: white;
-  margin-bottom: 0.5rem;
-}
 
 /* Panorama Viewer Styles */
 .panorama-viewer-container {
@@ -811,6 +760,25 @@ html, body, #root {
   background: white !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   min-height: 300px !important;
+  max-width: 300px !important;
+  width: 300px !important;
+}
+
+/* Responsive floor plan modal */
+@media (max-width: 768px) {
+  .floor-plan {
+    max-width: 280px !important;
+    width: 280px !important;
+    min-height: 250px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floor-plan {
+    max-width: 250px !important;
+    width: 250px !important;
+    min-height: 200px !important;
+  }
 }
 
 .floor-plan svg {
@@ -819,6 +787,15 @@ html, body, #root {
   max-height: 100% !important;
   display: block !important;
   min-height: 250px !important;
+  max-width: 100% !important;
+}
+
+/* Override fullScreenSvg class specifically for floor plan */
+.floor-plan .fullScreenSvg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 100% !important;
 }
 
 .floor-plan img {
@@ -833,10 +810,49 @@ html, body, #root {
   height: 100% !important;
   display: flex !important;
   flex-direction: column !important;
+  max-width: 100% !important;
 }
 
 .floor-plan > div > div {
   flex: 1 !important;
   overflow: auto !important;
   min-height: 250px !important;
+  max-width: 100% !important;
+}
+
+/* Floor plan hotspot styles */
+.floor-plan [style*="position: absolute"] {
+  pointer-events: auto !important;
+  z-index: 100 !important;
+}
+
+.floor-plan [style*="position: absolute"]:hover {
+  transform: translate(-50%, -50%) scale(1.2) !important;
+}
+
+.floor-plan [style*="position: absolute"] img {
+  pointer-events: none !important;
+}
+
+/* Responsive hotspot styles */
+@media (max-width: 768px) {
+  .floor-plan [style*="position: absolute"] {
+    min-width: 18px !important;
+    min-height: 18px !important;
+  }
+  
+  .floor-plan [style*="position: absolute"]:hover {
+    transform: translate(-50%, -50%) scale(1.15) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floor-plan [style*="position: absolute"] {
+    min-width: 16px !important;
+    min-height: 16px !important;
+  }
+  
+  .floor-plan [style*="position: absolute"]:hover {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+  }
 }

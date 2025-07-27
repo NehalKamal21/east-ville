@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { useContactModal } from "../utils/ContactModalContext";

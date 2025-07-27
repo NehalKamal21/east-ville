@@ -263,18 +263,23 @@ const ClusterPanoramaViewer: React.FC = () => {
           className="position-absolute end-0 m-3"
           style={{
             backgroundColor: "#000",
-            padding: "8px",
+            padding: "clamp(6px, 1.5vw, 8px)",
             borderRadius: "8px",
             cursor: "pointer",
             zIndex: 20,
-            bottom: '80px',
+            bottom: 'clamp(60px, 12vh, 80px)',
+            right: 'clamp(15px, 3vw, 20px)',
           }}
           onClick={toggleFloorPlan}
         >
           <img
             src="/floorPlan.png"
             alt="Floor Plan Icon"
-            style={{ width: 40, height: 40, objectFit: "contain" }}
+            style={{ 
+              width: 'clamp(30px, 8vw, 40px)', 
+              height: 'clamp(30px, 8vw, 40px)', 
+              objectFit: "contain" 
+            }}
           />
         </button>
    
@@ -283,13 +288,13 @@ const ClusterPanoramaViewer: React.FC = () => {
           className="floor-plan position-fixed bg-white shadow"
           style={{
             zIndex: 30,
-            width: "300px !important",
-            height: "400px",
-            minHeight: "300px",
+            width: "clamp(250px, 80vw, 300px)",
+            height: "clamp(200px, 60vh, 400px)",
+            minHeight: "200px",
             overflow: "auto",
-            bottom: '115px',
-            right: '80px',
-            padding: "15px",
+            bottom: 'clamp(80px, 15vh, 115px)',
+            right: 'clamp(20px, 5vw, 80px)',
+            padding: "clamp(10px, 2vw, 15px)",
             borderRadius: "8px",
             boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
           }}

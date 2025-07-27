@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
-import { Spinner, ToggleButton, ToggleButtonGroup, Card } from "react-bootstrap";
+import { ToggleButton, ToggleButtonGroup, Card } from "react-bootstrap";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import "@photo-sphere-viewer/core/index.css";

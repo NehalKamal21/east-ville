@@ -1,21 +1,42 @@
 // BreadcrumbNav.tsx
-import React, { JSX } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { JSX, useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import LoadingScreen from "./LoadingScreen";
 
 const BreadcrumbNav: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const pathname = location.pathname;
   const segments = pathname.split("/").filter(Boolean);
+  const [isNavigatingToMasterPlan, setIsNavigatingToMasterPlan] = useState(false);
 
-  const crumbs: { label: string; icon?: JSX.Element; to?: string }[] = [];
+  const crumbs: { label: string; icon?: JSX.Element; to?: string; onClick?: () => void }[] = [];
 
   // Check if we're coming from master plan (360 icon navigation)
   const isFromMasterPlan = pathname.startsWith("/exterior");
 
+  // Handle navigation to master plan with loading screen
+  const handleMasterPlanNavigation = () => {
+    setIsNavigatingToMasterPlan(true);
+    navigate("/");
+  };
+
+  // Reset loading state when we're on the master plan page
+  useEffect(() => {
+    if (pathname === "/" && isNavigatingToMasterPlan) {
+      // Small delay to ensure the master plan has time to start loading
+      const timer = setTimeout(() => {
+        setIsNavigatingToMasterPlan(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, isNavigatingToMasterPlan]);
+
   crumbs.push({
     label: '',
     icon: <img src="/eastville.png" alt="Location" style={{ height: 30 }} />, 
-    to: "/"
+    to: "/",
+    onClick: handleMasterPlanNavigation
   });
 
   if (segments[0] === "master-plan") {
@@ -64,6 +85,11 @@ const BreadcrumbNav: React.FC = () => {
     }
   }
 
+  // Show loading screen when navigating to master plan
+  if (isNavigatingToMasterPlan) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="breadcrumb-wrapper px-3 py-2 sticky-top" style={{ zIndex: 100 }}>
       <nav aria-label="breadcrumb">
@@ -75,10 +101,21 @@ const BreadcrumbNav: React.FC = () => {
               aria-current={!crumb.to ? 'page' : undefined}
             >
               {crumb.to ? (
-                <Link to={crumb.to} className="text-decoration-none">
-                  {crumb.icon}
-                  {crumb.label}
-                </Link>
+                crumb.onClick ? (
+                  <button 
+                    onClick={crumb.onClick} 
+                    className="text-decoration-none border-0 bg-transparent text-white p-0"
+                    style={{ cursor: 'pointer', outline: 'none' }}
+                  >
+                    {crumb.icon}
+                    {crumb.label}
+                  </button>
+                ) : (
+                  <Link to={crumb.to} className="text-decoration-none">
+                    {crumb.icon}
+                    {crumb.label}
+                  </Link>
+                )
               ) : (
                 <>
                   {crumb.icon}
