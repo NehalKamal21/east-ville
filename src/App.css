@@ -429,3 +429,321 @@ html, body, #root {
     max-height: 70px;
   }
 }
+
+/* Panorama Loading Screens */
+.panorama-loading-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.panorama-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(5px);
+}
+
+.loading-content {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 400px;
+}
+
+.loading-content h3,
+.loading-content h4 {
+  margin: 1rem 0 0.5rem 0;
+  color: white;
+  font-weight: 600;
+}
+
+.loading-content p {
+  margin: 0.5rem 0 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.loading-content .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.25em;
+}
+
+.loading-content .alert {
+  background: rgba(220, 53, 69, 0.9);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  color: white;
+}
+
+.loading-content .alert h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+/* Panorama Viewer Styles */
+.panorama-viewer-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.panorama-viewer-container > div {
+  width: 100% !important;
+  /* height: 100% !important; */
+}
+
+/* Ensure the photo sphere viewer takes full width and is interactive */
+.psv-container {
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab !important;
+}
+
+.psv-container:active {
+  cursor: grabbing !important;
+}
+
+.psv-viewer {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure panorama canvas is interactive */
+.psv-canvas-container {
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab !important;
+}
+
+.psv-canvas-container:active {
+  cursor: grabbing !important;
+}
+
+/* Ensure no CSS conflicts with panorama interactions */
+.psv-container * {
+  pointer-events: auto !important;
+}
+
+/* Room navigation buttons */
+.room-navigation-buttons {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: auto;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 90vw;
+}
+
+.room-button {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 16px;
+  background-color: rgba(0,0,0,0.7);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  min-width: 120px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  pointer-events: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: auto;
+  line-height: 1.2;
+}
+
+.room-button.active {
+  background-color: #67b1a4;
+}
+
+.room-button:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Floor plan button */
+.floor-plan-btn {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  z-index: 20;
+  background-color: #000;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  pointer-events: auto;
+}
+
+/* Floor plan modal */
+.floor-plan-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.floor-plan-modal > div {
+  max-width: 90%;
+  max-height: 90%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.floor-plan-modal h3 {
+  margin-bottom: 15px;
+}
+
+.floor-plan-modal img {
+  max-width: 100%;
+  height: auto;
+}
+
+.floor-plan-modal button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .room-button {
+    font-size: 11px;
+    padding: 6px 12px;
+    min-width: 100px;
+  }
+  
+  .floor-plan-btn {
+    bottom: 100px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-button {
+    font-size: 10px;
+    padding: 5px 10px;
+    min-width: 90px;
+  }
+  
+  .floor-plan-btn {
+    bottom: 120px;
+    right: 10px;
+  }
+}
+
+/* Floor Selection */
+.floor-selection-container {
+  position: absolute;
+  top: 90px;
+  left: 140px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.floor-toggle-group {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.floor-toggle-button {
+  border-radius: 20px !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  min-width: 50px !important;
+  transition: all 0.3s ease !important;
+  background: transparent !important;
+  color: white !important;
+}
+
+.floor-toggle-button:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+.floor-toggle-button.btn-primary {
+  background: #67b1a4 !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(103, 177, 164, 0.4) !important;
+}
+
+.floor-toggle-button.btn-outline-primary {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.floor-toggle-button.btn-outline-primary:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Mobile responsive for floor selection */
+@media (max-width: 768px) {
+  .floor-selection-container {
+    top: 10px;
+  }
+  
+  .floor-toggle-button {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    min-width: 40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floor-toggle-group {
+    padding: 3px;
+  }
+  
+  .floor-toggle-button {
+    padding: 5px 10px !important;
+    font-size: 10px !important;
+    min-width: 35px !important;
+  }
+}

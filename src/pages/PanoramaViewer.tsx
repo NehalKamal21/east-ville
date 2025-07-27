@@ -123,6 +123,10 @@ const PanoramaViewer: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
     }, 900);
+    // Fallback timeout to ensure loading state doesn't get stuck
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }, []);
 
   const onReady = useCallback((viewer: any) => {
@@ -256,7 +260,7 @@ const PanoramaViewer: React.FC = () => {
       </div>
       }
       {loading && (
-        <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 d-flex align-items-center justify-content-center z-3">
+        <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-60 d-flex align-items-center justify-content-center z-3">
           <LoadingScreen />
         </div>
       )}

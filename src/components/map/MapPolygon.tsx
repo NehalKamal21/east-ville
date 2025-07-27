@@ -24,7 +24,7 @@ const MapPolygon: React.FC = () => {
       <Polygon
         paths={polygonCoordinates}
         options={{
-          fillColor: "linear-gradient(135deg, #67b1a4 50%, #67b1a4 100%)",
+          fillColor: "#67b1a4",
           fillOpacity: 0.6,
           strokeColor: "#67b1a4",
           strokeOpacity: 1,

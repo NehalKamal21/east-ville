@@ -1,12 +1,6 @@
 // TODO: Define proper props interface
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Container,
-  ToggleButton,
-  ToggleButtonGroup,
-  Card,
-} from "react-bootstrap";
 
 import RoomDetailsPanel from "../components/RoomDetailsPanel";
 import { villaDetails } from "../utils/villaDetails";
@@ -24,8 +18,8 @@ const VillaView: React.FC = () => {
   const navigate = useNavigate();
 
   const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
-  const defaultSelected = useMemo(() => 
-    Floors.find((f) => f.key === FloorId) || Floors[0], 
+  const defaultSelected = useMemo(() =>
+    Floors.find((f) => f.key === FloorId) || Floors[0],
     [FloorId]
   );
   const [selectedFloor, setSelectedFloor] = useState(defaultSelected);
@@ -78,39 +72,35 @@ const VillaView: React.FC = () => {
 
   return (
     <>
-      <Container fluid className="d-flex flex-row justify-content-center align-items-center vh-100 p-0">
+      <div className="container-fluid d-flex flex-row justify-content-center align-items-center vh-100 p-0">
         <div className="fullScreen">{renderSVG(clusterId || "", selectedFloor)}</div>
         <div style={{ position: "fixed", top: "10%", left: "20px", zIndex: 999 }}>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <RoomDetailsPanel rooms={rooms} />
 
-            <div className="floor-panel-container mt-2">
-              <Card className="p-3 bg-dark text-white shadow-lg rounded-4">
-                <Card.Title className="text-center fs-6">Floors</Card.Title>
 
-                <ToggleButtonGroup
-                  type="radio"
-                  name="floors"
-                  value={selectedFloor.key}
-                >
-                  {Floors.map((floor) => (
-                    <ToggleButton
-                      key={floor.key}
-                      id={`floor-${floor.key}`}
-                      value={floor.key}
-                      variant="outline-light"
-                      className="text-center"
-                      onClick={() => handleFloorChange(floor)}
-                    >
-                      {floor.value}
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </Card>
+          </div>
+          <div className="floor-panel-container mt-2">
+            <div className="card p-3 bg-dark text-white shadow-lg rounded-4">
+              <h6 className="card-title text-center fs-6">Floors</h6>
+
+              <div className="btn-group floor-toggle-group" role="group" aria-label="Floor selection">
+                {Floors.map((floor) => (
+                  <button
+                    key={floor.key}
+                    id={`floor-${floor.key}`}
+                    type="button"
+                    className={`btn floor-toggle-button ${selectedFloor.key === floor.key ? 'btn-primary' : 'btn-outline-primary'}`}
+                    onClick={() => handleFloorChange(floor)}
+                  >
+                    {floor.value}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </>
   );
 };

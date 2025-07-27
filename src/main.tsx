@@ -3,6 +3,16 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 
+// Unregister any existing service workers to prevent caching issues
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      registration.unregister();
+      console.log('Service worker unregistered');
+    }
+  });
+}
+
 // Development utility for performance testing
 if (process.env.NODE_ENV === 'development') {
   // Add global function to clear storage (only in development)

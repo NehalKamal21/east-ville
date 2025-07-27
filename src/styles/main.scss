@@ -19,6 +19,8 @@
 
 // Breadcrumb responsive styles
 .breadcrumb-wrapper {
+  background: transparent;
+  
   .static-logo {
     display: flex;
     align-items: center;
@@ -29,6 +31,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
+    background: transparent;
   }
 
   // Mobile responsive styles

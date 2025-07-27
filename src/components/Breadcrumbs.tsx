@@ -1,6 +1,5 @@
 // BreadcrumbNav.tsx
 import React, { JSX } from "react";
-import { Breadcrumb } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 
 const BreadcrumbNav: React.FC = () => {
@@ -67,14 +66,29 @@ const BreadcrumbNav: React.FC = () => {
 
   return (
     <div className="breadcrumb-wrapper px-3 py-2 sticky-top" style={{ zIndex: 100 }}>
-      <Breadcrumb className="custom-breadcrumb mb-0">
-        {crumbs.map((crumb, idx) => (
-          <Breadcrumb.Item key={idx} linkAs={crumb.to ? Link : 'span'} linkProps={crumb.to ? { to: crumb.to } : undefined} active={!crumb.to} className="breadcrumb-item">
-            {crumb.icon}
-            {crumb.label}
-          </Breadcrumb.Item>
-        ))}
-      </Breadcrumb>
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb custom-breadcrumb mb-0">
+          {crumbs.map((crumb, idx) => (
+            <li 
+              key={idx} 
+              className={`breadcrumb-item ${!crumb.to ? 'active' : ''}`}
+              aria-current={!crumb.to ? 'page' : undefined}
+            >
+              {crumb.to ? (
+                <Link to={crumb.to} className="text-decoration-none">
+                  {crumb.icon}
+                  {crumb.label}
+                </Link>
+              ) : (
+                <>
+                  {crumb.icon}
+                  {crumb.label}
+                </>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
     </div>
   );
 };
