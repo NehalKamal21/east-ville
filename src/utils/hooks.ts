@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 // Test hook to check API connectivity using clusters endpoint
 export const useApiTest = () => {
@@ -67,4 +68,71 @@ export const useContacts = () => {
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
+}; 
+
+// Device type enum
+export type DeviceType = 'mobile' | 'tablet' | 'desktop';
+
+// Generic hook for detecting device type automatically
+export const useDeviceType = () => {
+  const [deviceType, setDeviceType] = useState<DeviceType>('desktop');
+
+  useEffect(() => {
+    const checkDeviceType = () => {
+      const width = window.innerWidth;
+      
+      if (width <= 768) {
+        setDeviceType('mobile');
+      } else if (width <= 1024) {
+        setDeviceType('tablet');
+      } else {
+        setDeviceType('desktop');
+      }
+    };
+
+    checkDeviceType();
+    window.addEventListener('resize', checkDeviceType);
+
+    return () => window.removeEventListener('resize', checkDeviceType);
+  }, []);
+
+  return deviceType;
+};
+
+// Convenience hooks for specific device types
+export const useIsMobile = () => {
+  const deviceType = useDeviceType();
+  return deviceType === 'mobile';
+};
+
+export const useIsTablet = () => {
+  const deviceType = useDeviceType();
+  return deviceType === 'tablet';
+};
+
+export const useIsDesktop = () => {
+  const deviceType = useDeviceType();
+  return deviceType === 'desktop';
+};
+
+// Hook to get current screen dimensions
+export const useScreenSize = () => {
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return screenSize;
 }; 

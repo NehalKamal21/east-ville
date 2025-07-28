@@ -91,19 +91,14 @@ const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
 
   // Function to center the map on East Ville location
   const centerMap = useCallback(() => {
-    console.log('Center button clicked');
-    console.log('Map ref:', mapRef.current);
-    console.log('East Ville location:', eastVilleLocation);
     
     if (mapRef.current) {
       try {
         // Use eastVilleLocation if available, otherwise use mapCenter as fallback
         const centerLocation = eastVilleLocation || mapCenter;
-        console.log('Using center location:', centerLocation);
         
         mapRef.current.panTo(centerLocation);
         mapRef.current.setZoom(13.5);
-        console.log('Map centered successfully');
       } catch (error) {
         console.error('Error centering map:', error);
       }
@@ -114,34 +109,25 @@ const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
 
   // Function to handle map load
   const onMapLoad = useCallback((map: google.maps.Map) => {
-    console.log('Map loaded, setting ref');
     mapRef.current = map;
-    console.log('Map ref set:', mapRef.current);
   }, []);
 
   // Alternative approach: use onLoad with proper typing
   const handleMapLoad = useCallback((map: google.maps.Map) => {
-    console.log('handleMapLoad called');
     mapRef.current = map;
-    console.log('Map ref set in handleMapLoad:', mapRef.current);
   }, []);
 
   // Direct function approach
   const onMapLoadDirect = (map: google.maps.Map) => {
-    console.log('onMapLoadDirect called');
     mapRef.current = map;
-    console.log('Map ref set in onMapLoadDirect:', mapRef.current);
   };
 
   // Monitor map reference
   useEffect(() => {
-    console.log('Map ref in useEffect:', mapRef.current);
-    
     // Check if map loads after a delay
     const timer = setTimeout(() => {
-      console.log('Map ref after timeout:', mapRef.current);
       if (!mapRef.current) {
-        console.log('Map still not loaded after timeout');
+        // Map still not loaded after timeout
       }
     }, 2000);
     
@@ -172,7 +158,6 @@ const MapContainer: React.FC<MapContainerProps> = ({ isLoaded }) => {
         options={mapOptions}
         onLoad={onMapLoadDirect}
         onUnmount={() => {
-          console.log('Map unmounted');
           mapRef.current = null;
         }}
       >

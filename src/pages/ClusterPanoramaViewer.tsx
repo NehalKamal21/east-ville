@@ -68,10 +68,6 @@ const ClusterPanoramaViewer: React.FC = () => {
   const getPanoramaImage = useMemo(() => {
     const currentPanoramaData = (panoramaDataForCluster as any)[currentLocation];
     const imagePath = currentPanoramaData?.imgName || "/panos/ClusterA/groundFloor/01.jpg";
-    console.log('🖼️ Cluster panorama image path:', imagePath);
-    console.log('📍 Current location:', currentLocation);
-    console.log('🏗️ Panorama data for cluster:', panoramaDataForCluster);
-    console.log('🏢 Selected floor:', selectedFloor);
     return imagePath;
   }, [panoramaDataForCluster, currentLocation, selectedFloor]);
 
@@ -80,12 +76,10 @@ const ClusterPanoramaViewer: React.FC = () => {
   }, [getPanoramaImage]);
 
   const handleRoomNavigation = (target: string) => {
-    console.log(`🔄 Navigating to room: ${target}`);
     setCurrentLocation(target);
   };
 
   const handleFloorChange = useCallback((floor: typeof Floors[0]) => {
-    console.log(`🏢 Changing floor to: ${floor.key}`);
     setSelectedFloor(floor);
     setCurrentLocation("location1"); // Reset to first location when changing floors
     setImageLoading(true); // Show loading while changing floors
@@ -120,7 +114,6 @@ const ClusterPanoramaViewer: React.FC = () => {
       
       // Generate floor SVG
       const svg = renderImgs(clusterId || "", selectedFloor, handleRoomNavigation);
-      console.log('🏗️ Generated floor SVG:', svg);
       setFloorSvg(svg);
     }
     setLoading(false);
@@ -130,7 +123,6 @@ const ClusterPanoramaViewer: React.FC = () => {
   useEffect(() => {
     if (imageLoading) {
       const timeout = setTimeout(() => {
-        console.log('⏰ Loading timeout - hiding loading screen');
         setImageLoading(false);
       }, 5000); // 5 second timeout
 
@@ -139,8 +131,6 @@ const ClusterPanoramaViewer: React.FC = () => {
   }, [imageLoading]);
 
   const handleHotspotClick = (hotspot: Hotspot) => {
-    console.log(`🎯 Hotspot clicked: ${hotspot.target}`);
-    
     if (selectedPanorama && selectedPanorama[hotspot.target]) {
       setCurrentLocation(hotspot.target);
     }
@@ -239,17 +229,11 @@ const ClusterPanoramaViewer: React.FC = () => {
             ],
           ]}
           onReady={(viewer) => {
-            console.log('✅ Cluster Panorama viewer ready, current location:', currentLocation, 'image:', currentImage);
-            console.log('🔍 Current panorama data:', currentPanoramaData);
-            console.log('🖼️ Image source:', currentImage);
-            console.log('🏢 Current floor:', selectedFloor);
-            
             // Set up hotspot click handling
             const markersPlugin = viewer.getPlugin(MarkersPlugin);
             markersPlugin.addEventListener("select-marker", (e: any) => {
               const target = e.marker?.data?.target;
               if (target) {
-                console.log(`🎯 Hotspot clicked: ${target}`);
                 handleHotspotClick({ pitch: 0, yaw: 0, target });
               }
             });

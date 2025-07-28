@@ -38,7 +38,7 @@ const MasterPlanFilter: React.FC<MasterPlanFilterProps> = ({ onTypeChange, onAre
   return (
     <div className="masterplan-filter p-3">
       <h6 className="text-white mb-2" style={{fontSize:'12px'}}>Filter by Type</h6>
-      <ButtonGroup vertical className="w-100 mb-3">
+      <ButtonGroup className="w-100 mb-3">
         {TYPES.map((type) => (
           <ToggleButton
             key={type.value}

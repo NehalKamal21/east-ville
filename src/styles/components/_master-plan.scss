@@ -3,34 +3,35 @@
   position: relative;
   height: 100vh;
   width: 100%;
+  overflow: hidden; // Desktop - no scrolling
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
   
-  // Desktop - no overflow
-  @media (min-width: 1024px) {
-    overflow: hidden;
-  }
-
-  // Mobile/Tablet - allow scrolling
+  // Mobile/Tablet - enable scrolling
   @media (max-width: 1023px) {
     overflow: auto;
     overflow-x: auto;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
-  }
-  
-  // iPad specific
-  @media (min-width: 768px) and (max-width: 1023px) {
-    overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-  }
-  
-  // Mobile specific
-  @media (max-width: 767px) {
-    overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    
+    // Ensure horizontal scrolling is enabled
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
   }
 }
 
@@ -39,148 +40,130 @@
   width: 100%;
   height: 100%;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
 
-// Responsive Master Plan SVG - Desktop only gets full styles, mobile/tablet gets zoomed out
+// Responsive Master Plan SVG - Full screen with scrolling
 .master-plan-svg-responsive {
   width: 100%;
   height: 100%;
   display: block;
+  position: absolute;
   top: 0;
-  position: fixed;
-
-  // Desktop styles (default)
-  @media (min-width: 1024px) {
-    // Apply the same styles as master-plan-svg for desktop
-    width: 100%;
-    height: 100%;
-    display: block;
+  left: 0;
+  object-fit: cover;
+  min-width: 100%;
+  min-height: 100%;
+  
+  // Ensure background image fills the container completely
+  image[id="background"] {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transform-origin: 0 0 !important;
   }
-
-  // Tablet and mobile - normal display without preserveAspectRatio
+  
+  // Mobile/Tablet - wider for scrolling
   @media (max-width: 1023px) {
-    // Change to absolute positioning for mobile/tablet to allow scrolling
-    position: absolute;
-    top: 0;
-    left: 0;
-    // Keep original size for scrolling
-    width: 1920px;
-    height: 1217.25px;
-    min-width: 1920px;
-    min-height: 1217.25px;
-    transform: scale(0.6);
-    transform-origin: 0 0;
+    width: 200%;
+    min-width: 200%;
   }
   
-  // iPad specific
-  @media (min-width: 768px) and (max-width: 1023px) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1920px;
-    height: 1217.25px;
-    min-width: 1920px;
-    min-height: 1217.25px;
-    transform: scale(0.7);
-    transform-origin: 0 0;
+  @media (max-width: 768px) {
+    width: 250%;
+    min-width: 250%;
   }
   
-  // Mobile specific
-  @media (max-width: 767px) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1920px;
-    height: 1217.25px;
-    min-width: 1920px;
-    min-height: 1217.25px;
-    transform: scale(0.5);
-    transform-origin: 0 0;
+  @media (max-width: 480px) {
+    width: 300%;
+    min-width: 300%;
   }
+}
 
-  // Background image
-  #Background {
-    width: 100%;
-    height: 100%;
-    display: block;
-    background-size: contain;
-  }
+// Background image
+#Background {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-size: 100% 100%;
+  object-fit: cover;
+}
 
-  // Villa hover and active states
-  .villa-A {
+// Villa hover and active states
+.villa-A {
+  cursor: pointer;
 
-    cursor: pointer;
-
-    &:hover,
-    &.active-A {
-      filter: brightness(0) saturate(100%) invert(25%) sepia(11%) saturate(4722%) hue-rotate(143deg) brightness(94%) contrast(98%);
-      opacity: 0.3;
-    }
-  }
-
-  .villa-B {
-
-    cursor: pointer;
-
-    &:hover,
-    &.active-B {
-      filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
-      opacity: 0.3;
-    }
-  }
-
-  .villa-TW {
-
-    cursor: pointer;
-
-    &:hover,
-    &.active-TW {
-      filter: brightness(0) saturate(100%) invert(84%) sepia(5%) saturate(2386%) hue-rotate(137deg) brightness(84%) contrast(84%);
+  &:hover,
+  &.active-A {
+    filter: brightness(0) saturate(100%) invert(25%) sepia(11%) saturate(4722%) hue-rotate(143deg) brightness(94%) contrast(98%);
     opacity: 0.3;
-    }
   }
+}
 
-  // Tooltip styles
-  .tooltip-container {
+.villa-B {
+  cursor: pointer;
+
+  &:hover,
+  &.active-B {
+    filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
+    opacity: 0.3;
+  }
+}
+
+.villa-TW {
+  cursor: pointer;
+
+  &:hover,
+  &.active-TW {
+    filter: brightness(0) saturate(100%) invert(84%) sepia(5%) saturate(2386%) hue-rotate(137deg) brightness(84%) contrast(84%);
+    opacity: 0.3;
+  }
+}
+
+// Tooltip styles
+.tooltip-container {
+  pointer-events: none !important;
+  position: absolute;
+  z-index: 9999;
+  
+  .tooltip {
+    background-color: rgba(0, 0, 0, 0.95);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 10000;
+    white-space: nowrap;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    min-width: 150px;
+    max-width: 250px;
+    transition: all 0.2s ease;
     pointer-events: none !important;
-    position: absolute;
-    z-index: 9999;
     
-    .tooltip {
-      background-color: rgba(0, 0, 0, 0.95);
-      color: white;
-      padding: 15px 25px;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
-      position: relative;
-      z-index: 10000;
-      white-space: nowrap;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      min-width: 150px;
-      max-width: 250px;
-      transition: all 0.2s ease;
-      pointer-events: none !important;
-      
-      // Animation for tooltip appearance
-      animation: tooltipFadeIn 0.2s ease-in-out;
-      
-      // Ensure tooltip is always visible
-      &::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid rgba(0, 0, 0, 0.95);
-        pointer-events: none;
-      }
+    // Animation for tooltip appearance
+    animation: tooltipFadeIn 0.2s ease-in-out;
+    
+    // Ensure tooltip is always visible
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid rgba(0, 0, 0, 0.95);
+      pointer-events: none;
     }
   }
 }
@@ -232,19 +215,261 @@
 @media (max-width: 1023px) {
   .floating-gallery-buttons {
     position: fixed;
-    top: 16%;
+    top: 40px;
     right: 10px;
     gap: 8px;
     pointer-events: auto;
   }
 }
 
+@media (max-width: 768px) {
+  .floating-gallery-buttons {
+    top: 40px;
+    right: 8px;
+    gap: 6px;
+    pointer-events: auto;
+  }
+}
+
 @media (max-width: 600px) {
   .floating-gallery-buttons {
-    top: 16%;
-    right: 10px;
-    gap: 8px;
+    top: 40px;
+    right: 8px;
+    gap: 6px;
     pointer-events: auto;
+  }
+}
+
+// Master Plan Filter Styles
+.masterplan-filter {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 1050;
+  max-width: 200px;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 12px;
+  color: white;
+  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  h6 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    min-height: 36px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &.active {
+      background-color: #67b1a4;
+      border-color: #67b1a4;
+      color: white;
+    }
+  }
+
+  .form-range {
+    width: 100%;
+    height: 30px;
+    margin: 10px 0;
+    background: transparent;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #67b1a4;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    &::-webkit-slider-track {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 8px;
+    background-color: rgba(103, 177, 164, 0.8);
+    color: white;
+    border-radius: 6px;
+    margin-top: 5px;
+    display: inline-block;
+  }
+}
+
+// Responsive styles for master plan filter
+@media (max-width: 1023px) {
+  .masterplan-filter {
+    top: 160px;
+    left: 15px;
+    max-width: 180px;
+    font-size: 11px;
+    padding: 12px;
+
+    h6 {
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      padding: 5px 10px;
+      font-size: 10px;
+      min-height: 32px;
+      margin-bottom: 6px;
+    }
+
+    .form-range {
+      height: 26px;
+      margin: 8px 0;
+
+      &::-webkit-slider-thumb {
+        height: 18px;
+        width: 18px;
+      }
+    }
+
+    .badge {
+      font-size: 9px;
+      padding: 3px 6px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .masterplan-filter {
+    top: 140px;
+    left: 10px;
+    max-width: 160px;
+    font-size: 10px;
+    padding: 10px;
+
+    h6 {
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .btn {
+      padding: 4px 8px;
+      font-size: 9px;
+      min-height: 28px;
+      margin-bottom: 5px;
+    }
+
+    .form-range {
+      height: 24px;
+      margin: 6px 0;
+
+      &::-webkit-slider-thumb {
+        height: 16px;
+        width: 16px;
+      }
+    }
+
+    .badge {
+      font-size: 8px;
+      padding: 2px 5px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .masterplan-filter {
+    top: 130px;
+    left: 8px;
+    max-width: 150px;
+    font-size: 9px;
+    padding: 8px;
+
+    h6 {
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .btn {
+      padding: 3px 6px;
+      font-size: 8px;
+      min-height: 26px;
+      margin-bottom: 4px;
+    }
+
+    .form-range {
+      height: 22px;
+      margin: 5px 0;
+
+      &::-webkit-slider-thumb {
+        height: 14px;
+        width: 14px;
+      }
+    }
+
+    .badge {
+      font-size: 7px;
+      padding: 2px 4px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .masterplan-filter {
+    top: 130px;
+    left: 6px;
+    max-width: 140px;
+    font-size: 8px;
+    padding: 6px;
+
+    h6 {
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .btn {
+      padding: 2px 5px;
+      font-size: 7px;
+      min-height: 24px;
+      margin-bottom: 3px;
+    }
+
+    .form-range {
+      height: 20px;
+      margin: 4px 0;
+
+      &::-webkit-slider-thumb {
+        height: 12px;
+        width: 12px;
+      }
+    }
+
+    .badge {
+      font-size: 6px;
+      padding: 1px 3px;
+    }
   }
 }
 

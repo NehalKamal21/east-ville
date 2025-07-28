@@ -38,7 +38,7 @@ const ContactForm: React.FC = () => {
             closeModal();
             
             // Log form data for debugging
-            console.log("Form submitted:", formData);
+    
         } catch (err) {
             alert("Failed to send message.");
         }

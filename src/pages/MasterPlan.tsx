@@ -90,12 +90,12 @@ const MasterPlan: React.FC = () => {
     const kasakounTabTitles = ["1 BEDROOM", "2 BEDROOM", "Corridor", "ENTRANCE", "Kasakoun", "Studio"];
 
     const handleTypeChange = (type: string) => {
-        console.log("Type:", type);
+
         setSelectedType(type);
     };
 
     const handleAreaChange = (index: number) => {
-        console.log("Area filter:", index); // 0, 1, or 2
+
         setSelectedArea(index);
     };
 
@@ -151,7 +151,13 @@ const MasterPlan: React.FC = () => {
     }
 
     return (
-        <div className="master-plan-container" style={{ position: "relative", height: "100vh" }}>
+        <div 
+            className="master-plan-container" 
+            style={{ 
+                position: "relative", 
+                height: "100vh"
+            }}
+        >
             {/* Floating Gallery Buttons - top right */}
             <div className="floating-gallery-buttons">
                 <Button

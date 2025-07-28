@@ -8,7 +8,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(function(registrations) {
     for(let registration of registrations) {
       registration.unregister();
-      console.log('Service worker unregistered');
     }
   });
 }
@@ -25,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
       const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
       document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     });
-    console.log('Storage cleared for performance testing');
+
   };
 }
 

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useDeviceType } from '../utils/hooks';
 import img01 from "../assets/masterplan/image_1.png";
 import img02 from "../assets/masterplan/image_2.png";
 import img03 from "../assets/masterplan/image_3.png";
@@ -66,19 +67,8 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
     const navigate = useNavigate();
     const [hovered, setHovered] = useState<string | null>(null);
     const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    // Detect mobile/tablet devices
-    useEffect(() => {
-        const checkScreenSize = () => {
-            setIsMobile(window.innerWidth <= 1023);
-        };
-
-        checkScreenSize();
-        window.addEventListener('resize', checkScreenSize);
-
-        return () => window.removeEventListener('resize', checkScreenSize);
-    }, []);
+    const deviceType = useDeviceType();
+    const isMobile = deviceType === 'mobile' || deviceType === 'tablet';
 
     const handleClick = (event: React.MouseEvent<SVGImageElement, MouseEvent>) => {
         const ClusterId = event.currentTarget.id; // Get the ID of clicked Cluster
@@ -149,7 +139,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
         const target = event.currentTarget as HTMLElement;
         const iconId = target.id; // Get the icon ID (e.g., "360-A", "360-B", etc.)
 
-        console.log('360 icon clicked:', iconId); // Debug log
+
 
         if (iconId && iconId.startsWith('360-')) {
             // Extract the letter from the icon ID (e.g., "A" from "360-A")
@@ -163,15 +153,13 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 location: 'location1' // Default location
             };
 
-            console.log('Navigating to panorama with config:', panoramaConfig); // Debug log
+
 
             // Store panorama configuration in localStorage for the viewer to use
             localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
 
             // Navigate to exterior panorama viewer with iconId parameter
             navigate(`/exterior/${iconId}`);
-        } else {
-            console.log('360 icon clicked with ID:', iconId);
         }
     };
 
@@ -182,7 +170,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             width="1920"
             height="1217.25"
             viewBox="0 0 7680 4869"
-            preserveAspectRatio={isMobile ? undefined : 'none'}
+            preserveAspectRatio={isMobile ? 'xMinYMin meet' : 'none'}
             className='master-plan-svg-responsive'
         >
             <image id="background" width="7680" height="4869" xlinkHref={img01} />

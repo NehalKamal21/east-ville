@@ -319,7 +319,6 @@ html, body, #root {
 @media (max-width: 768px) {
   .room-details-panel {
     position: static;
-    margin-top: 1rem;
   }
 }
 
@@ -695,7 +694,7 @@ html, body, #root {
 /* Mobile responsive for floor selection */
 @media (max-width: 768px) {
   .floor-selection-container {
-    top: 10px;
+    top: 55px;
   }
   
   .floor-toggle-button {

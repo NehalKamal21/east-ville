@@ -61,13 +61,11 @@ const IconPanoramaViewer: React.FC = () => {
         const letter = iconId.split('-')[1];
         if (letter) {
           const imagePath = `/360Ext/${letter}.jpg`;
-          console.log('🖼️ Icon panorama image path:', imagePath);
           return imagePath;
         }
       }
     }
     const fallbackPath = "/360Ext/A.jpg";
-    console.log('🖼️ Using fallback image path:', fallbackPath);
     return fallbackPath;
   }, [customPanoramaConfig]);
 
@@ -76,7 +74,6 @@ const IconPanoramaViewer: React.FC = () => {
   }, [getPanoramaImage]);
 
   const handleRoomNavigation = (target: string) => {
-    console.log(`🔄 Navigating to room: ${target}`);
     setCurrentLocation(target);
   };
 
@@ -114,8 +111,6 @@ const IconPanoramaViewer: React.FC = () => {
   }, [customPanoramaConfig]);
 
   const handleHotspotClick = (hotspot: Hotspot) => {
-    console.log(`🎯 Hotspot clicked: ${hotspot.target}`);
-    
     if (selectedPanorama && selectedPanorama[hotspot.target]) {
       setCurrentLocation(hotspot.target);
     }
@@ -186,16 +181,11 @@ const IconPanoramaViewer: React.FC = () => {
             ],
           ]}
           onReady={(viewer) => {
-            console.log('✅ Icon Panorama viewer ready, current location:', currentLocation, 'image:', currentImage);
-            console.log('🔍 Current panorama data:', currentPanoramaData);
-            console.log('🖼️ Image source:', currentImage);
-            
             // Set up hotspot click handling
             const markersPlugin = viewer.getPlugin(MarkersPlugin);
             markersPlugin.addEventListener("select-marker", (e: any) => {
               const target = e.marker?.data?.target;
               if (target) {
-                console.log(`🎯 Hotspot clicked: ${target}`);
                 handleHotspotClick({ pitch: 0, yaw: 0, target });
               }
             });
