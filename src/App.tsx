@@ -12,6 +12,7 @@ import ContactForm from './components/ContactForm';
 import LocationButton from './components/LocationButton';
 import BreadcrumbNav from './components/Breadcrumbs';
 import { ContactModalProvider } from './utils/ContactModalContext';
+import { ModalProvider } from './utils/ModalContext';
 
 // 🔹 Lazy-loaded Pages
 const GoogleMapWrapper = lazy(() => import("./pages/GoogleMapWrapper"));
@@ -49,8 +50,9 @@ function App() {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ContactModalProvider>
-          <Router>
+        <ModalProvider>
+          <ContactModalProvider>
+            <Router>
             <Suspense fallback={<LoadingScreen />}>
               <BreadcrumbNav />
               <Routes>
@@ -70,7 +72,8 @@ function App() {
             <ContactForm />
             <LocationButton />
           </Router>
-        </ContactModalProvider>
+          </ContactModalProvider>
+        </ModalProvider>
       </QueryClientProvider>
     </React.StrictMode>
   );

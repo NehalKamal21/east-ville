@@ -81,7 +81,21 @@ const ClusterPanoramaViewer: React.FC = () => {
 
   const handleFloorChange = useCallback((floor: typeof Floors[0]) => {
     setSelectedFloor(floor);
-    setCurrentLocation("location1"); // Reset to first location when changing floors
+    
+    // Find the first available location for the new floor
+    if (clusterName && panoramaData[clusterName as keyof typeof panoramaData]) {
+      const floorData = panoramaData[clusterName as keyof typeof panoramaData][floor.key as keyof typeof panoramaData[typeof clusterName]];
+      if (floorData) {
+        const availableLocations = Object.keys(floorData);
+        const firstLocation = availableLocations[0] || "location1";
+        setCurrentLocation(firstLocation);
+      } else {
+        setCurrentLocation("location1"); // Fallback
+      }
+    } else {
+      setCurrentLocation("location1"); // Fallback
+    }
+    
     setImageLoading(true); // Show loading while changing floors
     setShowFloorPlan(false); // Hide floor plan when changing floors
     
@@ -89,7 +103,7 @@ const ClusterPanoramaViewer: React.FC = () => {
     if (clusterId) {
       navigate(`/clusterView/${clusterId}/${floor.key}/image`);
     }
-  }, [clusterId, navigate]);
+  }, [clusterId, navigate, clusterName]);
 
   useEffect(() => {
     if (clusterName && selectedFloor.key) {
@@ -118,6 +132,15 @@ const ClusterPanoramaViewer: React.FC = () => {
     }
     setLoading(false);
   }, [clusterName, selectedFloor.key, clusterPrefix, panoramaDataForCluster, clusterId, selectedFloor]);
+
+  // Separate effect to handle location validation
+  useEffect(() => {
+    if (selectedPanorama && typeof selectedPanorama === 'object' && !(currentLocation in selectedPanorama)) {
+      const availableLocations = Object.keys(selectedPanorama);
+      const firstLocation = availableLocations[0] || "location1";
+      setCurrentLocation(firstLocation);
+    }
+  }, [selectedPanorama, currentLocation]);
 
   // Fallback to hide loading screen if onReady doesn't fire
   useEffect(() => {

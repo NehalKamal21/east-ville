@@ -19,6 +19,7 @@ import backgroundImage from '../assets/masterplan/image_1.png';
 import MasterPlanFilter from '../components/MasterPlanFilter';
 import VillaSearchFromClusters from '../components/VillaSearchFromClusters';
 import KasakounGalleryCarousel from '../components/KasakounGalleryCarousel';
+import { useModal } from '../utils/ModalContext';
 import LoadingScreen from '../components/LoadingScreen';
 
 
@@ -139,8 +140,7 @@ const MasterPlan: React.FC = () => {
             fetchCluster();
         }
     }, []);
-    const [showCarousel, setShowCarousel] = useState(false);
-    const [showKasakoun, setShowKasakoun] = useState(false);
+    const { openModal } = useModal();
 
     // Combined loading state - wait for both data and background image
     const isFullyLoaded = !isLoading && backgroundImageLoaded;
@@ -163,28 +163,24 @@ const MasterPlan: React.FC = () => {
                 <Button
                     variant="dark"
                     className="shadow"
-                    onClick={() => setShowCarousel(true)}
+                    onClick={() => openModal('compound')}
                 >
-                    View Compound Gallery
+                    Compound Gallery
                 </Button>
                 <Button
                     variant="dark"
                     className="shadow"
-                    onClick={() => setShowKasakoun(true)}
+                    onClick={() => openModal('kasakoun')}
                 >
-                    View KASAKOUN Gallery
+                    KASAKOUN Gallery
                 </Button>
             </div>
 
             <VillaSearchFromClusters />
             <CompoundImageCarousel
-                show={showCarousel}
-                onClose={() => setShowCarousel(false)}
                 images={compoundImages}
             />
             <KasakounGalleryCarousel
-                show={showKasakoun}
-                onClose={() => setShowKasakoun(false)}
                 tabImages={kasakounTabImages}
                 tabTitles={kasakounTabTitles}
             />

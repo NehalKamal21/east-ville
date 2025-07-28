@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import { Modal, Carousel, Tabs, Tab } from "react-bootstrap";
+import { useModal } from "../utils/ModalContext";
 
 interface KasakounGalleryCarouselProps {
-    show: boolean;
-    onClose: () => void;
     tabImages: string[][]; // Array of image arrays, one per tab
     tabTitles?: string[]; // Optional: titles for each tab
 }
 
 const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = React.memo(({
-    show,
-    onClose,
     tabImages,
     tabTitles = ["1 Bed Room", "2 Bed Room", "Corridor", "Entrance", "Kasakoun", "Studio"],
 }) => {
+    const { activeModal, closeModal } = useModal();
+    const show = activeModal === 'kasakoun';
     const [activeTab, setActiveTab] = useState<string>("0");
     return (
         <Modal
             show={show}
-            onHide={onClose}
+            onHide={closeModal}
             size="lg"
             centered
             dialogClassName="kasakoun-modal"

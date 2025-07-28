@@ -1,6 +1,6 @@
 import React from "react";
 import { Polygon } from "@react-google-maps/api";
-import { polygonCoordinates } from  "../../utils/helpers";
+import { polygonCoordinates } from "../../utils/helpers";
 
 const MapPolygon: React.FC = () => {
   return (
@@ -23,6 +23,10 @@ const MapPolygon: React.FC = () => {
       {/* Main Polygon */}
       <Polygon
         paths={polygonCoordinates}
+        onClick={() => {
+          console.log("Polygon clicked");
+          window.location.href = "/";
+        }}
         options={{
           fillColor: "#67b1a4",
           fillOpacity: 0.6,

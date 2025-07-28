@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useModal } from './ModalContext';
 
 interface ContactFormData {
   interestedUnit?: string;
@@ -22,21 +23,21 @@ export const useContactModal = () => {
 };
 
 export const ContactModalProvider = ({ children }: { children: ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [prefillData, setPrefillData] = useState<ContactFormData>({});
+  const { activeModal, openModal: openGlobalModal, closeModal: closeGlobalModal } = useModal();
 
   const openModal = (prefill?: ContactFormData) => {
     if (prefill) setPrefillData(prefill);
-    setIsOpen(true);
+    openGlobalModal('contact');
   };
 
   const closeModal = () => {
-    setIsOpen(false);
     setPrefillData({});
+    closeGlobalModal();
   };
 
   return (
-    <ContactModalContext.Provider value={{ openModal, closeModal, isOpen, prefillData }}>
+    <ContactModalContext.Provider value={{ openModal, closeModal, isOpen: activeModal === 'contact', prefillData }}>
       {children}
     </ContactModalContext.Provider>
   );

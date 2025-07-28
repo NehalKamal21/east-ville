@@ -1,21 +1,20 @@
 import React from "react";
 import { Modal, Carousel } from "react-bootstrap";
+import { useModal } from "../utils/ModalContext";
 
 interface CompoundImageCarouselProps {
-    show: boolean;
-    onClose: () => void;
     images: string[];
 }
 
 const CompoundImageCarousel: React.FC<CompoundImageCarouselProps> = React.memo(({
-    show,
-    onClose,
     images,
 }) => {
+    const { activeModal, closeModal } = useModal();
+    const show = activeModal === 'compound';
     return (
         <Modal
             show={show}
-            onHide={onClose}
+            onHide={closeModal}
             size="lg"
             centered
             dialogClassName="compound-carousel-modal"

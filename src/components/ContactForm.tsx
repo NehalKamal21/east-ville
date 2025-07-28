@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { useContactModal } from "../utils/ContactModalContext";
+import { useModal } from "../utils/ModalContext";
 import { RiMailLine } from "react-icons/ri";
 
 const ContactForm: React.FC = () => {
     const [show, setShow] = useState(false);
     const { isOpen, closeModal, prefillData, openModal } = useContactModal();
+    const { activeModal, openModal: openGlobalModal, closeModal: closeGlobalModal } = useModal();
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const showSuccessModal = activeModal === 'success';
 
     const [formData, setFormData] = useState({
         name: "",
@@ -34,7 +36,7 @@ const ContactForm: React.FC = () => {
             // const response = await axios.post("/api/contact", formData);
             
             // Show success message without API call
-            setShowSuccessModal(true);
+            openGlobalModal('success');
             closeModal();
             
             // Log form data for debugging
@@ -97,7 +99,7 @@ const ContactForm: React.FC = () => {
 
             </Modal.Footer>
         </Modal>
-        <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
+        <Modal show={showSuccessModal} onHide={() => closeGlobalModal()} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Success</Modal.Title>
             </Modal.Header>
@@ -106,7 +108,7 @@ const ContactForm: React.FC = () => {
                 <Button
                     variant="success"
                     onClick={() => {
-                        setShowSuccessModal(false);
+                        closeGlobalModal();
                         closeModal();
                     }}
                 >

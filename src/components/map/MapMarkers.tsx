@@ -24,7 +24,7 @@ const MapMarkers: React.FC<MapMarkersProps> = React.memo(({ handleMarkerClick, r
     const filteredMarkers = useMemo(() => {
         return filteredTypes.length > 0
             ? locations.filter((marker) => filteredTypes.includes(marker.type))
-            : locations;
+            : [];
     }, [filteredTypes]);
 
     // Memoize marker icons to prevent recreation on every render

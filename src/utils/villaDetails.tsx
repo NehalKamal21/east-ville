@@ -102,11 +102,11 @@ export const villaDetails = {
                 "dimensions": "2.40 × 2.90 m",
                 target: "location2"
             },
-            {
-                "name": "Bar Area",
-                "dimensions": "1.65 × 2.00 m",
-                target: "location3"
-            },
+            // {
+            //     "name": "Bar Area",
+            //     "dimensions": "1.65 × 2.00 m",
+            //     target: "location3"
+            // },
             {
                 "name": "Toilet",
                 "dimensions": "1.20 × 2.00 m",
@@ -127,17 +127,17 @@ export const villaDetails = {
             {
                 "name": "M. Bathroom 1",
                 "dimensions": "1.40 × 2.20 m",
-                target: "location3"
+                target: "location4"
             },
             {
                 "name": "Master Bedroom 2",
                 "dimensions": "3.00 × 3.35 m",
-                target: "location4"
+                target: "location5"
             },
             {
                 "name": "M. Bathroom 2",
                 "dimensions": "1.20 × 2.35 m",
-                target: "location5"
+                target: "location6"
             }
         ],
         "secondFloor": [
