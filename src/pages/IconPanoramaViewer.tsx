@@ -1,39 +1,18 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
-import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import "@photo-sphere-viewer/core/index.css";
-import "@photo-sphere-viewer/markers-plugin/index.css";
 
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
-
-interface Hotspot {
-  pitch: number;
-  yaw: number;
-  target: string;
-}
-
-interface Room {
-  name: string;
-  dimensions: string;
-  target: string;
-}
-
-import { panoramaData } from "../utils/panoData";
-import { villaDetails } from "../utils/villaDetails";
 
 const IconPanoramaViewer: React.FC = () => {
   const { iconId } = useParams<{ iconId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [currentLocation, setCurrentLocation] = useState("location1");
   const [loading, setLoading] = useState(true);
   const [imageLoading, setImageLoading] = useState(true);
-  const [rooms, setRooms] = useState<Room[]>([]);
   const [showFloorPlan, setShowFloorPlan] = useState(false);
-  const [floorSVG, setFloorSvg] = useState<React.ReactNode>(null);
-  const [selectedPanorama, setSelectedPanorama] = useState<any>(null);
   const [customPanoramaConfig, setCustomPanoramaConfig] = useState<any>(null);
 
   const viewerRef = useRef<any>(null);
@@ -44,7 +23,6 @@ const IconPanoramaViewer: React.FC = () => {
       try {
         const config = JSON.parse(storedConfig);
         setCustomPanoramaConfig(config);
-        setCurrentLocation(config.location || 'location1');
         localStorage.removeItem('panoramaConfig');
       } catch (error) {
         console.error('Error parsing panorama config:', error);
@@ -73,48 +51,7 @@ const IconPanoramaViewer: React.FC = () => {
     return getPanoramaImage;
   }, [getPanoramaImage]);
 
-  const handleRoomNavigation = (target: string) => {
-    setCurrentLocation(target);
-  };
 
-  useEffect(() => {
-    if (customPanoramaConfig) {
-      let clusterId: string;
-      if (customPanoramaConfig.clusterId === 'A') clusterId = 'ClusterA';
-      else if (customPanoramaConfig.clusterId === 'B') clusterId = 'ClusterB';
-      else if (customPanoramaConfig.clusterId === 'TW') clusterId = 'ClusterTW';
-      else clusterId = 'ClusterA'; // fallback
-      
-      const clusterVillaDetails = (villaDetails as any)[customPanoramaConfig.clusterId]?.[customPanoramaConfig.floorKey] || [];
-      const clusterPanoramaData = (panoramaData as any)[clusterId]?.[customPanoramaConfig.floorKey] || {};
-      
-      const allRooms: Room[] = clusterVillaDetails.map((room: any) => ({
-        name: room.name,
-        dimensions: room.dimensions,
-        target: room.target || 'location1'
-      }));
-      
-      Object.keys(clusterPanoramaData).forEach(locationKey => {
-        const existingRoom = allRooms.find(room => room.target === locationKey);
-        if (!existingRoom) {
-          allRooms.push({
-            name: `Room ${locationKey}`,
-            dimensions: "N/A",
-            target: locationKey
-          });
-        }
-      });
-      
-      setRooms(allRooms);
-      setSelectedPanorama(clusterPanoramaData);
-    }
-  }, [customPanoramaConfig]);
-
-  const handleHotspotClick = (hotspot: Hotspot) => {
-    if (selectedPanorama && selectedPanorama[hotspot.target]) {
-      setCurrentLocation(hotspot.target);
-    }
-  };
 
   const toggleFloorPlan = () => {
     setShowFloorPlan(!showFloorPlan);
@@ -125,7 +62,6 @@ const IconPanoramaViewer: React.FC = () => {
   }
 
   const currentImage = getCurrentPanoramaImage;
-  const currentPanoramaData = selectedPanorama?.[currentLocation];
 
   if (!currentImage) {
     return (
@@ -145,8 +81,8 @@ const IconPanoramaViewer: React.FC = () => {
 
 
       {/* Panorama Viewer */}
-      <div style={{ 
-        width: '100vw', 
+      <div style={{
+        width: '100vw',
         height: '100vh',
         position: 'relative',
         overflow: 'hidden'
@@ -167,29 +103,7 @@ const IconPanoramaViewer: React.FC = () => {
             'move',
             'fullscreen'
           ]}
-          plugins={[
-            [
-              MarkersPlugin,
-              {
-                markers: currentPanoramaData?.hotspots?.map((hotspot: Hotspot, index: number) => ({
-                  id: `hotspot-${index}`,
-                  position: { pitch: hotspot.pitch, yaw: hotspot.yaw },
-                  html: `<div class="hotspot-marker"></div>`,
-                  data: { target: hotspot.target },
-                })) || [],
-              },
-            ],
-          ]}
-          onReady={(viewer) => {
-            // Set up hotspot click handling
-            const markersPlugin = viewer.getPlugin(MarkersPlugin);
-            markersPlugin.addEventListener("select-marker", (e: any) => {
-              const target = e.marker?.data?.target;
-              if (target) {
-                handleHotspotClick({ pitch: 0, yaw: 0, target });
-              }
-            });
-            
+          onReady={() => {
             setImageLoading(false);
           }}
         />
