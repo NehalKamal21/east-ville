@@ -1,3 +1,5 @@
+import { panoramaData } from './panoData';
+
 export const containerStyle: React.CSSProperties = {
   width: "100%",
   height: "100vh",
@@ -159,3 +161,105 @@ export interface PanoData {
   ClusterB?: Cluster;
   ClusterTW?: Cluster;
 }
+
+/**
+ * Extracts image paths from SVG components for preloading
+ * @param clusterId - The cluster ID (e.g., 'A', 'B', 'TW')
+ * @param floorId - The floor ID (e.g., 'groundFloor', 'firstFloor', 'secondFloor', 'Roof')
+ * @returns Array of image paths to preload
+ */
+export const getSvgImagePaths = (clusterId: string, floorId: string): string[] => {
+  const imagePaths: string[] = [];
+  
+  // Base path for cluster assets
+  const basePath = `/src/assets/cluster${clusterId.toLowerCase()}`;
+  
+  // Common image patterns for each floor
+  const floorImages: Record<string, string[]> = {
+    groundFloor: [
+      `${basePath}/AGroundFloor/image_27b1e69b.png`,
+      `${basePath}/AGroundFloor/image_34ef8e10.png`,
+      `${basePath}/AGroundFloor/image_4378a9b0.png`,
+      `${basePath}/AGroundFloor/image_7fc8ae7b.png`,
+      `${basePath}/AGroundFloor/image_80ea181a.png`,
+      `${basePath}/AGroundFloor/image_ab601311.png`,
+      `${basePath}/AGroundFloor/image_cea36707.png`,
+      `${basePath}/AGroundFloor/image_e3dba228.png`,
+      `${basePath}/AGroundFloor/image_f48a940d.png`,
+    ],
+    firstFloor: [
+      `${basePath}/AFirstFloor/image_259f4b31.png`,
+      `${basePath}/AFirstFloor/image_3ddb5d61.png`,
+      `${basePath}/AFirstFloor/image_48e72a08.png`,
+      `${basePath}/AFirstFloor/image_4d8f2fa1.png`,
+      `${basePath}/AFirstFloor/image_59e36c1d.png`,
+      `${basePath}/AFirstFloor/image_5a02debb.png`,
+      `${basePath}/AFirstFloor/image_9722bc5c.png`,
+      `${basePath}/AFirstFloor/image_a7e18dca.png`,
+      `${basePath}/AFirstFloor/image_da86f081.png`,
+      `${basePath}/AFirstFloor/image_e2912d53.png`,
+    ],
+    secondFloor: [
+      `${basePath}/ASecondFloor/image_34d4d63b.png`,
+      `${basePath}/ASecondFloor/image_3503f3c6.png`,
+      `${basePath}/ASecondFloor/image_55d5f099.png`,
+      `${basePath}/ASecondFloor/image_6a4a7b03.png`,
+      `${basePath}/ASecondFloor/image_87f4cbc5.png`,
+      `${basePath}/ASecondFloor/image_8981182b.png`,
+      `${basePath}/ASecondFloor/image_c0e80be6.png`,
+      `${basePath}/ASecondFloor/image_dc92bf35.png`,
+    ],
+    Roof: [
+      `${basePath}/ARoof/image_047d556f.png`,
+      `${basePath}/ARoof/image_0d691623.png`,
+      `${basePath}/ARoof/image_2f85a7ce.png`,
+      `${basePath}/ARoof/image_3d17e53f.png`,
+      `${basePath}/ARoof/image_4fa2920c.png`,
+      `${basePath}/ARoof/image_b879f188.png`,
+      `${basePath}/ARoof/image_d4190ae6.png`,
+    ]
+  };
+
+  // Return images for the specific floor, or empty array if not found
+  return floorImages[floorId] || [];
+};
+
+/**
+ * Gets panorama image paths for a specific cluster and floor
+ * @param clusterId - The cluster ID
+ * @param floorId - The floor ID
+ * @returns Array of panorama image paths
+ */
+export const getPanoramaImagePaths = (clusterId: string, floorId: string): string[] => {
+  const clusterName = `Cluster${clusterId}` as keyof typeof panoramaData;
+  
+  const clusterData = panoramaData[clusterName];
+  if (!clusterData) return [];
+  
+  const floorData = clusterData[floorId as keyof typeof clusterData];
+  if (!floorData) return [];
+  
+  const imagePaths: string[] = [];
+  
+  // Extract image paths from panorama data
+  Object.values(floorData).forEach((location: any) => {
+    if (location.imgName) {
+      imagePaths.push(location.imgName);
+    }
+  });
+  
+  return imagePaths;
+};
+
+/**
+ * Combines all image paths that need to be preloaded for a specific view
+ * @param clusterId - The cluster ID
+ * @param floorId - The floor ID
+ * @returns Array of all image paths to preload
+ */
+export const getAllImagePathsForView = (clusterId: string, floorId: string): string[] => {
+  const svgImages = getSvgImagePaths(clusterId, floorId);
+  const panoramaImages = getPanoramaImagePaths(clusterId, floorId);
+  
+  return [...svgImages, ...panoramaImages];
+};

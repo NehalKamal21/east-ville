@@ -1,9 +1,33 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
+import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import "@photo-sphere-viewer/core/index.css";
+import "@photo-sphere-viewer/markers-plugin/index.css";
 
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
+
+// Simple hotspot configuration for letters A-M
+const panoramaHotspots: Record<string, {
+  id: string;
+  position: { yaw: number; pitch: number };
+  tooltip: string;
+  target: string;
+}> = {
+  A: { id: 'A', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to B', target: 'B' },
+  B: { id: 'B', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to C', target: 'C' },
+  C: { id: 'C', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to D', target: 'D' },
+  D: { id: 'D', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to E', target: 'E' },
+  E: { id: 'E', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to F', target: 'F' },
+  F: { id: 'F', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to G', target: 'G' },
+  G: { id: 'G', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to H', target: 'H' },
+  H: { id: 'H', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to I', target: 'I' },
+  I: { id: 'I', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to J', target: 'J' },
+  J: { id: 'J', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to K', target: 'K' },
+  K: { id: 'K', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to L', target: 'L' },
+  L: { id: 'L', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to M', target: 'M' },
+  M: { id: 'M', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to A', target: 'A' }
+};
 
 const IconPanoramaViewer: React.FC = () => {
   const { iconId } = useParams<{ iconId: string }>();
@@ -14,6 +38,7 @@ const IconPanoramaViewer: React.FC = () => {
   const [imageLoading, setImageLoading] = useState(true);
   const [showFloorPlan, setShowFloorPlan] = useState(false);
   const [customPanoramaConfig, setCustomPanoramaConfig] = useState<any>(null);
+  const [currentLetter, setCurrentLetter] = useState<string>('A');
 
   const viewerRef = useRef<any>(null);
 
@@ -33,25 +58,93 @@ const IconPanoramaViewer: React.FC = () => {
   }, []);
 
   const getPanoramaImage = useMemo(() => {
+    // First check URL params
+    if (iconId) {
+      const letter = iconId.split('-')[1];
+      if (letter) {
+        setCurrentLetter(letter);
+        const imagePath = `/360Ext/${letter}.jpg`;
+        return imagePath;
+      }
+    }
+    
+    // Fallback to localStorage config
     if (customPanoramaConfig) {
       const iconId = customPanoramaConfig.iconId;
       if (iconId) {
         const letter = iconId.split('-')[1];
         if (letter) {
+          setCurrentLetter(letter);
           const imagePath = `/360Ext/${letter}.jpg`;
           return imagePath;
         }
       }
     }
+    
     const fallbackPath = "/360Ext/A.jpg";
+    setCurrentLetter('A');
     return fallbackPath;
-  }, [customPanoramaConfig]);
+  }, [iconId, customPanoramaConfig]);
 
   const getCurrentPanoramaImage = useMemo(() => {
     return getPanoramaImage;
   }, [getPanoramaImage]);
 
+  // Reset image loading when image changes
+  useEffect(() => {
+    setImageLoading(true);
+  }, [getCurrentPanoramaImage]);
 
+  // Get hotspot for current letter
+  const currentHotspot = useMemo(() => {
+    return panoramaHotspots[currentLetter];
+  }, [currentLetter]);
+
+  const handleHotspotClick = (hotspot: any) => {
+    if (hotspot.target) {
+      // Navigate to another panorama
+      const newConfig = {
+        iconId: `360-${hotspot.target}`,
+        clusterId: hotspot.target,
+        floorId: 'groundFloor',
+        location: 'location1'
+      };
+      localStorage.setItem('panoramaConfig', JSON.stringify(newConfig));
+      navigate(`/exterior/360-${hotspot.target}`);
+    }
+  };
+
+  const onReady = (viewer: any) => {
+    viewerRef.current = viewer;
+    const markersPlugin = viewer.getPlugin(MarkersPlugin);
+
+    // Create marker from hotspot
+    if (currentHotspot) {
+      const marker = {
+        id: currentHotspot.id,
+        position: currentHotspot.position,
+        image: "/arrow-down-marker.png",
+        width: 32,
+        height: 32,
+        anchor: "bottom center",
+        tooltip: currentHotspot.tooltip,
+        data: currentHotspot,
+        size: { width: 32, height: 32 },
+      };
+
+      markersPlugin.setMarkers([marker]);
+
+      // Add click event listener
+      markersPlugin.addEventListener('select-marker', (e: any) => {
+        const hotspot = e.marker?.data;
+        if (hotspot) {
+          handleHotspotClick(hotspot);
+        }
+      });
+    }
+
+    setImageLoading(false);
+  };
 
   const toggleFloorPlan = () => {
     setShowFloorPlan(!showFloorPlan);
@@ -78,8 +171,6 @@ const IconPanoramaViewer: React.FC = () => {
     <div className="panorama-viewer-container">
       {imageLoading && <LoadingScreen />}
 
-
-
       {/* Panorama Viewer */}
       <div style={{
         width: '100vw',
@@ -88,6 +179,7 @@ const IconPanoramaViewer: React.FC = () => {
         overflow: 'hidden'
       }}>
         <ReactPhotoSphereViewer
+          key={currentImage} // Force re-render when image changes
           ref={viewerRef}
           src={currentImage}
           height="100%"
@@ -97,16 +189,36 @@ const IconPanoramaViewer: React.FC = () => {
           mousewheel={true}
           touchmoveTwoFingers={true}
           mousewheelCtrlKey={true}
+          plugins={[[MarkersPlugin, {}]]}
           navbar={[
             'autorotate',
             'zoom',
             'move',
             'fullscreen'
           ]}
-          onReady={() => {
-            setImageLoading(false);
-          }}
+          onReady={onReady}
         />
+      </div>
+
+      {/* Navigation Panel */}
+      <div className="position-absolute top-0 end-0 m-3" style={{ zIndex: 10 }}>
+        <div className="card bg-dark text-white" style={{ minWidth: '200px' }}>
+          <div className="card-header">
+            <h6 className="mb-0">Location: {currentLetter}</h6>
+          </div>
+          <div className="card-body">
+            <p className="small mb-2">Next destination:</p>
+            {currentHotspot && (
+              <button
+                className="btn btn-sm btn-outline-light"
+                onClick={() => handleHotspotClick(currentHotspot)}
+                title={currentHotspot.tooltip}
+              >
+                Go to {currentHotspot.target}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       {showFloorPlan && (

@@ -12,6 +12,7 @@ interface Hotspot {
   pitch: number;
   yaw: number;
   target: string;
+  tooltip?: string;
 }
 
 import { panoramaData } from "../utils/panoData";
@@ -245,8 +246,13 @@ const ClusterPanoramaViewer: React.FC = () => {
                 markers: currentPanoramaData?.hotspots?.map((hotspot: Hotspot, index: number) => ({
                   id: `hotspot-${index}`,
                   position: { pitch: hotspot.pitch, yaw: hotspot.yaw },
-                  html: `<div class="hotspot-marker"></div>`,
+                  image: "/arrow-down-marker.png",
+                  width: 32,
+                  height: 32,
+                  anchor: "bottom center",
+                  tooltip: hotspot.tooltip || `Go to ${hotspot.target}`,
                   data: { target: hotspot.target },
+                  size: { width: 32, height: 32 },
                 })) || [],
               },
             ],

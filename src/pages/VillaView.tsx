@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import RoomDetailsPanel from "../components/RoomDetailsPanel";
 import { villaDetails } from "../utils/villaDetails";
 import { renderSVG } from "../utils/renderSVG";
+import LoadingScreen from "../components/LoadingScreen";
+import { getAllImagePathsForView } from "../utils/helpers";
 
 const Floors = [
   { value: "GF", key: "groundFloor" },
@@ -18,6 +20,8 @@ const VillaView: React.FC = () => {
   const navigate = useNavigate();
 
   const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  
   const defaultSelected = useMemo(() =>
     Floors.find((f) => f.key === FloorId) || Floors[0],
     [FloorId]
@@ -31,6 +35,12 @@ const VillaView: React.FC = () => {
     if (clusterId?.startsWith("T")) return "TW";
     return "";
   }, [clusterId]);
+
+  // Get image paths for preloading
+  const imagePaths = useMemo(() => {
+    if (!clusterPrefix || !selectedFloor) return [];
+    return getAllImagePathsForView(clusterPrefix, selectedFloor.key);
+  }, [clusterPrefix, selectedFloor]);
 
   // Memoize rooms data processing
   const getRoomsData = useCallback((clusterId: string | number, selectedFloor: { key: string | number; }) => {
@@ -55,20 +65,29 @@ const VillaView: React.FC = () => {
     }
   }, [clusterId, selectedFloor, clusterPrefix, getRoomsData]);
 
-  useEffect(() => {
-    // Only store rooms data if it's not empty to minimize storage usage
-    if (rooms.length > 0) {
-      localStorage.setItem("rooms", JSON.stringify(rooms));
-    } else {
-      localStorage.removeItem("rooms");
-    }
-  }, [rooms]);
+  // Removed localStorage operations - rooms data is read directly from villaDetails
 
   // Memoize floor navigation handler
   const handleFloorChange = useCallback((floor: typeof Floors[0]) => {
     setSelectedFloor(floor);
+    setImagesLoaded(false); // Reset image loading state when changing floors
     navigate(`/clusterView/${clusterId}/${floor.key}`);
   }, [clusterId, navigate]);
+
+  const handleLoadComplete = () => {
+    setImagesLoaded(true);
+  };
+
+  // Show loading screen until images are loaded
+  if (!imagesLoaded) {
+    return (
+      <LoadingScreen 
+        imagesToLoad={imagePaths}
+        onLoadComplete={handleLoadComplete}
+        showProgress={true}
+      />
+    );
+  }
 
   return (
     <>

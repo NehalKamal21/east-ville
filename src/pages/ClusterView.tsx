@@ -1,5 +1,5 @@
 // TODO: Define proper props interface
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Button } from "react-bootstrap";
 import { FiRotateCcw } from "react-icons/fi";
 import { useParams } from "react-router-dom";
@@ -11,13 +11,34 @@ import TWFront from '../SVGs/ClusterTW/TWFront';
 import TWBack from '../SVGs/ClusterTW/TWBack';
 import { useCluster } from '../utils/hooks';
 import LoadingScreen from '../components/LoadingScreen';
+import { getAllImagePathsForView } from '../utils/helpers';
 
 const ClusterView: React.FC = () => {
     const { clusterId } = useParams<{ clusterId: string }>();
     const [isFront, setIsFront] = useState(true);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
     
     // Use React Query for data fetching
     const { data: cluster, error, isLoading } = useCluster(clusterId || '');
+
+    // Get cluster prefix for image paths
+    const clusterPrefix = useMemo(() => {
+        if (clusterId?.startsWith("A")) return "A";
+        if (clusterId?.startsWith("B")) return "B";
+        if (clusterId?.startsWith("T")) return "TW";
+        return "";
+    }, [clusterId]);
+
+    // Get image paths for preloading
+    const imagePaths = useMemo(() => {
+        if (!clusterPrefix) return [];
+        
+        // For cluster view, we need both front and back images
+        const frontImages = getAllImagePathsForView(clusterPrefix, 'groundFloor'); // Using groundFloor as base
+        const backImages = getAllImagePathsForView(clusterPrefix, 'groundFloor'); // Same base for back
+        
+        return [...frontImages, ...backImages];
+    }, [clusterPrefix]);
 
     useEffect(() => {
         const scrollToMiddle = () => {
@@ -32,8 +53,19 @@ const ClusterView: React.FC = () => {
         setIsFront((prev) => !prev);
     };
 
-    if (isLoading) {
-        return <LoadingScreen />;
+    const handleLoadComplete = () => {
+        setImagesLoaded(true);
+    };
+
+    // Show loading screen until both data and images are loaded
+    if (isLoading || !imagesLoaded) {
+        return (
+            <LoadingScreen 
+                imagesToLoad={imagePaths}
+                onLoadComplete={handleLoadComplete}
+                showProgress={true}
+            />
+        );
     }
 
     if (error) {

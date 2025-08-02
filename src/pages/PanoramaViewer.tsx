@@ -12,6 +12,7 @@ interface Hotspot {
   pitch: number;
   yaw: number;
   target: string;
+  tooltip?: string;
 }
 
 import { panoramaData } from "../utils/panoData";
@@ -37,6 +38,7 @@ const PanoramaViewer: React.FC = () => {
 
   const [currentLocation, setCurrentLocation] = useState("location1");
   const [loading, setLoading] = useState(false);
+  const [panoramaImagesLoaded, setPanoramaImagesLoaded] = useState(false);
   const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
   const [showFloorPlan, setShowFloorPlan] = useState(false);
   const [floorSVG, setFloorSvg] = useState<React.ReactNode>(null);
@@ -62,6 +64,26 @@ const PanoramaViewer: React.FC = () => {
     if (clusterId?.startsWith("T")) return "TW";
     return "";
   }, [clusterId]);
+
+  // Get panorama image paths for preloading
+  const panoramaImagePaths = useMemo(() => {
+    if (!clusterName || !selectedFloor) return [];
+    
+    const clusterData = panoramaData[clusterName];
+    if (!clusterData) return [];
+    
+    const floorData = clusterData[selectedFloor.key as keyof typeof clusterData];
+    if (!floorData) return [];
+    
+    const imagePaths: string[] = [];
+    Object.values(floorData).forEach((location: any) => {
+      if (location.imgName) {
+        imagePaths.push(location.imgName);
+      }
+    });
+    
+    return imagePaths;
+  }, [clusterName, selectedFloor]);
 
   // Check for custom panorama configuration from 360 icons
   useEffect(() => {
@@ -152,7 +174,7 @@ const PanoramaViewer: React.FC = () => {
         width: 32,
         height: 32,
         anchor: "bottom center",
-        tooltip: `Go to ${hotspot.target}`,
+        tooltip: hotspot.tooltip || `Go to ${hotspot.target}`,
         data: { target: hotspot.target },
         size: { width: 32, height: 32 },
       }));
@@ -164,6 +186,10 @@ const PanoramaViewer: React.FC = () => {
       if (target) handleHotspotClick(target);
     });
   }, [selectedPanorama, currentLocation, handleHotspotClick]);
+
+  const handlePanoramaLoadComplete = () => {
+    setPanoramaImagesLoaded(true);
+  };
 
   useEffect(() => {
     setSelectedPanorama(panoramaDataForCluster);
@@ -223,11 +249,24 @@ const PanoramaViewer: React.FC = () => {
     setCurrentLocation("location1");
     // Hide floor plan when changing floors
     setShowFloorPlan(false);
+    // Reset panorama images loaded state
+    setPanoramaImagesLoaded(false);
     // Navigate to the new floor panorama
     if (clusterId) {
       navigate(`/clusterView/${clusterId}/${floor.key}/image`);
     }
   }, [clusterId, navigate]);
+
+  // Show loading screen until panorama images are loaded
+  if (!panoramaImagesLoaded) {
+    return (
+      <LoadingScreen 
+        imagesToLoad={panoramaImagePaths}
+        onLoadComplete={handlePanoramaLoadComplete}
+        showProgress={true}
+      />
+    );
+  }
 
   return (
     <div className="w-100 vh-100 position-relative bg-black">

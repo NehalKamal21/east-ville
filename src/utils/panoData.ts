@@ -6,7 +6,7 @@ export const panoramaData = {
                 "name": "Reception / Dining",
                 "imgName": "/panos/ClusterA/groundFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": "0deg", "yaw": "95deg", "target": "location2" }
+                    { "pitch": "0deg", "yaw": "95deg", "target": "location2", "tooltip": "Go to Kitchen" }
                 ]
             },
             "location2": {
@@ -14,7 +14,7 @@ export const panoramaData = {
                 "name": "Kitchen",
                 "imgName": "/panos/ClusterA/groundFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": "0deg", "yaw": "140deg", "target": "location3" }
+                    { "pitch": "0deg", "yaw": "140deg", "target": "location3", "tooltip": "Go to Lobby" }
                 ]
             },
             "location3": {
@@ -22,7 +22,7 @@ export const panoramaData = {
                 "name": "Lobby",
                 "imgName": "/panos/ClusterA/groundFloor/03.jpg",
                 "hotspots": [
-                    { "pitch": "0deg", "yaw": "180deg", "target": "location4" }
+                    { "pitch": "0deg", "yaw": "-40deg", "target": "location4", "tooltip": "Go to Toilet" }
                 ]
             },
             "location4": {
@@ -30,7 +30,7 @@ export const panoramaData = {
                 "name": "Toilet",
                 "imgName": "/panos/ClusterA/groundFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": "0deg", "yaw": "245deg", "target": "location1" }
+                    { "pitch": "0deg", "yaw": "245deg", "target": "location1", "tooltip": "Go to Reception / Dining" }
                 ]
             }
         },
@@ -40,7 +40,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 3",
                 "imgName": "/panos/ClusterA/firstFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": "0deg", "yaw": "80deg", "target": "location3" }
+                    { "pitch": "0deg", "yaw": "-32deg", "target": "location3", "tooltip": "Go to Dressing" }
                 ]
             },
             "location3": {
@@ -48,7 +48,7 @@ export const panoramaData = {
                 "name": "Dressing",
                 "imgName": "/panos/ClusterA/firstFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location4" }
+                    { "pitch": "0deg", "yaw": "-100deg", "target": "location4", "tooltip": "Go to M. Bathroom 3" }
                 ]
             },
             "location4": {
@@ -56,7 +56,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 3",
                 "imgName": "/panos/ClusterA/firstFloor/03.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location5" }
+                    { "pitch": 0, "yaw": -90, "target": "location5", "tooltip": "Go to Master Bedroom 4" }
                 ]
             },
             "location5": {
@@ -64,7 +64,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 4",
                 "imgName": "/panos/ClusterA/firstFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location6" }
+                    { "pitch": "0deg", "yaw": "-90deg", "target": "location6", "tooltip": "Go to M. Bathroom 4" }
                 ]
             },
             "location6": {
@@ -72,7 +72,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 4",
                 "imgName": "/panos/ClusterA/firstFloor/05.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "-220deg", "target": "location2", "tooltip": "Go to Master Bedroom 3" }
                 ]
             }
         },
@@ -82,7 +82,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 1",
                 "imgName": "/panos/ClusterA/secondFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "240deg", "target": "location2", "tooltip": "Go to M. Bathroom 1" }
                 ]
             },
             "location2": {
@@ -90,7 +90,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 1",
                 "imgName": "/panos/ClusterA/secondFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location3" }
+                    { "pitch": 0, "yaw": -90, "target": "location3", "tooltip": "Go to Living Room" }
                 ]
             },
             "location3": {
@@ -98,7 +98,7 @@ export const panoramaData = {
                 "name": "Living Room",
                 "imgName": "/panos/ClusterA/secondFloor/03.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location4" }
+                    { "pitch": "0deg", "yaw": "-95deg", "target": "location4", "tooltip": "Go to Master Bedroom 2" }
                 ]
             },
             "location4": {
@@ -106,7 +106,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 2",
                 "imgName": "/panos/ClusterA/secondFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location5" }
+                    { "pitch": "0deg", "yaw": "95deg", "target": "location5", "tooltip": "Go to M. Bathroom 2" }
                 ]
             },
             "location5": {
@@ -114,7 +114,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 2",
                 "imgName": "/panos/ClusterA/secondFloor/05.png",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "95deg", "target": "location1", "tooltip": "Go to Master Bedroom 1" }
                 ]
             }
         },
@@ -124,7 +124,7 @@ export const panoramaData = {
                 "name": "Maids Room",
                 "imgName": "/panos/ClusterA/Roof/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 0, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location2", "tooltip": "Go to Maids Toilet" }
                 ]
             },
             "location2": {
@@ -132,7 +132,7 @@ export const panoramaData = {
                 "name": "Maids Toilet",
                 "imgName": "/panos/ClusterA/Roof/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": -90, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "160deg", "target": "location1", "tooltip": "Go to Maids Room" }
                 ]
             }
         }
@@ -144,7 +144,7 @@ export const panoramaData = {
                 "name": "Reception / Dining",
                 "imgName": "/panos/ClusterB/groundFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "25deg", "target": "location2", "tooltip": "Go to Kitchen" }
                 ]
             },
             "location2": {
@@ -152,7 +152,7 @@ export const panoramaData = {
                 "name": "Kitchen",
                 "imgName": "/panos/ClusterB/groundFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location3" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location3", "tooltip": "Go to Toilet" }
                 ]
             },
             "location3": {
@@ -160,7 +160,7 @@ export const panoramaData = {
                 "name": "Toilet",
                 "imgName": "/panos/ClusterB/groundFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "25deg", "target": "location1", "tooltip": "Go to Reception / Dining" }
                 ]
             }
         },
@@ -170,7 +170,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 1",
                 "imgName": "/panos/ClusterB/firstFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location3" }
+                    { "pitch": "0deg", "yaw": "-35deg", "target": "location3", "tooltip": "Go to Dressing" }
                 ]
             },
             "location3": {
@@ -178,7 +178,7 @@ export const panoramaData = {
                 "name": "Dressing",
                 "imgName": "/panos/ClusterB/firstFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location4" }
+                    { "pitch": "0deg", "yaw": "0deg", "target": "location4", "tooltip": "Go to M. Bathroom 1" }
                 ]
             },
             "location4": {
@@ -186,7 +186,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 1",
                 "imgName": "/panos/ClusterB/firstFloor/03.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location5" }
+                    { "pitch": "0deg", "yaw": "70deg", "target": "location5", "tooltip": "Go to Master Bedroom 2" }
                 ]
             },
             "location5": {
@@ -194,7 +194,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 2",
                 "imgName": "/panos/ClusterB/firstFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location6" }
+                    { "pitch": "0deg", "yaw": "230deg", "target": "location6", "tooltip": "Go to M. Bathroom 2" }
                 ]
             },
             "location6": {
@@ -202,7 +202,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 2",
                 "imgName": "/panos/ClusterB/firstFloor/05.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location2", "tooltip": "Go to Master Bedroom 1" }
                 ]
             }
         },
@@ -212,7 +212,7 @@ export const panoramaData = {
                 "name": "Master Bedroom",
                 "imgName": "/panos/ClusterB/secondFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "120deg", "target": "location2", "tooltip": "Go to Dressing" }
                 ]
             },
             "location2": {
@@ -220,7 +220,7 @@ export const panoramaData = {
                 "name": "Dressing",
                 "imgName": "/panos/ClusterB/secondFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location3" }
+                    { "pitch": "0deg", "yaw": "-20deg", "target": "location3", "tooltip": "Go to M. Bathroom" }
                 ]
             },
             "location3": {
@@ -228,7 +228,7 @@ export const panoramaData = {
                 "name": "M. Bathroom",
                 "imgName": "/panos/ClusterB/secondFloor/03.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location4" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location4", "tooltip": "Go to Living Room" }
                 ]
             },
             "location4": {
@@ -236,7 +236,7 @@ export const panoramaData = {
                 "name": "Living Room",
                 "imgName": "/panos/ClusterB/secondFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location5" }
+                    { "pitch": "0deg", "yaw": "60deg", "target": "location5", "tooltip": "Go to Bathroom" }
                 ]
             },
             "location5": {
@@ -244,7 +244,7 @@ export const panoramaData = {
                 "name": "Bathroom",
                 "imgName": "/panos/ClusterB/secondFloor/05.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location6" }
+                    { "pitch": "0deg", "yaw": "230deg", "target": "location6", "tooltip": "Go to Kitchenette" }
                 ]
             },
             "location6": {
@@ -252,7 +252,7 @@ export const panoramaData = {
                 "name": "Kitchenette",
                 "imgName": "/panos/ClusterB/secondFloor/07.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location1", "tooltip": "Go to Master Bedroom" }
                 ]
             }
         },
@@ -262,7 +262,7 @@ export const panoramaData = {
                 "name": "Maids Room",
                 "imgName": "/panos/ClusterB/Roof/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 0, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location2", "tooltip": "Go to Maids Toilet" }
                 ]
             },
             "location2": {
@@ -270,7 +270,7 @@ export const panoramaData = {
                 "name": "Maids Toilet",
                 "imgName": "/panos/ClusterB/Roof/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 0, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "160deg", "target": "location1", "tooltip": "Go to Maids Room" }
                 ]
             }
         }
@@ -282,7 +282,7 @@ export const panoramaData = {
                 "name": "Reception / Dining",
                 "imgName": "/panos/ClusterTW/groundFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location2" }
+                    { "pitch": "10deg", "yaw": "70deg", "target": "location2", "tooltip": "Go to Kitchen" }
                 ]
             },
             "location2": {
@@ -290,15 +290,15 @@ export const panoramaData = {
                 "name": "Kitchen",
                 "imgName": "/panos/ClusterTW/groundFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location4" }
+                    { "pitch": "0deg", "yaw": "100deg", "target": "location3", "tooltip": "Go to Toilet" }
                 ]
             },
-            "location4": {
+            "location3": {
                 "id": "TW-gf-loc4",
                 "name": "Toilet",
                 "imgName": "/panos/ClusterTW/groundFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 90, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "-90deg", "target": "location1", "tooltip": "Go to Reception / Dining" }
                 ]
             }
         },
@@ -308,7 +308,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 1",
                 "imgName": "/panos/ClusterTW/firstFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "210deg", "target": "location2", "tooltip": "Go to M. Bathroom 1" }
                 ]
             },
             "location2": {
@@ -316,7 +316,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 1",
                 "imgName": "/panos/ClusterTW/firstFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location3" }
+                    { "pitch": "0deg", "yaw": "220deg", "target": "location3", "tooltip": "Go to Master Bedroom 2" }
                 ]
             },
             "location3": {
@@ -324,7 +324,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 2",
                 "imgName": "/panos/ClusterTW/firstFloor/03.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location4" }
+                    { "pitch": "0deg", "yaw": "220deg", "target": "location4", "tooltip": "Go to M. Bathroom 2" }
                 ]
             },
             "location4": {
@@ -332,7 +332,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 2",
                 "imgName": "/panos/ClusterTW/firstFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location5" }
+                    { "pitch": "0deg", "yaw": "100deg", "target": "location5", "tooltip": "Go to Master Bedroom 3" }
                 ]
             },
             "location5": {
@@ -340,7 +340,7 @@ export const panoramaData = {
                 "name": "Master Bedroom 3",
                 "imgName": "/panos/ClusterTW/firstFloor/05.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location6" }
+                    { "pitch": "0deg", "yaw": "-75deg", "target": "location6", "tooltip": "Go to M. Bathroom 3" }
                 ]
             },
             "location6": {
@@ -348,7 +348,7 @@ export const panoramaData = {
                 "name": "M. Bathroom 3",
                 "imgName": "/panos/ClusterTW/firstFloor/06.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "245deg", "target": "location1", "tooltip": "Go to Master Bedroom 1" }
                 ]
             }
         },
@@ -358,47 +358,39 @@ export const panoramaData = {
                 "name": "Master Bedroom 4",
                 "imgName": "/panos/ClusterTW/secondFloor/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "280deg", "target": "location2", "tooltip": "Go to M. Bathroom 4" }
                 ]
             },
-            "location2": {
+               "location2": {
                 "id": "TW-sf-loc2",
                 "name": "M. Bathroom 4",
                 "imgName": "/panos/ClusterTW/secondFloor/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location3" }
+                    { "pitch": "0deg", "yaw": "260deg", "target": "location3", "tooltip": "Go to Living Room" }
                 ]
             },
             "location3": {
-                "id": "TW-sf-loc3",
-                "name": "Dressing",
-                "imgName": "/panos/ClusterTW/secondFloor/03.jpg",
-                "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location4" }
-                ]
-            },
-            "location4": {
                 "id": "TW-sf-loc4",
                 "name": "Living Room",
                 "imgName": "/panos/ClusterTW/secondFloor/04.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location5" }
+                    { "pitch": "0deg", "yaw": "1550deg", "target": "location4", "tooltip": "Go to Master Bedroom 5" }
                 ]
             },
-            "location5": {
+            "location4": {
                 "id": "TW-sf-loc5",
                 "name": "Master Bedroom 5",
                 "imgName": "/panos/ClusterTW/secondFloor/05.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location6" }
+                    { "pitch": "0deg", "yaw": "240deg", "target": "location5", "tooltip": "Go to M. Bathroom 5" }
                 ]
             },
-            "location6": {
+            "location5": {
                 "id": "TW-sf-loc6",
                 "name": "M. Bathroom 5",
                 "imgName": "/panos/ClusterTW/secondFloor/06.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 180, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "105deg", "target": "location1", "tooltip": "Go to Master Bedroom 4" }
                 ]
             }
         },
@@ -408,7 +400,7 @@ export const panoramaData = {
                 "name": "Maids Room",
                 "imgName": "/panos/ClusterTW/Roof/01.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 0, "target": "location2" }
+                    { "pitch": "0deg", "yaw": "180deg", "target": "location2", "tooltip": "Go to Maids Toilet" }
                 ]
             },
             "location2": {
@@ -416,7 +408,7 @@ export const panoramaData = {
                 "name": "Maids Toilet",
                 "imgName": "/panos/ClusterTW/Roof/02.jpg",
                 "hotspots": [
-                    { "pitch": 0, "yaw": 0, "target": "location1" }
+                    { "pitch": "0deg", "yaw": "160deg", "target": "location1", "tooltip": "Go to Maids Room" }
                 ]
             }
         }
