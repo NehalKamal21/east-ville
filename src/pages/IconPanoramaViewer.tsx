@@ -200,26 +200,7 @@ const IconPanoramaViewer: React.FC = () => {
         />
       </div>
 
-      {/* Navigation Panel */}
-      <div className="position-absolute top-0 end-0 m-3" style={{ zIndex: 10 }}>
-        <div className="card bg-dark text-white" style={{ minWidth: '200px' }}>
-          <div className="card-header">
-            <h6 className="mb-0">Location: {currentLetter}</h6>
-          </div>
-          <div className="card-body">
-            <p className="small mb-2">Next destination:</p>
-            {currentHotspot && (
-              <button
-                className="btn btn-sm btn-outline-light"
-                onClick={() => handleHotspotClick(currentHotspot)}
-                title={currentHotspot.tooltip}
-              >
-                Go to {currentHotspot.target}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+
 
       {showFloorPlan && (
         <div className="floor-plan-modal" onClick={toggleFloorPlan}>
