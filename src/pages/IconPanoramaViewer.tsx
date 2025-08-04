@@ -36,6 +36,7 @@ const IconPanoramaViewer: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState<string | null>(null);
   const [showFloorPlan, setShowFloorPlan] = useState(false);
   const [customPanoramaConfig, setCustomPanoramaConfig] = useState<any>(null);
   const [currentLetter, setCurrentLetter] = useState<string>('A');
@@ -56,6 +57,27 @@ const IconPanoramaViewer: React.FC = () => {
     }
     setLoading(false);
   }, []);
+
+  // Preload and validate image before rendering
+  const validateImage = async (imagePath: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        // Check if image has correct aspect ratio (2:1 for 360 panoramas)
+        const aspectRatio = img.width / img.height;
+        if (Math.abs(aspectRatio - 2) > 0.1) {
+          console.warn(`Image ${imagePath} has incorrect aspect ratio: ${aspectRatio}. Expected 2:1`);
+        }
+        resolve(true);
+      };
+      img.onerror = () => {
+        console.error(`Failed to load image: ${imagePath}`);
+        setImageError(`Failed to load panorama image: ${imagePath}`);
+        resolve(false);
+      };
+      img.src = imagePath;
+    });
+  };
 
   const getPanoramaImage = useMemo(() => {
     // First check URL params
@@ -145,6 +167,13 @@ const IconPanoramaViewer: React.FC = () => {
 
     setImageLoading(false);
   };
+  // Validate image when it changes
+  useEffect(() => {
+    if (getCurrentPanoramaImage) {
+      setImageError(null);
+      validateImage(getCurrentPanoramaImage);
+    }
+  }, [getCurrentPanoramaImage]);
 
   const toggleFloorPlan = () => {
     setShowFloorPlan(!showFloorPlan);
@@ -162,6 +191,26 @@ const IconPanoramaViewer: React.FC = () => {
         <div className="alert alert-danger">
           <h3>❌ Error</h3>
           <p>No panorama image found</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (imageError) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="alert alert-danger">
+          <h3>❌ Image Loading Error</h3>
+          <p>{imageError}</p>
+          <button 
+            className="btn btn-primary mt-2"
+            onClick={() => {
+              setImageError(null);
+              setImageLoading(true);
+            }}
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
@@ -196,7 +245,10 @@ const IconPanoramaViewer: React.FC = () => {
             'move',
             'fullscreen'
           ]}
-          onReady={onReady}
+          onReady={() => {
+            setImageLoading(false);
+            console.log('Panorama loaded successfully:', currentImage);
+          }}
         />
       </div>
 

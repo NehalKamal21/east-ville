@@ -7,6 +7,7 @@ import "@photo-sphere-viewer/markers-plugin/index.css";
 
 import { renderImgs } from "../utils/renderImg";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { validatePanoramaImage } from "../utils/helpers";
 
 interface Hotspot {
   pitch: number;
@@ -39,6 +40,7 @@ const PanoramaViewer: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState("location1");
   const [loading, setLoading] = useState(false);
   const [panoramaImagesLoaded, setPanoramaImagesLoaded] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
   const [rooms, setRooms] = useState<{ name: string; dimensions: string }[]>([]);
   const [showFloorPlan, setShowFloorPlan] = useState(false);
   const [floorSVG, setFloorSvg] = useState<React.ReactNode>(null);
@@ -135,8 +137,33 @@ const PanoramaViewer: React.FC = () => {
     return null;
   }, [customPanoramaConfig]);
 
+  // Validate current image when it changes
+  useEffect(() => {
+    const currentImage = getPanoramaImage || (selectedPanorama && selectedPanorama[currentLocation]?.imgName);
+    
+    if (currentImage) {
+      setImageError(null);
+      
+      // Special handling for the problematic B-51 Master Bedroom 1 image
+      if (currentImage === '/panos/ClusterB/firstFloor/01.jpg') {
+        console.warn('Loading potentially problematic image: B-51 Master Bedroom 1');
+        
+        validatePanoramaImage(currentImage).then(validation => {
+          if (!validation.isValid) {
+            console.error('Image validation failed for B-51 Master Bedroom 1:', validation.issues);
+            setImageError(`Image validation failed: ${validation.issues.join(', ')}`);
+          }
+        }).catch(error => {
+          console.error('Error validating B-51 Master Bedroom 1 image:', error);
+          setImageError('Failed to validate image');
+        });
+      }
+    }
+  }, [getPanoramaImage, selectedPanorama, currentLocation]);
+
   const handleHotspotClick = useCallback((targetLocation: string) => {
     setLoading(true);
+    setImageError(null); // Clear any previous errors
     // Hide floor plan when changing location
     setShowFloorPlan(false);
     setTimeout(() => {
@@ -185,11 +212,14 @@ const PanoramaViewer: React.FC = () => {
       const target = e.marker?.data?.target;
       if (target) handleHotspotClick(target);
     });
+    
+    console.log('Panorama loaded successfully:', currentLocation);
   }, [selectedPanorama, currentLocation, handleHotspotClick]);
 
   const handlePanoramaLoadComplete = () => {
     setPanoramaImagesLoaded(true);
   };
+
 
   useEffect(() => {
     setSelectedPanorama(panoramaDataForCluster);
@@ -257,14 +287,41 @@ const PanoramaViewer: React.FC = () => {
     }
   }, [clusterId, navigate]);
 
-  // Show loading screen until panorama images are loaded
-  if (!panoramaImagesLoaded) {
+  // Show error message if image failed to load
+  if (imageError) {
     return (
-      <LoadingScreen 
-        imagesToLoad={panoramaImagePaths}
-        onLoadComplete={handlePanoramaLoadComplete}
-        showProgress={true}
-      />
+      <div className="w-100 vh-100 position-relative bg-black d-flex align-items-center justify-content-center">
+        <div className="alert alert-danger m-4" style={{ maxWidth: '500px' }}>
+          <h3>❌ Image Loading Error</h3>
+          <p>{imageError}</p>
+          <div className="mt-3">
+            <button 
+              className="btn btn-primary me-2"
+              onClick={() => {
+                setImageError(null);
+                setLoading(true);
+              }}
+            >
+              Retry
+            </button>
+            <button 
+              className="btn btn-secondary"
+              onClick={() => navigate(-1)}
+            >
+              Go Back
+            </button>
+          </div>
+          {imageError.includes('B-51 Master Bedroom 1') && (
+            <div className="mt-3 p-3 bg-warning bg-opacity-10 border border-warning rounded">
+              <h6>⚠️ Known Issue with B-51 Master Bedroom 1</h6>
+              <p className="mb-2">This image may have format or aspect ratio issues causing black diamonds.</p>
+              <a href="/specific-validator" className="btn btn-sm btn-warning">
+                Check Image Details
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
 

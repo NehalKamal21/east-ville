@@ -263,3 +263,106 @@ export const getAllImagePathsForView = (clusterId: string, floorId: string): str
   
   return [...svgImages, ...panoramaImages];
 };
+
+/**
+ * Validates panorama image properties to prevent black diamond issues
+ * @param imagePath - Path to the panorama image
+ * @returns Promise<{isValid: boolean, issues: string[], dimensions: {width: number, height: number}}>
+ */
+export const validatePanoramaImage = (imagePath: string): Promise<{
+  isValid: boolean;
+  issues: string[];
+  dimensions: { width: number; height: number };
+}> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const issues: string[] = [];
+
+    img.onload = () => {
+      const { width, height } = img;
+      const aspectRatio = width / height;
+
+      // Check aspect ratio (should be 2:1 for equirectangular panoramas)
+      if (Math.abs(aspectRatio - 2) > 0.1) {
+        issues.push(`Incorrect aspect ratio: ${aspectRatio.toFixed(2)} (expected 2:1)`);
+      }
+
+      // Check minimum resolution
+      if (width < 1024 || height < 512) {
+        issues.push(`Low resolution: ${width}x${height} (recommended minimum: 2048x1024)`);
+      }
+
+      // Check if dimensions are reasonable for panorama
+      if (width < height) {
+        issues.push('Image appears to be portrait orientation (should be landscape)');
+      }
+
+      resolve({
+        isValid: issues.length === 0,
+        issues,
+        dimensions: { width, height }
+      });
+    };
+
+    img.onerror = () => {
+      resolve({
+        isValid: false,
+        issues: ['Failed to load image'],
+        dimensions: { width: 0, height: 0 }
+      });
+    };
+
+    img.src = imagePath;
+  });
+};
+
+/**
+ * Preloads an image and returns a promise
+ * @param src - Image source path
+ * @returns Promise<HTMLImageElement>
+ */
+export const preloadImage = (src: string): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+    img.src = src;
+  });
+};
+
+/**
+ * Checks if all panorama images in a directory are valid
+ * @param imagePaths - Array of image paths to validate
+ * @returns Promise<{valid: string[], invalid: Array<{path: string, issues: string[]}>}>
+ */
+export const validatePanoramaImages = async (imagePaths: string[]) => {
+  const results = await Promise.allSettled(
+    imagePaths.map(async (path) => {
+      const validation = await validatePanoramaImage(path);
+      return { path, ...validation };
+    })
+  );
+
+  const valid: string[] = [];
+  const invalid: Array<{ path: string; issues: string[] }> = [];
+
+  results.forEach((result) => {
+    if (result.status === 'fulfilled') {
+      if (result.value.isValid) {
+        valid.push(result.value.path);
+      } else {
+        invalid.push({
+          path: result.value.path,
+          issues: result.value.issues
+        });
+      }
+    } else {
+      invalid.push({
+        path: 'unknown',
+        issues: [result.reason?.message || 'Unknown error']
+      });
+    }
+  });
+
+  return { valid, invalid };
+};

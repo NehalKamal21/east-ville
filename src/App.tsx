@@ -13,6 +13,8 @@ import LocationButton from './components/LocationButton';
 import BreadcrumbNav from './components/Breadcrumbs';
 import { ContactModalProvider } from './utils/ContactModalContext';
 import { ModalProvider } from './utils/ModalContext';
+import PanoramaImageValidator from './components/PanoramaImageValidator';
+import SpecificImageValidator from './components/SpecificImageValidator';
 
 // 🔹 Lazy-loaded Pages
 const GoogleMapWrapper = lazy(() => import("./pages/GoogleMapWrapper"));
@@ -66,6 +68,8 @@ function App() {
                 <Route path="/clusterView/:clusterId" element={<ClusterView />} />
                 <Route path="/clusterView/:clusterId/:FloorId" element={<VillaView />} />
                 <Route path="/clusterView/:clusterId/:FloorId/image" element={<ClusterPanoramaViewer />} />
+                <Route path="/panorama-validator" element={<PanoramaImageValidator />} />
+                <Route path="/specific-validator" element={<SpecificImageValidator />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
