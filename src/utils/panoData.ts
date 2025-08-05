@@ -104,7 +104,7 @@ export const panoramaData = {
             "location4": {
                 "id": "A-sf-loc4",
                 "name": "Master Bedroom 2",
-                "imgName": "/panos/ClusterA/secondFloor/04.jpg",
+                "imgName": "/panos/ClusterA/secondFloor/04.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "95deg", "target": "location5", "tooltip": "Go to M. Bathroom 2" }
                 ]
@@ -210,7 +210,7 @@ export const panoramaData = {
             "location1": {
                 "id": "B-sf-loc1",
                 "name": "Master Bedroom",
-                "imgName": "/panos/ClusterB/secondFloor/01.jpg",
+                "imgName": "/panos/ClusterB/secondFloor/01.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "120deg", "target": "location2", "tooltip": "Go to Dressing" }
                 ]
@@ -218,7 +218,7 @@ export const panoramaData = {
             "location2": {
                 "id": "B-sf-loc2",
                 "name": "Dressing",
-                "imgName": "/panos/ClusterB/secondFloor/02.jpg",
+                "imgName": "/panos/ClusterB/secondFloor/02.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "-20deg", "target": "location3", "tooltip": "Go to M. Bathroom" }
                 ]
@@ -234,7 +234,7 @@ export const panoramaData = {
             "location4": {
                 "id": "B-sf-loc4",
                 "name": "Living Room",
-                "imgName": "/panos/ClusterB/secondFloor/04.jpg",
+                "imgName": "/panos/ClusterB/secondFloor/04.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "60deg", "target": "location5", "tooltip": "Go to Bathroom" }
                 ]
@@ -242,7 +242,7 @@ export const panoramaData = {
             "location5": {
                 "id": "B-sf-loc5",
                 "name": "Bathroom",
-                "imgName": "/panos/ClusterB/secondFloor/05.jpg",
+                "imgName": "/panos/ClusterB/secondFloor/05.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "230deg", "target": "location6", "tooltip": "Go to Kitchenette" }
                 ]
@@ -306,7 +306,7 @@ export const panoramaData = {
             "location1": {
                 "id": "TW-ff-loc1",
                 "name": "Master Bedroom 1",
-                "imgName": "/panos/ClusterTW/firstFloor/01.jpg",
+                "imgName": "/panos/ClusterTW/firstFloor/01.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "210deg", "target": "location2", "tooltip": "Go to M. Bathroom 1" }
                 ]
@@ -346,7 +346,7 @@ export const panoramaData = {
             "location6": {
                 "id": "TW-ff-loc6",
                 "name": "M. Bathroom 3",
-                "imgName": "/panos/ClusterTW/firstFloor/06.jpg",
+                "imgName": "/panos/ClusterTW/firstFloor/06.png",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "245deg", "target": "location1", "tooltip": "Go to Master Bedroom 1" }
                 ]

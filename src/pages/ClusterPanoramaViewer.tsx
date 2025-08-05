@@ -44,6 +44,28 @@ const ClusterPanoramaViewer: React.FC = () => {
   const [selectedPanorama, setSelectedPanorama] = useState<any>(null);
   const [selectedFloor, setSelectedFloor] = useState(defaultSelected);
 
+  // Read panorama configuration from localStorage on component mount
+  useEffect(() => {
+    const storedConfig = localStorage.getItem('panoramaConfig');
+    if (storedConfig) {
+      try {
+        const config = JSON.parse(storedConfig);
+        console.log('Read panorama config from localStorage:', config);
+        
+        // Set the location from the stored config
+        if (config.location) {
+          setCurrentLocation(config.location);
+        }
+        
+        // Clean up localStorage after reading
+        localStorage.removeItem('panoramaConfig');
+      } catch (error) {
+        console.error('Error parsing panorama config:', error);
+        localStorage.removeItem('panoramaConfig');
+      }
+    }
+  }, []);
+
   const viewerRef = useRef<any>(null);
 
   const clusterName = useMemo(() => {

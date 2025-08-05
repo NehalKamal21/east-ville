@@ -1,7 +1,7 @@
 // TODO: Define proper props interface
 import React, { useEffect, useRef, useState } from 'react';
 import MasterPlanSvg from '../SVGs/MasterPlanSvg';
-import axios from "axios";
+
 import CompoundImageCarousel from '../components/CompoundImageCarousel';
 import { Button } from 'react-bootstrap';
 import img1 from '../assets/01.png';
@@ -41,6 +41,35 @@ const MasterPlan: React.FC = () => {
     // Images for Kasakoun Gallery tabs from public/KASAKOUN
     const kasakounTabImages = [
         [
+            '/KASAKOUN/KASAKOUN/KASAKOUN_.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_02.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_03.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_04.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_05.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN_06.jpg',
+            '/KASAKOUN/KASAKOUN/KASAKOUN-01.jpg',
+        ],
+        [
+            '/KASAKOUN/ENTRANCE/1.jpg',
+            '/KASAKOUN/ENTRANCE/2.jpg',
+            '/KASAKOUN/ENTRANCE/3.jpg',
+            '/KASAKOUN/ENTRANCE/4.jpg',
+            '/KASAKOUN/ENTRANCE/5.jpg',
+        ],
+        [
+            '/KASAKOUN/Corridor/1.jpg',
+            '/KASAKOUN/Corridor/2.jpg',
+            '/KASAKOUN/Corridor/3.jpg',
+        ],
+        [
+            '/KASAKOUN/STUDIO/1.jpg',
+            '/KASAKOUN/STUDIO/2.jpg',
+            '/KASAKOUN/STUDIO/3.jpg',
+            '/KASAKOUN/STUDIO/4.jpg',
+            '/KASAKOUN/STUDIO/5.jpg',
+            '/KASAKOUN/STUDIO/6.jpg',
+        ],
+        [
             '/KASAKOUN/1%20BEDROOM/1.jpg',
             '/KASAKOUN/1%20BEDROOM/2.jpg',
             '/KASAKOUN/1%20BEDROOM/3.jpg',
@@ -58,37 +87,8 @@ const MasterPlan: React.FC = () => {
             '/KASAKOUN/2%20BEDROOM/7.jpg',
             '/KASAKOUN/2%20BEDROOM/8.jpg',
         ],
-        [
-            '/KASAKOUN/Corridor/1.jpg',
-            '/KASAKOUN/Corridor/2.jpg',
-            '/KASAKOUN/Corridor/3.jpg',
-        ],
-        [
-            '/KASAKOUN/ENTRANCE/1.jpg',
-            '/KASAKOUN/ENTRANCE/2.jpg',
-            '/KASAKOUN/ENTRANCE/3.jpg',
-            '/KASAKOUN/ENTRANCE/4.jpg',
-            '/KASAKOUN/ENTRANCE/5.jpg',
-        ],
-        [
-            '/KASAKOUN/KASAKOUN/KASAKOUN_.jpg',
-            '/KASAKOUN/KASAKOUN/KASAKOUN_02.jpg',
-            '/KASAKOUN/KASAKOUN/KASAKOUN_03.jpg',
-            '/KASAKOUN/KASAKOUN/KASAKOUN_04.jpg',
-            '/KASAKOUN/KASAKOUN/KASAKOUN_05.jpg',
-            '/KASAKOUN/KASAKOUN/KASAKOUN_06.jpg',
-            '/KASAKOUN/KASAKOUN/KASAKOUN-01.jpg',
-        ],
-        [
-            '/KASAKOUN/STUDIO/1.jpg',
-            '/KASAKOUN/STUDIO/2.jpg',
-            '/KASAKOUN/STUDIO/3.jpg',
-            '/KASAKOUN/STUDIO/4.jpg',
-            '/KASAKOUN/STUDIO/5.jpg',
-            '/KASAKOUN/STUDIO/6.jpg',
-        ],
     ];
-    const kasakounTabTitles = ["1 BEDROOM", "2 BEDROOM", "Corridor", "ENTRANCE", "Kasakoun", "Studio"];
+    const kasakounTabTitles = ["Exterior", "Entrance", "Corridor", "Studio", "1 Bedroom", "2 Bedroom"];
 
     const handleTypeChange = (type: string) => {
 
@@ -120,14 +120,9 @@ const MasterPlan: React.FC = () => {
     useEffect(() => {
         const fetchCluster = async (): Promise<void> => {
             try {
-                const response = await axios.get(`/api/clusters`);
-                const data = response.data;
+                const response = await fetch('/data/clusters.json');
+                const data = await response.json();
 
-                data.map((item: any) => {
-                    item.availableUnits = item.villas.filter((villa: any) => villa.status === "Available").length;
-                    item.totalVillas = item.villas.length;
-                    // return item;
-                });
                 setClusters(data);
                 setIsLoading(false);
             } catch (err) {
@@ -172,7 +167,7 @@ const MasterPlan: React.FC = () => {
                     className="shadow"
                     onClick={() => openModal('kasakoun')}
                 >
-                    KASAKOUN Gallery
+                    Kasakoun Gallery
                 </Button>
             </div>
 

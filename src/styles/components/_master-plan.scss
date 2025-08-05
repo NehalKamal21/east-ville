@@ -114,11 +114,11 @@
   }
 }
 
-.villa-TW {
+.villa-T {
   cursor: pointer;
 
   &:hover,
-  &.active-TW {
+  &.active-T {
     filter: brightness(0) saturate(100%) invert(84%) sepia(5%) saturate(2386%) hue-rotate(137deg) brightness(84%) contrast(84%);
     opacity: 0.3;
   }

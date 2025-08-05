@@ -4,7 +4,7 @@ import { ButtonGroup, ToggleButton, Form, Badge } from "react-bootstrap";
 const TYPES = [
   { name: "A", value: "A" },
   { name: "B", value: "B" },
-  { name: "TW", value: "TW" }
+  { name: "T", value: "T" }
 ];
 
 const AREA_BREAKPOINTS = ["< 130 m²", "130 - 230 m²", "> 290 m²"];

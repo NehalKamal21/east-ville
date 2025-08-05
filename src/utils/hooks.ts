@@ -2,25 +2,21 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-// Test hook to check API connectivity using clusters endpoint
+// Test hook to check local data connectivity using clusters endpoint
 export const useApiTest = () => {
   return useQuery({
     queryKey: ['api-test'],
     queryFn: async () => {
       try {
-        const response = await axios.get('/api/clusters', { 
-          timeout: 5000,
-          withCredentials: true
-        });
-        return { status: 'success', data: response.data };
+        const response = await fetch('/data/clusters.json');
+        const data = await response.json();
+        return { status: 'success', data: data };
       } catch (error: any) {
-        console.error('API Test Error:', error);
+        console.error('Local Data Test Error:', error);
         return { 
           status: 'error', 
           message: error.message,
-          code: error.code,
-          statusCode: error.response?.status,
-          response: error.response?.data 
+          code: error.code
         };
       }
     },
@@ -34,10 +30,9 @@ export const useClusters = () => {
   return useQuery({
     queryKey: ['clusters'],
     queryFn: async () => {
-      const response = await axios.get('/api/clusters', { 
-        withCredentials: true 
-      });
-      return response.data;
+      const response = await fetch('/data/clusters.json');
+      const data = await response.json();
+      return data;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -48,8 +43,13 @@ export const useCluster = (clusterId: string) => {
   return useQuery({
     queryKey: ['cluster', clusterId],
     queryFn: async () => {
-      const response = await axios.get(`/api/clusters/clusterId/${clusterId}`);
-      return response.data;
+      const response = await fetch('/data/clusters.json');
+      const data = await response.json();
+      const cluster = data.find((cluster: any) => cluster.clusterId === clusterId);
+      if (!cluster) {
+        throw new Error(`Cluster with ID ${clusterId} not found`);
+      }
+      return cluster;
     },
     enabled: !!clusterId,
     staleTime: 5 * 60 * 1000, // 5 minutes

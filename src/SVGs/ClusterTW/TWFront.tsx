@@ -19,9 +19,9 @@ const TWFront: React.FC = () => {
     return (
         <svg preserveAspectRatio='none' className='fullScreenSvg' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="2000" height="2334" viewBox="0 0 2000 2334">
             <image width="2000" height="2334" xlinkHref={imgBg} />
-            <image id="secondFloor" className='villa-TW' onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} x="961" y="982" width="528" height="311" xlinkHref={img1} />
-            <image id="firstFloor" className='villa-TW' onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} x="962" y="1297" width="530" height="210" xlinkHref={img2} />
-            <image id="groundFloor" className='villa-TW' onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} x="921" y="1633" width="576" height="259" xlinkHref={img3} />
+            <image id="secondFloor" className='villa-T' onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} x="961" y="982" width="528" height="311" xlinkHref={img1} />
+            <image id="firstFloor" className='villa-T' onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} x="962" y="1297" width="530" height="210" xlinkHref={img2} />
+            <image id="groundFloor" className='villa-T' onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)} x="921" y="1633" width="576" height="259" xlinkHref={img3} />
         </svg>
 
     );

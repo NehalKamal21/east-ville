@@ -9,7 +9,7 @@ interface KasakounGalleryCarouselProps {
 
 const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = React.memo(({
     tabImages,
-    tabTitles = ["1 Bed Room", "2 Bed Room", "Corridor", "Entrance", "Kasakoun", "Studio"],
+    tabTitles = ["Exterior", "Entrance", "Corridor", "Studio", "1 Bedroom", "2 Bedroom"],
 }) => {
     const { activeModal, closeModal } = useModal();
     const show = activeModal === 'kasakoun';
@@ -23,7 +23,7 @@ const KasakounGalleryCarousel: React.FC<KasakounGalleryCarouselProps> = React.me
             dialogClassName="kasakoun-modal"
         >
             <Modal.Header closeButton className="border-0 text-white kasakoun-modal-header">
-                <Modal.Title className="text-white">KASAKOUN Gallery</Modal.Title>
+                <Modal.Title className="text-white">Kasakoun Gallery</Modal.Title>
             </Modal.Header>
             <Modal.Body className="kasakoun-modal-body">
                 <Tabs

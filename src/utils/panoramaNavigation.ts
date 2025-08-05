@@ -19,6 +19,8 @@ export const handlePanoramaClick = (
   floorId: string | undefined,
   location: string
 ) => {
+  console.log('handlePanoramaClick called with:', { clusterId, floorId, location });
+  
   // Determine the cluster prefix based on the clusterId
   let clusterPrefix = 'A'; // default
   if (clusterId?.startsWith('B')) {
@@ -27,12 +29,15 @@ export const handlePanoramaClick = (
     clusterPrefix = 'TW';
   }
 
+  console.log('Determined clusterPrefix:', clusterPrefix);
+
   const panoramaConfig: PanoramaConfig = {
     clusterId: clusterPrefix,
     floorId: floorId || 'groundFloor',
     location: location
   };
 
+  console.log('Setting panoramaConfig:', panoramaConfig);
   localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
   navigate(`/clusterView/${clusterId}/${floorId}/image`);
 };

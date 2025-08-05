@@ -15,7 +15,7 @@ const BGroundFloor: React.FC = () => {
 
   const handlePanoramaClick = (location: string) => {
     const panoramaConfig = {
-      clusterId: clusterId?.startsWith('B') ? 'B' : 'B',
+      clusterId: clusterId || 'B',
       floorId: FloorId || 'groundFloor',
       location: location
     };
@@ -31,9 +31,9 @@ const BGroundFloor: React.FC = () => {
     <image x="1254" y="519" width="513" height="193" xlinkHref={img3} />
     <image x="2107" width="621" height="1803" xlinkHref={img4} />
     <image x="2336" y="1363" width="290" height="245" xlinkHref={img5} className='villa-B' onClick={() => handlePanoramaClick('location2')}/>
-    <image x="2505" y="1148" width="122" height="203" xlinkHref={img6} className='villa-B' onClick={() => handlePanoramaClick('location4')}/>
     <image x="2215" y="511" width="415" height="853" xlinkHref={img7} className='villa-B' onClick={() => handlePanoramaClick('location1')}/>
-  </svg>
+    <image x="2505" y="1148" width="122" height="203" xlinkHref={img6} className='villa-B' onClick={() => handlePanoramaClick('location3')}/>
+    </svg>
   );
 };
 

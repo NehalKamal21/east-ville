@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { usePanoramaClick } from '../../utils/panoramaNavigation';
 import layer0 from '../../assets/clusterTW/TWRoof/image_73b0b3f9.png';
 import img1 from '../../assets/clusterTW/TWRoof/image_14322978.png';
 import img2 from '../../assets/clusterTW/TWRoof/image_4e1a20b5.png';
@@ -12,15 +13,7 @@ const TWRoof: React.FC = () => {
     const navigate = useNavigate();
     const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
 
-    const handlePanoramaClick = (location: string) => {
-        const panoramaConfig = {
-            clusterId: clusterId?.startsWith('TW') ? 'TW' : 'TW',
-            floorId: FloorId || 'Roof',
-            location: location
-        };
-        localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
-        navigate(`/clusterView/${clusterId}/${FloorId}/image`);
-    };
+    const handlePanoramaClick = usePanoramaClick(navigate, clusterId, FloorId);
 
     return (
         <svg className="fullScreenSvg" preserveAspectRatio='' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="2880" height="1800" viewBox="0 0 2880 1800">
@@ -29,8 +22,8 @@ const TWRoof: React.FC = () => {
             <image x="1417" y="352" width="163" height="79" xlinkHref={img2} />
             <image x="1273" y="532" width="447" height="170" xlinkHref={img3} />
             <image x="2119" width="609" height="1798" xlinkHref={img4} />
-            <image x="2290" y="1086" width="136" height="146" xlinkHref={img5} className='villa-TW' onClick={() => handlePanoramaClick('location1')} />
-            <image x="2289" y="998" width="138" height="80" xlinkHref={img6} className='villa-TW' onClick={() => handlePanoramaClick('location2')} />
+            <image x="2290" y="1086" width="136" height="146" xlinkHref={img5} className='villa-T' onClick={() => handlePanoramaClick('location1')} />
+            <image x="2289" y="998" width="138" height="80" xlinkHref={img6} className='villa-T' onClick={() => handlePanoramaClick('location2')} />
         </svg>
     );
 };

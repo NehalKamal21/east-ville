@@ -197,11 +197,11 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
                 xlinkHref={img04}
             />
-            <image x="3897" y="1066" width="276" height="279" id="TW-33"
-                onMouseEnter={(event) => handleMouseEnter('TW-33', event)}
+            <image x="3897" y="1066" width="276" height="279" id="T-33"
+                onMouseEnter={(event) => handleMouseEnter('T-33', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img05}
             />
             <image x="4080" y="1204" width="435" height="380" id="B-32"
@@ -218,11 +218,11 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
                 xlinkHref={img07}
             />
-            <image x="3481" y="1269" width="286" height="321" id="TW-38"
-                onMouseEnter={(event) => handleMouseEnter('TW-38', event)}
+            <image x="3481" y="1269" width="286" height="321" id="T-38"
+                onMouseEnter={(event) => handleMouseEnter('T-38', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img08}
             />
             <image x="3167" y="1036" width="410" height="390" id="B-39"
@@ -267,11 +267,11 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
                 xlinkHref={img14}
             />
-            <image x="3100" y="1466" width="285" height="297" id="TW-43"
-                onMouseEnter={(event) => handleMouseEnter('TW-43', event)}
+            <image x="3100" y="1466" width="285" height="297" id="T-43"
+                onMouseEnter={(event) => handleMouseEnter('T-43', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img15}
             />
             <image x="3288" y="1603" width="378" height="417" id="B-42"
@@ -302,11 +302,11 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
                 xlinkHref={img19}
             />
-            <image x="2653" y="1687" width="292" height="318" id="TW-50"
-                onMouseEnter={(event) => handleMouseEnter('TW-50', event)}
+            <image x="2653" y="1687" width="292" height="318" id="T-50"
+                onMouseEnter={(event) => handleMouseEnter('T-50', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img20}
             />
             <image x="2787" y="1862" width="488" height="423" id="B-51"
@@ -395,14 +395,14 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('T-22', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img33}
             />
             <image x="5204" y="1989" width="305" height="320" id="T-21"
                 onMouseEnter={(event) => handleMouseEnter('T-21', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img34}
             />
             <image x="5409" y="2140" width="455" height="473" id="A-20"
@@ -437,7 +437,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('T-14', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img39}
             />
             <image x="4772" y="2225" width="512" height="444" id="A-15"
@@ -479,7 +479,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('T-10', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img45}
             />
             <image x="4368" y="2449" width="446" height="420" id="A-09"
@@ -521,14 +521,14 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('T-02', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img51}
             />
             <image x="3937" y="2714" width="315" height="355" id="T-03"
                 onMouseEnter={(event) => handleMouseEnter('T-03', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-TW ' + (selectedType === 'TW' || selectedArea === 2 ? 'active-TW' : '')}
+                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
                 xlinkHref={img52}
             />
             <image x="4147" y="2892" width="482" height="501" id="A-04"

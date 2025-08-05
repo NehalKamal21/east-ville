@@ -25,12 +25,12 @@ const TWFirstFloor: React.FC = () => {
             <image x="1269" y="1395" width="460" height="122" xlinkHref={img1} />
             <image x="1417" y="352" width="163" height="79" xlinkHref={img2} />
             <image x="2111" width="615" height="1799" xlinkHref={img3} />
-            <image x="2190" y="1324" width="127" height="139" xlinkHref={img4} className='villa-TW' onClick={() => handlePanoramaClick('location6')} />
-            <image x="2328" y="1325" width="323" height="224" xlinkHref={img5} className='villa-TW' onClick={() => handlePanoramaClick('location5')} />
-            <image x="2190" y="1187" width="127" height="130" xlinkHref={img6} className='villa-TW' onClick={() => handlePanoramaClick('location4')} />
-            <image x="2188" y="973" width="237" height="259" xlinkHref={img7} className='villa-TW' onClick={() => handlePanoramaClick('location3')} />
-            <image x="2541" y="738" width="111" height="227" xlinkHref={img8} className='villa-TW' onClick={() => handlePanoramaClick('location2')} />
-            <image x="2190" y="740" width="342" height="224" xlinkHref={img9} className='villa-TW' onClick={() => handlePanoramaClick('location1')} />
+            <image x="2190" y="1324" width="127" height="139" xlinkHref={img4} className='villa-T' onClick={() => handlePanoramaClick('location6')} />
+            <image x="2328" y="1325" width="323" height="224" xlinkHref={img5} className='villa-T' onClick={() => handlePanoramaClick('location5')} />
+            <image x="2190" y="1187" width="127" height="130" xlinkHref={img6} className='villa-T' onClick={() => handlePanoramaClick('location4')} />
+            <image x="2188" y="973" width="237" height="259" xlinkHref={img7} className='villa-T' onClick={() => handlePanoramaClick('location3')} />
+            <image x="2541" y="738" width="111" height="227" xlinkHref={img8} className='villa-T' onClick={() => handlePanoramaClick('location2')} />
+            <image x="2190" y="740" width="342" height="224" xlinkHref={img9} className='villa-T' onClick={() => handlePanoramaClick('location1')} />
             <image x="1269" y="527" width="463" height="176" xlinkHref={img10} />
         </svg>
     );
