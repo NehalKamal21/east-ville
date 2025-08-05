@@ -241,21 +241,26 @@ export const villaDetails = {
                 "dimensions": "1.30 × 3.00 m",
                 target: "location2"
             },
+            {
+                "name": "Dressing",
+                "dimensions": "1.50 × 3.00 m",
+                target: "location3"
+            },
           
             {
                 "name": "Living Room",
                 "dimensions": "5.00 × 3.60 m",
-                target: "location3"
+                target: "location4"
             },
             {
                 "name": "Master Bedroom 5",
                 "dimensions": "4.40 × 3.00 m",
-                target: "location4"
+                target: "location5"
             },
             {
                 "name": "M. Bathroom 5",
                 "dimensions": "1.80 × 1.70 m",
-                target: "location5"
+                target: "location6"
             }
         ],
         "Roof": [

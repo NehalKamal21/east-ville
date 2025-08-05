@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { usePanoramaClick } from '../../utils/panoramaNavigation';
-import layer0 from '../../assets/clusterTW/TWSecondFloor/image_176ed469.png';
+import layer0 from '../../assets/clusterTW/TWSecondFloor/image_04894a4e.png';
 import img1 from '../../assets/clusterTW/TWSecondFloor/image_32b47103.png';
 import img2 from '../../assets/clusterTW/TWSecondFloor/image_581ec2c5.png';
 import img3 from '../../assets/clusterTW/TWSecondFloor/image_26f6bea6.png';
@@ -17,7 +16,16 @@ const TWSecondFloor: React.FC = () => {
   const navigate = useNavigate();
   const { clusterId, FloorId } = useParams<{ clusterId: string; FloorId: string }>();
 
-  const handlePanoramaClick = usePanoramaClick(navigate, clusterId, FloorId);
+  const handlePanoramaClick = (location: string) => {
+    console.log('Panorama click:', location); // Debug log
+    const panoramaConfig = {
+      clusterId: clusterId || 'T',
+      floorId: FloorId || 'secondFloor',
+      location: location
+    };
+    localStorage.setItem('panoramaConfig', JSON.stringify(panoramaConfig));
+    navigate(`/clusterView/${clusterId}/${FloorId}/image`);
+  };
 
   return (
     <svg className="fullScreenSvg" preserveAspectRatio='' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="2880" height="1800" viewBox="0 0 2880 1800">
