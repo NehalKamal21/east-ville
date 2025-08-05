@@ -7,26 +7,69 @@ import "@photo-sphere-viewer/markers-plugin/index.css";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
 
-// Simple hotspot configuration for letters A-M
-const panoramaHotspots: Record<string, {
+// Hotspot configuration for letters A-M - each letter can have multiple hotspots
+const panoramaHotspots: Record<string, Array<{
   id: string;
-  position: { yaw: number; pitch: number };
-  tooltip: string;
+  position: { yaw: number | string; pitch: number | string };
   target: string;
-}> = {
-  A: { id: 'A', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to B', target: 'B' },
-  B: { id: 'B', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to C', target: 'C' },
-  C: { id: 'C', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to D', target: 'D' },
-  D: { id: 'D', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to E', target: 'E' },
-  E: { id: 'E', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to F', target: 'F' },
-  F: { id: 'F', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to G', target: 'G' },
-  G: { id: 'G', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to H', target: 'H' },
-  H: { id: 'H', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to I', target: 'I' },
-  I: { id: 'I', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to J', target: 'J' },
-  J: { id: 'J', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to K', target: 'K' },
-  K: { id: 'K', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to L', target: 'L' },
-  L: { id: 'L', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to M', target: 'M' },
-  M: { id: 'M', position: { yaw: 0, pitch: 0 }, tooltip: 'Go to A', target: 'A' }
+}>> = {
+  A: [
+    { id: 'A-to-D', position: { yaw: "50deg", pitch: "0deg" }, target: 'D' },
+    { id: 'A-to-C', position: { yaw: "130deg", pitch: "0deg" }, target: 'C' },
+    { id: 'A-to-I', position: { yaw: "87deg", pitch: "0deg" }, target: 'I' }
+  ],
+  B: [
+    { id: 'B-to-F', position: { yaw: "87deg", pitch: "0deg" }, target: 'F' },
+    { id: 'B-to-D', position: { yaw: "130deg", pitch: "0deg" }, target: 'D' }
+  ],
+  C: [
+    { id: 'C-to-A', position: { yaw: "10deg", pitch: "0deg" }, target: 'A' },
+    { id: 'C-to-H', position: { yaw: "90deg", pitch: "0deg" }, target: 'H' }
+  ],
+  D: [
+    { id: 'D-to-B', position: { yaw: "30deg", pitch: "0deg" }, target: 'B' },
+    { id: 'D-to-A', position: { yaw: "150deg", pitch: "0deg" }, target: 'A' },
+    { id: 'D-to-I', position: { yaw: "87deg", pitch: "0deg" }, target: 'I' }
+ ],
+  E: [
+    { id: 'E-to-L', position: { yaw: "-40deg", pitch: "0deg" }, target: 'L' },
+    { id: 'E-to-F', position: { yaw: "30deg", pitch: "0deg" }, target: 'F' },
+    { id: 'E-to-D', position: { yaw: "-10deg", pitch: "0deg" }, target: 'D' }
+  ],
+  F: [
+    { id: 'F-to-I', position: { yaw: "170deg", pitch: "0deg" }, target: 'I' },
+    { id: 'F-to-E', position: { yaw: "150deg", pitch: "0deg" }, target: 'E' },
+    { id: 'F-to-D', position: { yaw: "200deg", pitch: "0deg" }, target: 'D' },
+    { id: 'F-to-B', position: { yaw: "270deg", pitch: "0deg" }, target: 'B' }
+  ],
+  H: [
+    { id: 'H-to-E', position: { yaw: "0deg", pitch: "0deg" }, target: 'E' },
+    { id: 'H-to-G', position: { yaw: "-140deg", pitch: "35deg" }, target: 'G' },
+    { id: 'H-to-J', position: { yaw: "-140deg", pitch: "0deg" }, target: 'J' },
+
+    { id: 'H-to-L', position: { yaw: "50deg", pitch: "0deg" }, target: 'L' },
+    { id: 'H-to-M', position: { yaw: "120deg", pitch: "25deg" }, target: 'M' },
+    { id: 'H-to-K', position: { yaw: "140deg", pitch: "0deg" }, target: 'K' },
+    { id: 'H-to-C', position: { yaw: "-30deg", pitch: "0deg" }, target: 'C' },
+  ],
+  I: [
+    { id: 'I-to-F', position: { yaw: "0deg", pitch: "0deg" }, target: 'F' },
+    { id: 'I-to-A', position: { yaw: "-120deg", pitch: "0deg" }, target: 'A' },
+    { id: 'I-to-H', position: { yaw: "180deg", pitch: "0deg" }, target: 'H' }
+  ],
+  J: [
+    { id: 'J-to-K', position: { yaw: "0deg", pitch: "0deg" }, target: 'K' },
+    { id: 'J-to-G', position: { yaw: "-30deg", pitch: "45deg" }, target: 'G' },
+    { id: 'J-to-H', position: { yaw: "10deg", pitch: "0deg" }, target: 'H' }
+  ],
+  K: [
+    { id: 'K-to-H', position: { yaw: "160deg", pitch: "0deg" }, target: 'H' },
+    { id: 'K-to-M', position: { yaw: "0deg", pitch: "18deg" }, target: 'M' }
+  ],
+  L: [
+    { id: 'L-to-C', position: { yaw: "0deg", pitch: "0deg" }, target: 'C' },
+    { id: 'L-to-E', position: { yaw: "60deg", pitch: "-6deg" }, target: 'E' }
+  ]
 };
 
 const IconPanoramaViewer: React.FC = () => {
@@ -85,7 +128,7 @@ const IconPanoramaViewer: React.FC = () => {
       const letter = iconId.split('-')[1];
       if (letter) {
         setCurrentLetter(letter);
-        const imagePath = `/360Ext/${letter}.jpg`;
+        const imagePath = `/360Ext/${letter.toUpperCase()}.jpg`;
         return imagePath;
       }
     }
@@ -97,7 +140,7 @@ const IconPanoramaViewer: React.FC = () => {
         const letter = iconId.split('-')[1];
         if (letter) {
           setCurrentLetter(letter);
-          const imagePath = `/360Ext/${letter}.jpg`;
+          const imagePath = `/360Ext/${letter.toUpperCase()}.jpg`;
           return imagePath;
         }
       }
@@ -117,9 +160,9 @@ const IconPanoramaViewer: React.FC = () => {
     setImageLoading(true);
   }, [getCurrentPanoramaImage]);
 
-  // Get hotspot for current letter
-  const currentHotspot = useMemo(() => {
-    return panoramaHotspots[currentLetter];
+  // Get hotspots for current letter
+  const currentHotspots = useMemo(() => {
+    return panoramaHotspots[currentLetter] || [];
   }, [currentLetter]);
 
   const handleHotspotClick = (hotspot: any) => {
@@ -140,21 +183,21 @@ const IconPanoramaViewer: React.FC = () => {
     viewerRef.current = viewer;
     const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
-    // Create marker from hotspot
-    if (currentHotspot) {
-      const marker = {
-        id: currentHotspot.id,
-        position: currentHotspot.position,
+    // Create markers from hotspots
+    if (currentHotspots && currentHotspots.length > 0) {
+      const markers = currentHotspots.map(hotspot => ({
+        id: hotspot.id,
+        position: hotspot.position,
         image: "/arrow-down-marker.png",
         width: 32,
         height: 32,
         anchor: "bottom center",
-        tooltip: currentHotspot.tooltip,
-        data: currentHotspot,
-        size: { width: 32, height: 32 },
-      };
 
-      markersPlugin.setMarkers([marker]);
+        data: hotspot,
+        size: { width: 32, height: 32 },
+      }));
+
+      markersPlugin.setMarkers(markers);
 
       // Add click event listener
       markersPlugin.addEventListener('select-marker', (e: any) => {
@@ -240,15 +283,11 @@ const IconPanoramaViewer: React.FC = () => {
           mousewheelCtrlKey={true}
           plugins={[[MarkersPlugin, {}]]}
           navbar={[
-            'autorotate',
             'zoom',
             'move',
             'fullscreen'
           ]}
-          onReady={() => {
-            setImageLoading(false);
-            console.log('Panorama loaded successfully:', currentImage);
-          }}
+          onReady={onReady}
         />
       </div>
 

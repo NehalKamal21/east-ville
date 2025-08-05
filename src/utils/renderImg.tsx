@@ -60,7 +60,7 @@ const PanoramaIcon: React.FC<{
       title={config.title || "View 360° Panorama"}
     >
       <img 
-        src="/icons/button.png" 
+        src="/icons/360-degrees-icon.png" 
         alt="360° View" 
         style={{
           width: '100%',
@@ -248,7 +248,7 @@ const FloorPlanWithHotspots: React.FC<{
           title={hotspot.room}
         >
           <img 
-            src="/icons/button.png" 
+            src="/icons/360-degrees-icon.png" 
             alt="360° View" 
             style={{
               width: '100%',
