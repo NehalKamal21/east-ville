@@ -3,6 +3,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { useContactModal } from "../utils/ContactModalContext";
 import { useModal } from "../utils/ModalContext";
 import { RiMailLine } from "react-icons/ri";
+import axios from "axios";
 
 const ContactForm: React.FC = () => {
     const [show, setShow] = useState(false);
@@ -17,6 +18,8 @@ const ContactForm: React.FC = () => {
         phone: "",
         interestedUnit: "",
         message: "",
+        priority: "Medium",
+        source: "Website"
     });
 
     useEffect(() => {
@@ -32,17 +35,84 @@ const ContactForm: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            // Commented out API call for now
-            // const response = await axios.post("/api/contact", formData);
+            // Validate required fields according to schema
+            if (!formData.name || !formData.name.trim()) {
+                alert("Name is required.");
+                return;
+            }
+            if (formData.name.length > 100) {
+                alert("Name cannot exceed 100 characters.");
+                return;
+            }
             
-            // Show success message without API call
+            if (!formData.email || !formData.email.trim()) {
+                alert("Email is required.");
+                return;
+            }
+            const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+            if (!emailRegex.test(formData.email)) {
+                alert("Please enter a valid email.");
+                return;
+            }
+            
+            if (!formData.phone || !formData.phone.trim()) {
+                alert("Phone number is required.");
+                return;
+            }
+            // Remove any non-digit characters for validation
+            const phoneDigits = formData.phone.replace(/\D/g, '');
+            if (phoneDigits.length !== 11) {
+                alert("Phone number must be exactly 11 digits.");
+                return;
+            }
+            
+            if (!formData.message || !formData.message.trim()) {
+                alert("Message is required.");
+                return;
+            }
+            if (formData.message.length > 1000) {
+                alert("Message cannot exceed 1000 characters.");
+                return;
+            }
+            
+            if (formData.interestedUnit && formData.interestedUnit.length > 200) {
+                alert("Interested unit cannot exceed 200 characters.");
+                return;
+            }
+
+            // Call the backend API
+            const response = await axios.post("/api/contacts", formData, { 
+                withCredentials: true 
+            });
+            
+            // Show success message
             openGlobalModal('success');
             closeModal();
             
-            // Log form data for debugging
+            // Reset form
+            setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                interestedUnit: "",
+                message: "",
+                priority: "Medium",
+                source: "Website"
+            });
     
-        } catch (err) {
-            alert("Failed to send message.");
+        } catch (err: any) {
+            console.error("Contact form error:", err);
+            
+            // Show more specific error messages
+            if (err.response?.data?.error) {
+                alert(`Error: ${err.response.data.error}`);
+            } else if (err.response?.data?.message) {
+                alert(`Error: ${err.response.data.message}`);
+            } else if (err.response?.status === 400) {
+                alert("Invalid data. Please check your input and try again.");
+            } else {
+                alert("Failed to send message. Please try again.");
+            }
         }
     };
 
@@ -63,28 +133,78 @@ const ContactForm: React.FC = () => {
             <Modal.Body>
                 <Form>
                     <Form.Group className="mb-3">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        <Form.Label>Name *</Form.Label>
+                        <Form.Control 
+                            type="text" 
+                            name="name" 
+                            value={formData.name} 
+                            onChange={handleChange} 
+                            required 
+                            maxLength={100}
+                            placeholder="Enter your full name"
+                        />
+                        <Form.Text className="text-muted">
+                            {formData.name.length}/100 characters
+                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+                        <Form.Label>Email *</Form.Label>
+                        <Form.Control 
+                            type="email" 
+                            name="email" 
+                            value={formData.email} 
+                            onChange={handleChange} 
+                            required 
+                            placeholder="Enter your email address"
+                        />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
+                        <Form.Label>Phone *</Form.Label>
+                        <Form.Control 
+                            type="tel" 
+                            name="phone" 
+                            value={formData.phone} 
+                            onChange={handleChange} 
+                            required 
+                            placeholder="Enter 11-digit phone number (e.g., 01234567890)"
+                        />
+                        <Form.Text className="text-muted">
+                            Must be exactly 11 digits (e.g., 01234567890)
+                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Interested Unit</Form.Label>
-                        <Form.Control type="text" name="interestedUnit" value={formData.interestedUnit} onChange={handleChange} />
+                        <Form.Control 
+                            type="text" 
+                            name="interestedUnit" 
+                            value={formData.interestedUnit} 
+                            onChange={handleChange}
+                            maxLength={200}
+                            placeholder="e.g., Unit A203, Villa B, etc."
+                        />
+                        <Form.Text className="text-muted">
+                            {formData.interestedUnit.length}/200 characters
+                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Message</Form.Label>
-                        <Form.Control as="textarea" name="message" rows={3} value={formData.message} onChange={handleChange} required />
+                        <Form.Label>Message *</Form.Label>
+                        <Form.Control 
+                            as="textarea" 
+                            name="message" 
+                            rows={3} 
+                            value={formData.message} 
+                            onChange={handleChange} 
+                            required 
+                            maxLength={1000}
+                            placeholder="Enter your message here..."
+                        />
+                        <Form.Text className="text-muted">
+                            {formData.message.length}/1000 characters
+                        </Form.Text>
                     </Form.Group>
                 </Form>
             </Modal.Body>

@@ -242,7 +242,7 @@ export const villaDetails = {
                 target: "location2"
             },
             {
-                "name": "Dressing",
+                "name": "Pantry",
                 "dimensions": "1.50 × 3.00 m",
                 target: "location3"
             },

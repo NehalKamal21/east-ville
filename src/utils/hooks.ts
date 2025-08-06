@@ -2,21 +2,20 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-// Test hook to check local data connectivity using clusters endpoint
+// Test hook to check API connectivity
 export const useApiTest = () => {
   return useQuery({
     queryKey: ['api-test'],
     queryFn: async () => {
       try {
-        const response = await fetch('/data/clusters.json');
-        const data = await response.json();
-        return { status: 'success', data: data };
+        const response = await axios.get('/api/clusters', { withCredentials: true });
+        return { status: 'success', data: response.data };
       } catch (error: any) {
-        console.error('Local Data Test Error:', error);
+        console.error('API Test Error:', error);
         return { 
           status: 'error', 
           message: error.message,
-          code: error.code
+          code: error.response?.status
         };
       }
     },
@@ -25,34 +24,45 @@ export const useApiTest = () => {
   });
 };
 
-// Custom hook for fetching clusters data
+// Custom hook for fetching clusters data from API
 export const useClusters = () => {
   return useQuery({
     queryKey: ['clusters'],
     queryFn: async () => {
-      const response = await fetch('/data/clusters.json');
-      const data = await response.json();
-      return data;
+      const response = await axios.get('/api/clusters', { withCredentials: true });
+      return response.data.clusters || response.data;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
   });
 };
 
-// Custom hook for fetching specific cluster data
+// Custom hook for fetching specific cluster data from API
 export const useCluster = (clusterId: string) => {
   return useQuery({
     queryKey: ['cluster', clusterId],
     queryFn: async () => {
-      const response = await fetch('/data/clusters.json');
-      const data = await response.json();
-      const cluster = data.find((cluster: any) => cluster.clusterId === clusterId);
-      if (!cluster) {
-        throw new Error(`Cluster with ID ${clusterId} not found`);
-      }
-      return cluster;
+      const response = await axios.get(`/api/clusters/clusterId/${clusterId}`, { 
+        withCredentials: true 
+      });
+      return response.data.cluster || response.data;
     },
     enabled: !!clusterId,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+  });
+};
+
+// Custom hook for fetching cluster statistics
+export const useClusterStats = () => {
+  return useQuery({
+    queryKey: ['cluster-stats'],
+    queryFn: async () => {
+      const response = await axios.get('/api/clusters/stats', { withCredentials: true });
+      return response.data;
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    retry: 3,
   });
 };
 
@@ -67,8 +77,25 @@ export const useContacts = () => {
       return response.data;
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
+    retry: 3,
   });
-}; 
+};
+
+// Custom hook for searching villa by combined ID
+export const useVillaSearch = (combinedId: string) => {
+  return useQuery({
+    queryKey: ['villa-search', combinedId],
+    queryFn: async () => {
+      const response = await axios.get(`/api/clusters/villa/search/${combinedId}`, { 
+        withCredentials: true 
+      });
+      return response.data;
+    },
+    enabled: !!combinedId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+  });
+};
 
 // Device type enum
 export type DeviceType = 'mobile' | 'tablet' | 'desktop';

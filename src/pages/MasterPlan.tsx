@@ -1,6 +1,7 @@
 // TODO: Define proper props interface
 import React, { useEffect, useRef, useState } from 'react';
 import MasterPlanSvg from '../SVGs/MasterPlanSvg';
+import axios from 'axios';
 
 import CompoundImageCarousel from '../components/CompoundImageCarousel';
 import { Button } from 'react-bootstrap';
@@ -120,13 +121,14 @@ const MasterPlan: React.FC = () => {
     useEffect(() => {
         const fetchCluster = async (): Promise<void> => {
             try {
-                const response = await fetch('/data/clusters.json');
-                const data = await response.json();
+                const response = await axios.get('/api/clusters', { withCredentials: true });
+                const data = response.data.clusters || response.data;
 
                 setClusters(data);
                 setIsLoading(false);
             } catch (err) {
-                setError("Cluster not found");
+                console.error('Error fetching clusters:', err);
+                setError("Failed to load clusters");
                 setIsLoading(false);
             }
         }

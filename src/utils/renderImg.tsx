@@ -78,20 +78,101 @@ const PanoramaIcon: React.FC<{
 
 // Configuration for panorama icons by cluster and floor
 const panoramaIconConfigs: Record<string, PanoramaIconConfig[]> = {
+  // TW Cluster - Ground Floor (3 rooms)
   "TWGroundFloor": [
-    { top: '75px', left: '50%', location: 'location1' },
-    { bottom: '60px', left: '60%', location: 'location2' },
-    { bottom: '26px', left: '46%', location: 'location4' },
-    // { bottom: '60px', left: '35%', location: 'location3' }
+    { top: '75px', left: '50%', location: 'location1' }, // Reception / Dining
+    { bottom: '60px', left: '60%', location: 'location2' }, // Kitchen
+    { bottom: '26px', left: '46%', location: 'location3' } // Toilet
   ],
-  // Add configurations for other clusters/floors as needed
+  
+  // TW Cluster - First Floor (6 rooms)
+  "TWFirstFloor": [
+    { top: '50px', left: '20%', location: 'location1' }, // Master Bedroom 1
+    { top: '50px', left: '35%', location: 'location2' }, // M. Bathroom 1
+    { top: '50px', left: '50%', location: 'location3' }, // Master Bedroom 2
+    { top: '50px', left: '65%', location: 'location4' }, // M. Bathroom 2
+    { top: '50px', left: '80%', location: 'location5' }, // Master Bedroom 3
+    { bottom: '50px', left: '50%', location: 'location6' } // M. Bathroom 3
+  ],
+  
+  // TW Cluster - Second Floor (6 rooms)
+  "TWSecondFloor": [
+    { top: '50px', left: '20%', location: 'location1' }, // Master Bedroom 4
+    { top: '50px', left: '35%', location: 'location2' }, // M. Bathroom 4
+    { top: '50px', left: '50%', location: 'location3' }, // Dressing
+    { top: '50px', left: '65%', location: 'location4' }, // Living Room
+    { top: '50px', left: '80%', location: 'location5' }, // Master Bedroom 5
+    { bottom: '50px', left: '50%', location: 'location6' } // M. Bathroom 5
+  ],
+  
+  // TW Cluster - Roof (2 rooms)
+  "TWRoof": [
+    { top: '50px', left: '40%', location: 'location1' }, // Maids Room
+    { bottom: '50px', left: '60%', location: 'location2' } // Maids Toilet
+  ],
+  
+  // A Cluster - Ground Floor (4 rooms)
   "AGroundFloor": [
-    { top: '50px', left: '30%', location: 'location1' },
-    { top: '50px', left: '70%', location: 'location2' }
+    { top: '50px', left: '25%', location: 'location1' }, // Reception / Dining
+    { top: '50px', left: '50%', location: 'location2' }, // Kitchen
+    { top: '50px', left: '75%', location: 'location3' }, // Lobby
+    { bottom: '50px', left: '50%', location: 'location4' } // Toilet
   ],
+  
+  // A Cluster - First Floor (5 rooms)
+  "AFirstFloor": [
+    { top: '50px', left: '20%', location: 'location2' }, // Master Bedroom 3
+    { top: '50px', left: '40%', location: 'location3' }, // Dressing
+    { top: '50px', left: '60%', location: 'location4' }, // M. Bathroom 3
+    { top: '50px', left: '80%', location: 'location5' }, // Master Bedroom 4
+    { bottom: '50px', left: '50%', location: 'location6' } // M. Bathroom 4
+  ],
+  
+  // A Cluster - Second Floor (5 rooms)
+  "ASecondFloor": [
+    { top: '50px', left: '20%', location: 'location1' }, // Master Bedroom 1
+    { top: '50px', left: '40%', location: 'location2' }, // M. Bathroom 1
+    { top: '50px', left: '60%', location: 'location3' }, // Living Room
+    { top: '50px', left: '80%', location: 'location4' }, // Master Bedroom 2
+    { bottom: '50px', left: '50%', location: 'location5' } // M. Bathroom 2
+  ],
+  
+  // A Cluster - Roof (2 rooms)
+  "ARoof": [
+    { top: '50px', left: '40%', location: 'location1' }, // Maids Room
+    { bottom: '50px', left: '60%', location: 'location2' } // Maids Toilet
+  ],
+  
+  // B Cluster - Ground Floor (3 rooms)
   "BGroundFloor": [
-    { top: '60px', left: '40%', location: 'location1' },
-    { bottom: '40px', left: '60%', location: 'location2' }
+    { top: '50px', left: '30%', location: 'location1' }, // Reception / Dining
+    { top: '50px', left: '60%', location: 'location2' }, // Kitchen
+    { bottom: '50px', left: '50%', location: 'location3' } // Toilet
+  ],
+  
+  // B Cluster - First Floor (5 rooms)
+  "BFirstFloor": [
+    { top: '50px', left: '20%', location: 'location2' }, // Master Bedroom 1
+    { top: '50px', left: '40%', location: 'location3' }, // Dressing
+    { top: '50px', left: '60%', location: 'location4' }, // M. Bathroom 1
+    { top: '50px', left: '80%', location: 'location5' }, // Master Bedroom 2
+    { bottom: '50px', left: '50%', location: 'location6' } // M. Bathroom 2
+  ],
+  
+  // B Cluster - Second Floor (6 rooms)
+  "BSecondFloor": [
+    { top: '50px', left: '20%', location: 'location1' }, // Master Bedroom
+    { top: '50px', left: '35%', location: 'location2' }, // Dressing
+    { top: '50px', left: '50%', location: 'location3' }, // M. Bathroom
+    { top: '50px', left: '65%', location: 'location4' }, // Living Room
+    { top: '50px', left: '80%', location: 'location5' }, // Bathroom
+    { bottom: '50px', left: '50%', location: 'location6' } // Kitchenette
+  ],
+  
+  // B Cluster - Roof (2 rooms)
+  "BRoof": [
+    { top: '50px', left: '40%', location: 'location1' }, // Maids Room
+    { bottom: '50px', left: '60%', location: 'location2' } // Maids Toilet
   ]
 };
 
@@ -145,16 +226,15 @@ const floorPlanHotspots: Record<string, Array<{ x: number; y: number; room: stri
   "BGroundFloor": [
     { x: 48, y: 36, room: "Reception / Dining", target: "location1" },
     { x: 55, y: 82, room: "Kitchen", target: "location2" },
-    { x: 47, y: 65, room: "Bar Area", target: "location3" },
-    { x: 65, y: 65, room: "Toilet", target: "location4" }
+    { x: 65, y: 65, room: "Toilet", target: "location3" }
   ],
   // Cluster B - First Floor (5 rooms)
   "BFirstFloor": [
     { x: 45, y: 22, room: "Master Bedroom 1", target: "location2" },
     { x: 38, y: 42, room: "Dressing", target: "location3" },
-    { x: 38, y: 58, room: "M. Bathroom 1", target: "location3" },
-    { x: 55, y: 80, room: "Master Bedroom 2", target: "location4" },
-    { x: 36, y: 76, room: "M. Bathroom 2", target: "location5" }
+    { x: 38, y: 58, room: "M. Bathroom 1", target: "location4" },
+    { x: 55, y: 80, room: "Master Bedroom 2", target: "location5" },
+    { x: 36, y: 76, room: "M. Bathroom 2", target: "location6" }
   ],
   // Cluster B - Second Floor (6 rooms)
   "BSecondFloor": [
@@ -174,7 +254,7 @@ const floorPlanHotspots: Record<string, Array<{ x: number; y: number; room: stri
   "TWGroundFloor": [
     { x: 50, y: 36, room: "Reception / Dining", target: "location1" },
     { x: 60, y: 72, room: "Kitchen", target: "location2" },
-    { x: 44, y: 80, room: "Toilet", target: "location4" }
+    { x: 44, y: 80, room: "Toilet", target: "location3" }
   ],
   // Cluster TW - First Floor (6 rooms)
   "TWFirstFloor": [
@@ -189,7 +269,7 @@ const floorPlanHotspots: Record<string, Array<{ x: number; y: number; room: stri
   "TWSecondFloor": [
     { x: 36, y: 27, room: "Master Bedroom 4", target: "location1" },
     { x: 74, y: 26, room: "M. Bathroom 4", target: "location2" },
-    { x: 60, y: 26, room: "Dressing", target: "location3" },
+    { x: 60, y: 26, room: "Pantry", target: "location3" },
     { x: 43, y: 57, room: "Living Room", target: "location4" },
     { x: 50, y: 82, room: "Master Bedroom 5", target: "location5" },
     { x: 28, y: 80, room: "M. Bathroom 5", target: "location6" }

@@ -378,7 +378,7 @@ export const panoramaData = {
             }, 
             "location3": {
                 "id": "TW-sf-loc3",
-                "name": "Dressing",
+                "name": "Pantry",
                 "imgName": "/panos/ClusterTW/secondFloor/03.jpg",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "1550deg", "target": "location4", "tooltip": "Go to Master Bedroom 5" }
