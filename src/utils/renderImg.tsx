@@ -125,7 +125,8 @@ const panoramaIconConfigs: Record<string, PanoramaIconConfig[]> = {
     { top: '50px', left: '40%', location: 'location3' }, // Dressing
     { top: '50px', left: '60%', location: 'location4' }, // M. Bathroom 3
     { top: '50px', left: '80%', location: 'location5' }, // Master Bedroom 4
-    { bottom: '50px', left: '50%', location: 'location6' } // M. Bathroom 4
+    { bottom: '50px', left: '50%', location: 'location6' }, // M. Bathroom 4
+    // { bottom: '70px', left: '50%', location: 'location1' } // Corridor
   ],
   
   // A Cluster - Second Floor (5 rooms)
@@ -207,7 +208,8 @@ const floorPlanHotspots: Record<string, Array<{ x: number; y: number; room: stri
     { x: 38, y: 42, room: "Dressing", target: "location3" },
     { x: 38, y: 55, room: "M. Bathroom 3", target: "location4" },
     { x: 56, y: 80, room: "Master Bedroom 4", target: "location5" },
-    { x: 31, y: 78, room: "M. Bathroom 4", target: "location6" }
+    { x: 31, y: 78, room: "M. Bathroom 4", target: "location6" },
+    { x: 60, y: 50, room: "Corridor", target: "location1" }
   ],
   // Cluster A - Second Floor (5 rooms)
   "ASecondFloor": [
@@ -269,7 +271,7 @@ const floorPlanHotspots: Record<string, Array<{ x: number; y: number; room: stri
   "TWSecondFloor": [
     { x: 36, y: 27, room: "Master Bedroom 4", target: "location1" },
     { x: 74, y: 26, room: "M. Bathroom 4", target: "location2" },
-    { x: 60, y: 26, room: "Pantry", target: "location3" },
+    { x: 25, y: 67, room: "Pantry", target: "location3" },
     { x: 43, y: 57, room: "Living Room", target: "location4" },
     { x: 50, y: 82, room: "Master Bedroom 5", target: "location5" },
     { x: 28, y: 80, room: "M. Bathroom 5", target: "location6" }

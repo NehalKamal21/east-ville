@@ -48,6 +48,11 @@ export const villaDetails = {
                 "name": "M. Bathroom 4",
                 "dimensions": "1.20 × 2.35 m",
                 target: "location6"
+            },
+            {
+                "name": "Corridor",
+                "dimensions": "1.20 × 2.35 m",
+                target: "location1"
             }
         ],
         "secondFloor": [

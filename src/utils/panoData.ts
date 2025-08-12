@@ -37,7 +37,7 @@ export const panoramaData = {
         "firstFloor": {
             "location1": {
                 "id": "A-ff-loc1",
-                "name": "",
+                "name": "Corridor",
                 "imgName": "/panos/ClusterA/firstFloor/00.jpg",
                 "hotspots": [
                     { "pitch": "0deg", "yaw": "-32deg", "target": "location2", "tooltip": "Go to Master Bedroom 3" }

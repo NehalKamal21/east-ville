@@ -3,6 +3,22 @@ import React, { JSX, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 
+// Helper function to convert floorId to user-friendly names
+const getFloorDisplayName = (floorId: string): string => {
+  switch (floorId) {
+    case 'groundFloor':
+      return 'Ground Floor';
+    case 'firstFloor':
+      return 'First Floor';
+    case 'secondFloor':
+      return 'Second Floor';
+    case 'Roof':
+      return 'Roof';
+    default:
+      return floorId; // Fallback to original if no match
+  }
+};
+
 const BreadcrumbNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,7 +93,7 @@ const BreadcrumbNav: React.FC = () => {
 
       if (isImage && floorId && clusterId) {
         crumbs.push({
-          label: `Floor ${floorId}`,
+          label: `${getFloorDisplayName(floorId)}`,
           to: `/clusterView/${clusterId}/${floorId}`,
         });
         crumbs.push({ label: "360 View" });
