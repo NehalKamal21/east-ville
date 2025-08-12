@@ -86,7 +86,7 @@ const BreadcrumbNav: React.FC = () => {
 
       if (floorId && !isImage) {
         crumbs.push({
-          label: `${floorId}`,
+          label: `${getFloorDisplayName(floorId)}`,
           to: `/clusterView/${clusterId}/${floorId}`,
         });
       }
