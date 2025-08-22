@@ -55,7 +55,7 @@ const MasterPlanFilter: React.FC<MasterPlanFilterProps> = ({ onTypeChange, onAre
           <ToggleButton
             key={type.value}
             id={`radio-${type.value}`}
-            type="button"
+            type="radio"
             variant={selectedType === type.value ? "light" : "outline-light"}
             name="type"
             value={type.value}
