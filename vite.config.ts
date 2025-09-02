@@ -59,7 +59,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: process.env.NODE_ENV === 'production' 
-          ? 'http://209.38.255.181' 
+          ? 'https://eastville.app/' 
           : 'http://localhost:5001',
         changeOrigin: true,
         secure: false,
