@@ -7,28 +7,28 @@
   display: flex;
   align-items: stretch;
   justify-content: stretch;
-  
+
   // Mobile/Tablet - enable scrolling
   @media (max-width: 1023px) {
     overflow: auto;
     overflow-x: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    
+
     // Ensure horizontal scrolling is enabled
     &::-webkit-scrollbar {
       height: 8px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: rgba(0, 0, 0, 0.1);
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.3);
       border-radius: 4px;
     }
-    
+
     &::-webkit-scrollbar-thumb:hover {
       background: rgba(0, 0, 0, 0.5);
     }
@@ -58,7 +58,7 @@
   object-fit: cover;
   min-width: 100%;
   min-height: 100%;
-  
+
   // Ensure background image fills the container completely
   image[id="background"] {
     width: 100% !important;
@@ -66,18 +66,18 @@
     object-fit: cover !important;
     transform-origin: 0 0 !important;
   }
-  
+
   // Mobile/Tablet - wider for scrolling
   @media (max-width: 1023px) {
     width: 200%;
     min-width: 200%;
   }
-  
+
   @media (max-width: 768px) {
     width: 250%;
     min-width: 250%;
   }
-  
+
   @media (max-width: 480px) {
     width: 300%;
     min-width: 300%;
@@ -107,11 +107,15 @@
 .villa-B {
   cursor: pointer;
 
-  &:hover,
-  &.active-B {
+  &:hover {
     filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
     opacity: 0.3;
   }
+}
+
+.active-B {
+  filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
+  opacity: 0.3;
 }
 
 .villa-T {
@@ -129,7 +133,7 @@
   pointer-events: none !important;
   position: absolute;
   z-index: 9999;
-  
+
   .tooltip {
     background-color: rgba(0, 0, 0, 0.95);
     color: white;
@@ -147,10 +151,10 @@
     max-width: 250px;
     transition: all 0.2s ease;
     pointer-events: none !important;
-    
+
     // Animation for tooltip appearance
     animation: tooltipFadeIn 0.2s ease-in-out;
-    
+
     // Ensure tooltip is always visible
     &::before {
       content: '';
@@ -505,5 +509,26 @@
     font-size: 0.95rem;
     max-width: 98vw;
     pointer-events: auto;
+  }
+}
+
+// Cluster view button hover styles
+.cluster-view-button {
+
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(8px);
+    transform: translateY(-2px);
+    // box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
   }
 }

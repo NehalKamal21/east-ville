@@ -4,7 +4,7 @@
 @use 'components/master-plan';
 @use 'components/search';
 @use 'components/map';
-@use 'components/cluster-view';
+// @use 'components/cluster-view';
 @use 'components/kasakoun-gallery';
 
 // Global styles can be added here
@@ -20,7 +20,7 @@
 // Breadcrumb responsive styles
 .breadcrumb-wrapper {
   background: transparent;
-  
+
   .static-logo {
     display: flex;
     align-items: center;
@@ -39,15 +39,15 @@
     .custom-breadcrumb {
       font-size: 14px;
       gap: 4px;
-      
+
       .breadcrumb-item {
         margin-right: 4px;
-        
+
         img {
           height: 24px !important;
         }
       }
-      
+
       .static-logo img {
         height: 24px !important;
         margin-right: 15px !important;
@@ -59,15 +59,15 @@
     .custom-breadcrumb {
       font-size: 12px;
       gap: 2px;
-      
+
       .breadcrumb-item {
         margin-right: 2px;
-        
+
         img {
           height: 20px !important;
         }
       }
-      
+
       .static-logo img {
         height: 20px !important;
         margin-right: 10px !important;

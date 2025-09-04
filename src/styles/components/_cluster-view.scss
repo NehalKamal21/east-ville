@@ -50,24 +50,3 @@
     opacity: 0.3;
   }
 }
-
-// Cluster view button hover styles
-.cluster-view-button {
-
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.8) !important;
-    backdrop-filter: blur(8px);
-    transform: translateY(-2px);
-    // box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:focus {
-    outline: 2px solid rgba(255, 255, 255, 0.5);
-    outline-offset: 2px;
-  }
-}
