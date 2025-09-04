@@ -540,3 +540,13 @@
     outline-offset: 2px;
   }
 }
+
+.villa-overlay {
+  fill: #00aa88;
+  /* your custom tint color */
+  opacity: 0.3;
+  /* transparency level */
+  mix-blend-mode: multiply;
+  /* optional: adds color blending */
+  pointer-events: none;
+}

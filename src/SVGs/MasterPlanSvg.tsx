@@ -316,6 +316,10 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
                 xlinkHref={img21}
             />
+            {selectedType === 'B' || selectedArea === 1 && <rect
+                x="2787" y="1862" width="488" height="423"
+                className="villa-overlay"
+            />}
             <image x="6124" y="2202" width="302" height="328"
                 onMouseEnter={() => { setHovered(''); }}
                 onMouseLeave={() => setHovered(null)}
@@ -786,7 +790,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             >
                 {/* White background circle */}
                 <circle
-                    cx="2000" 
+                    cx="2000"
                     cy="2000"
                     r="70"
                     fill="white"
@@ -805,16 +809,16 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 />
             </g>
 
-              {/* 9th 360 Icon */}
-              <g
+            {/* 9th 360 Icon */}
+            <g
                 id="360-K"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
                 {/* White background circle */}
                 <circle
-                  cx="3000" 
-                  cy="2800"
+                    cx="3000"
+                    cy="2800"
                     r="70"
                     fill="white"
                     stroke="#e0e0e0"
@@ -832,16 +836,16 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 />
             </g>
 
-             {/* 10th 360 Icon */}
-             <g
+            {/* 10th 360 Icon */}
+            <g
                 id="360-H"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
                 {/* White background circle */}
                 <circle
-                 cx="3200" 
-                 cy="2300"
+                    cx="3200"
+                    cy="2300"
                     r="70"
                     fill="white"
                     stroke="#e0e0e0"
@@ -858,16 +862,16 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                     style={{ pointerEvents: 'none' }}
                 />
             </g>
-             {/* 11th 360 Icon */}
-             <g
+            {/* 11th 360 Icon */}
+            <g
                 id="360-L"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
                 {/* White background circle */}
                 <circle
-                cx="4400" 
-                cy="3000"
+                    cx="4400"
+                    cy="3000"
                     r="70"
                     fill="white"
                     stroke="#e0e0e0"
@@ -884,16 +888,16 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                     style={{ pointerEvents: 'none' }}
                 />
             </g>
-              {/* 12th 360 Icon */}
-              <g
+            {/* 12th 360 Icon */}
+            <g
                 id="360-I"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
                 {/* White background circle */}
                 <circle
-               cx="4000"
-                cy="2000"
+                    cx="4000"
+                    cy="2000"
                     r="70"
                     fill="white"
                     stroke="#e0e0e0"
@@ -911,16 +915,16 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 />
             </g>
 
-              {/* 13th 360 Icon */}
-              <g
+            {/* 13th 360 Icon */}
+            <g
                 id="360-M"
                 style={{ cursor: 'pointer' }}
                 onClick={handle360IconClick}
             >
                 {/* White background circle */}
                 <circle
-              cx="4500" 
-              cy="4000"
+                    cx="4500"
+                    cy="4000"
                     r="70"
                     fill="white"
                     stroke="#e0e0e0"
