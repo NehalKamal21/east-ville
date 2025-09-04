@@ -109,19 +109,21 @@
 
   &:hover {
     filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
-    -webkit-filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
     opacity: 0.3;
 
-    /* mobile stability nudges */
-    will-change: filter, opacity;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+
   }
 }
 
 .active-B {
-  filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
-  opacity: 0.3;
+  filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%) !important;
+  -webkit-filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%) !important;
+  opacity: 0.3 !important;
+
+  /* mobile stability nudges */
+  will-change: filter, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .villa-T {
