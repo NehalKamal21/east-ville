@@ -313,10 +313,11 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('B-51', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img21}
             />
-            {selectedType === 'B' || selectedArea === 1 && <rect
+            {console.log(selectedType, selectedArea)}
+            {(selectedType === 'B' || selectedArea === 1) && <rect
                 x="2787" y="1862" width="488" height="423"
                 className="villa-overlay"
             />}
