@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDeviceType } from '../utils/hooks';
 import img01 from "../assets/masterplan/image_1.png";
@@ -74,6 +74,10 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
         const ClusterId = event.currentTarget.id; // Get the ID of clicked Cluster
         navigate('/clusterView/' + ClusterId); // Navigate to ClusterView page with the ClusterId
     };
+    useEffect(() => {
+        console.log(selectedArea, selectedType);
+
+    }, [selectedArea, selectedType]);
 
     const handleMouseEnter = (clusterId: string, event: React.MouseEvent<SVGImageElement, MouseEvent>) => {
         setHovered(clusterId);
@@ -316,7 +320,6 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 className={'villa-B '}
                 xlinkHref={img21}
             />
-            {console.log(selectedType, selectedArea)}
             {(selectedType === 'B' || selectedArea === 1) && <rect
                 x="2787" y="1862" width="488" height="423"
                 className="villa-overlay"
