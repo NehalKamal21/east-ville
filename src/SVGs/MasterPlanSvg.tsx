@@ -184,135 +184,211 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('B-36', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event: React.MouseEvent<SVGImageElement, MouseEvent>) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img02}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="2988" y="416" width="382" height="367"
+                className="villa-overlay-B"
+            />}
             <image x="3266" y="621" width="366" height="385" id="A-35"
                 onMouseEnter={(event) => handleMouseEnter('A-35', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img03}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="3266" y="621" width="366" height="385"
+                className="villa-overlay-A"
+            />}
             <image x="3574" y="841" width="414" height="383" id="B-34"
                 onMouseEnter={(event) => handleMouseEnter('B-34', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img04}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3574" y="841" width="414" height="383"
+                className="villa-overlay-B"
+            />}
             <image x="3897" y="1066" width="276" height="279" id="T-33"
                 onMouseEnter={(event) => handleMouseEnter('T-33', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img05}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="3897" y="1066" width="276" height="279"
+                className="villa-overlay-T"
+            />}
             <image x="4080" y="1204" width="435" height="380" id="B-32"
                 onMouseEnter={(event) => handleMouseEnter('B-32', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img06}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4080" y="1204" width="435" height="380"
+                className="villa-overlay-B"
+            />}
             <image x="3663" y="1413" width="463" height="382" id="B-37"
                 onMouseEnter={(event) => handleMouseEnter('B-37', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img07}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3663" y="1413" width="463" height="382"
+                className="villa-overlay-B"
+            />}
             <image x="3481" y="1269" width="286" height="321" id="T-38"
                 onMouseEnter={(event) => handleMouseEnter('T-38', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img08}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="3481" y="1269" width="286" height="321"
+                className="villa-overlay-T"
+            />}
             <image x="3167" y="1036" width="410" height="390" id="B-39"
                 onMouseEnter={(event) => handleMouseEnter('B-39', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img09}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3167" y="1036" width="410" height="390"
+                className="villa-overlay-B"
+            />}
             <image x="2855" y="805" width="438" height="394" id="A-40"
                 onMouseEnter={(event) => handleMouseEnter('A-40', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img10}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="2855" y="805" width="438" height="394"
+                className="villa-overlay-A"
+            />}
             <image x="2607" y="634" width="356" height="299" id="B-41"
                 onMouseEnter={(event) => handleMouseEnter('B-41', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img11}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="2607" y="634" width="356" height="299"
+                className="villa-overlay-B"
+            />}
             <image x="2169" y="788" width="430" height="373" id="B-46"
                 onMouseEnter={(event) => handleMouseEnter('B-46', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img12}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="2169" y="788" width="430" height="373"
+                className="villa-overlay-B"
+            />}
             <image x="2474" y="991" width="378" height="401" id="A-45"
                 onMouseEnter={(event) => handleMouseEnter('A-45', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img13}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="2474" y="991" width="378" height="401"
+                className="villa-overlay-A"
+            />}
             <image x="2778" y="1231" width="422" height="389" id="B-44"
                 onMouseEnter={(event) => handleMouseEnter('B-44', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img14}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="2778" y="1231" width="422" height="389"
+                className="villa-overlay-B"
+            />}
             <image x="3100" y="1466" width="285" height="297" id="T-43"
                 onMouseEnter={(event) => handleMouseEnter('T-43', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img15}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="3100" y="1466" width="285" height="297"
+                className="villa-overlay-T"
+            />}
             <image x="3288" y="1603" width="378" height="417" id="B-42"
                 onMouseEnter={(event) => handleMouseEnter('B-42', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img16}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3288" y="1603" width="378" height="417"
+                className="villa-overlay-B"
+            />}
             <image x="1758" y="969" width="437" height="375" id="B-47"
                 onMouseEnter={(event) => handleMouseEnter('B-47', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img17}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="1758" y="969" width="437" height="375"
+                className="villa-overlay-B"
+            />}
             <image x="2036" y="1195" width="446" height="405" id="A-48"
                 onMouseEnter={(event) => handleMouseEnter('A-48', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img18}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="2036" y="1195" width="446" height="405"
+                className="villa-overlay-A"
+            />}
             <image x="2341" y="1437" width="415" height="414" id="B-49"
                 onMouseEnter={(event) => handleMouseEnter('B-49', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img19}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="2341" y="1437" width="415" height="414"
+                className="villa-overlay-B"
+            />}
             <image x="2653" y="1687" width="292" height="318" id="T-50"
                 onMouseEnter={(event) => handleMouseEnter('T-50', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img20}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="2653" y="1687" width="292" height="318"
+                className="villa-overlay-T"
+            />}
             <image x="2787" y="1862" width="488" height="423" id="B-51"
                 onMouseEnter={(event) => handleMouseEnter('B-51', event)}
                 onMouseLeave={handleMouseLeave}
@@ -322,7 +398,7 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
             />
             {(selectedType === 'B' || selectedArea === 1) && <rect
                 x="2787" y="1862" width="488" height="423"
-                className="villa-overlay"
+                className="villa-overlay-B"
             />}
             <image x="6124" y="2202" width="302" height="328"
                 onMouseEnter={() => { setHovered(''); }}
@@ -340,226 +416,354 @@ const MasterPlanSvg: React.FC<MasterPlanSvgProps> = ({ points, selectedArea, sel
                 onMouseEnter={(event) => handleMouseEnter('B-31', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img24}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3480" y="355" width="353" height="348"
+                className="villa-overlay-B"
+            />}
             <image x="3752" y="534" width="396" height="385" id="B-30"
                 onMouseEnter={(event) => handleMouseEnter('B-30', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img25}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3752" y="534" width="396" height="385"
+                className="villa-overlay-B"
+            />}
             <image x="4062" y="742" width="404" height="391" id="B-29"
                 onMouseEnter={(event) => handleMouseEnter('B-29', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img26}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4062" y="742" width="404" height="391"
+                className="villa-overlay-B"
+            />}
             <image x="4406" y="947" width="455" height="385" id="A-28"
                 onMouseEnter={(event) => handleMouseEnter('A-28', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img27}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="4406" y="947" width="455" height="385"
+                className="villa-overlay-A"
+            />}
             <image x="4752" y="1174" width="428" height="414" id="B-27"
                 onMouseEnter={(event) => handleMouseEnter('B-27', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img28}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4752" y="1174" width="428" height="414"
+                className="villa-overlay-B"
+            />}
             <image x="5085" y="1414" width="485" height="415" id="A-26"
                 onMouseEnter={(event) => handleMouseEnter('A-26', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img29}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="5085" y="1414" width="485" height="415"
+                className="villa-overlay-A"
+            />}
             <image x="5431" y="1684" width="455" height="431" id="B-25"
                 onMouseEnter={(event) => handleMouseEnter('B-25', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img30}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5431" y="1684" width="455" height="431"
+                className="villa-overlay-B"
+            />}
             <image x="5803" y="1945" width="422" height="415" id="B-24"
                 onMouseEnter={(event) => handleMouseEnter('B-24', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img31}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5803" y="1945" width="422" height="415"
+                className="villa-overlay-B"
+            />}
             <image x="4618" y="1577" width="456" height="393" id="B-23"
                 onMouseEnter={(event) => handleMouseEnter('B-23', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img32}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4618" y="1577" width="456" height="393"
+                className="villa-overlay-B"
+            />}
             <image x="4981" y="1831" width="302" height="306" id="T-22"
                 onMouseEnter={(event) => handleMouseEnter('T-22', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img33}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="4981" y="1831" width="302" height="306"
+                className="villa-overlay-T"
+            />}
             <image x="5204" y="1989" width="305" height="320" id="T-21"
                 onMouseEnter={(event) => handleMouseEnter('T-21', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img34}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="5204" y="1989" width="305" height="320"
+                className="villa-overlay-T"
+            />}
             <image x="5409" y="2140" width="455" height="473" id="A-20"
                 onMouseEnter={(event) => handleMouseEnter('A-20', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img35}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="5409" y="2140" width="455" height="473"
+                className="villa-overlay-A"
+            />}
             <image x="5774" y="2456" width="557" height="430" id="B-19"
                 onMouseEnter={(event) => handleMouseEnter('B-19', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img36}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5774" y="2456" width="557" height="430"
+                className="villa-overlay-B"
+            />}
             <image x="6367" y="2689" width="489" height="490" id="A-18"
                 onMouseEnter={(event) => handleMouseEnter('A-18', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img37}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="6367" y="2689" width="489" height="490"
+                className="villa-overlay-A"
+            />}
             <image x="4228" y="1782" width="428" height="463" id="B-13"
                 onMouseEnter={(event) => handleMouseEnter('B-13', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img38}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4228" y="1782" width="428" height="463"
+                className="villa-overlay-B"
+            />}
             <image x="4571" y="2060" width="303" height="332" id="T-14"
                 onMouseEnter={(event) => handleMouseEnter('T-14', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img39}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="4571" y="2060" width="303" height="332"
+                className="villa-overlay-T"
+            />}
             <image x="4772" y="2225" width="512" height="444" id="A-15"
                 onMouseEnter={(event) => handleMouseEnter('A-15', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img40}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="4772" y="2225" width="512" height="444"
+                className="villa-overlay-A"
+            />}
             <image x="5166" y="2506" width="483" height="461" id="B-16"
                 onMouseEnter={(event) => handleMouseEnter('B-16', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img41}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5166" y="2506" width="483" height="461"
+                className="villa-overlay-B"
+            />}
             <image x="5548" y="2806" width="545" height="481" id="B-17"
                 onMouseEnter={(event) => handleMouseEnter('B-17', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img42}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5548" y="2806" width="545" height="481"
+                className="villa-overlay-B"
+            />}
             <image x="5974" y="3116" width="345" height="352" id="B-12+"
                 onMouseEnter={(event) => handleMouseEnter('B-12+', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img43}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5974" y="3116" width="345" height="352"
+                className="villa-overlay-B"
+            />}
             <image x="3766" y="2039" width="509" height="413" id="B-11"
                 onMouseEnter={(event) => handleMouseEnter('B-11', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img44}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="3766" y="2039" width="509" height="413"
+                className="villa-overlay-B"
+            />}
             <image x="4168" y="2288" width="307" height="329" id="T-10"
                 onMouseEnter={(event) => handleMouseEnter('T-10', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img45}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="4168" y="2288" width="307" height="329"
+                className="villa-overlay-T"
+            />}
             <image x="4368" y="2449" width="446" height="420" id="A-09"
                 onMouseEnter={(event) => handleMouseEnter('A-09', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img46}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="4368" y="2449" width="446" height="420"
+                className="villa-overlay-A"
+            />}
             <image x="4749" y="2755" width="502" height="455" id="B-08"
                 onMouseEnter={(event) => handleMouseEnter('B-08', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img47}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4749" y="2755" width="502" height="455"
+                className="villa-overlay-B"
+            />}
             <image x="5148" y="3051" width="474" height="498" id="A-07"
                 onMouseEnter={(event) => handleMouseEnter('A-07', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img48}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="5148" y="3051" width="474" height="498"
+                className="villa-overlay-A"
+            />}
             <image x="5574" y="3377" width="367" height="372" id="B-12"
                 onMouseEnter={(event) => handleMouseEnter('B-12', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img49}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="5574" y="3377" width="367" height="372"
+                className="villa-overlay-B"
+            />}
             <image x="3348" y="2262" width="405" height="482" id="A-01"
                 onMouseEnter={(event) => handleMouseEnter('A-01', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img50}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="3348" y="2262" width="405" height="482"
+                className="villa-overlay-A"
+            />}
             <image x="3711" y="2538" width="319" height="346" id="T-02"
                 onMouseEnter={(event) => handleMouseEnter('T-02', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img51}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="3711" y="2538" width="319" height="346"
+                className="villa-overlay-T"
+            />}
             <image x="3937" y="2714" width="315" height="355" id="T-03"
                 onMouseEnter={(event) => handleMouseEnter('T-03', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-T ' + (selectedType === 'T' || selectedArea === 2 ? 'active-T' : '')}
+                className={'villa-T '}
                 xlinkHref={img52}
             />
+            {(selectedType === 'T' || selectedArea === 2) && <rect
+                x="3937" y="2714" width="315" height="355"
+                className="villa-overlay-T"
+            />}
             <image x="4147" y="2892" width="482" height="501" id="A-04"
                 onMouseEnter={(event) => handleMouseEnter('A-04', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img53}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="4147" y="2892" width="482" height="501"
+                className="villa-overlay-A"
+            />}
             <image x="4539" y="3211" width="500" height="489" id="B-05"
                 onMouseEnter={(event) => handleMouseEnter('B-05', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-B ' + (selectedType === 'B' || selectedArea === 1 ? 'active-B' : '')}
+                className={'villa-B '}
                 xlinkHref={img54}
             />
+            {(selectedType === 'B' || selectedArea === 1) && <rect
+                x="4539" y="3211" width="500" height="489"
+                className="villa-overlay-B"
+            />}
             <image x="4930" y="3538" width="568" height="521" id="A-06"
                 onMouseEnter={(event) => handleMouseEnter('A-06', event)}
                 onMouseLeave={handleMouseLeave}
                 onClick={(event) => handleClick(event)}
-                className={'villa-A ' + (selectedType === 'A' || selectedArea === 0 ? 'active-A' : '')}
+                className={'villa-A '}
                 xlinkHref={img55}
             />
+            {(selectedType === 'A' || selectedArea === 0) && <rect
+                x="4930" y="3538" width="568" height="521"
+                className="villa-overlay-A"
+            />}
             {points.map((point) => (
                 hovered == point.clusterId && <g key={point.clusterId} className='cluster-point'>
                     {/* Clickable Circle */}

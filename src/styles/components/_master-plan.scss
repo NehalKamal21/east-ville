@@ -541,10 +541,30 @@
   }
 }
 
-.villa-overlay {
-  fill: #00aa88;
+.villa-overlay-A {
+  fill: #025159;
   /* your custom tint color */
   opacity: 0.3;
+  /* transparency level */
+  mix-blend-mode: multiply;
+  /* optional: adds color blending */
+  pointer-events: none;
+}
+
+.villa-overlay-B {
+  fill: #3f858c;
+  /* your custom tint color */
+  opacity: 0.4;
+  /* transparency level */
+  mix-blend-mode: multiply;
+  /* optional: adds color blending */
+  pointer-events: none;
+}
+
+.villa-overlay-T {
+  fill: #7ab8bf;
+  /* your custom tint color */
+  opacity: 0.5;
   /* transparency level */
   mix-blend-mode: multiply;
   /* optional: adds color blending */
