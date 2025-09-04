@@ -31,6 +31,7 @@
 
   &:hover {
     filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
+    -webkit-filter: brightness(0) saturate(100%) invert(45%) sepia(25%) saturate(795%) hue-rotate(137deg) brightness(96%) contrast(86%);
     opacity: 0.3;
   }
 }
